@@ -18,6 +18,7 @@ This repository does **not** prove the Goldbach conjecture. Current strategy:
 | `WilliamsonMurIIExtensions` | `first_failure_previous_conditions`, `deficient_prime_power_bound` (2r^a ≤ P−3), `previous_prime_has_private_owner`, `private_owner_budget`, `pair_height_bound_odd` |
 | `WilliamsonMurIIKLines` | **k-line bound**: for any set D of deficient lines, ∏_{i∈D}(N−i) ∣ `deficitBudget P #D`, hence (N−P)^#D ≤ `deficitBudget P #D`; `wallII_height_ceiling` |
 | `WilliamsonMurIIClosure` | link with §17 of *A Closure Chain Toward Williamson's Conjecture*: `one_add_absent_le_deficient` (z ≥ 1 + a, the used half of (17.1)), `geomAbs_subset_absent` ((17.32), a ≥ G(N,P)), `height_of_geomAbs`: for every k ≤ 1 + G(N,P), (N−P)^k ≤ `deficitBudget P k`. The analytic input G(N,P) ≥ 3P/(20 log P) for N > P^{3/2} (Prop. 17.13, (17.47)) is **not** formalized; it enters only as the hypothesis on k. |
+| `WilliamsonMurIIRatio` | exact identities of §17: **(17.4)** `ratio_identity` ∏ M_ℓ = L·B for every assignment of maxima; **(17.1)** `deficit_identity` z = 1 + a + t + e; **(17.5)–(17.6)** `factor_one_budget` (N−P)^{1+a+e} ≤ B; `deficient_iff_rowDef` (manuscript's "no private certificate" ↔ `Deficient`) |
 | `WilliamsonMurIIBridge` | **exact bridge**: at P = largest prime < N, `BadFamily P N ↔ ¬ Goldbach(N)`; `first_failure_rank_chain`; **`goldbach_of_walls`**: Wall I + Wall II above P₀ + ranks 5 ≤ P < P₀ ⇒ Goldbach for all even N ≥ 8 |
 
 `deficitBudget P k = ∏_{r<P prime} r^{E(r)}`, with
@@ -54,6 +55,8 @@ Goldbach/WilliamsonMurIIExtensions.lean  arithmetic extensions
 Goldbach/WilliamsonMurIIKLines.lean      simultaneous k-line bound
 Goldbach/WilliamsonMurIIBridge.lean      exact bridge to Goldbach
 Goldbach/WilliamsonMurIIClosure.lean     link with manuscript §17 (z ≥ 1+a ≥ 1+G)
+Goldbach/WilliamsonMurIIRatio.lean       exact identities (17.1), (17.4), (17.6)
+docs/joint-sieve-SQ.md                   joint-sieve analysis (conditional on Hypothesis T)
 scripts/check_small_ranks.py             finite check of small ranks
 archive/                                 previous route (not built)
 ```

@@ -1,0 +1,101 @@
+# Joint sieve on the incidences (q, ℓ) — analysis note
+
+Status: **mathematical analysis, not formalized.** One analytic input
+(Hypothesis T below) is **not proved**. No lock is declared closed.
+
+Reference: I. O. Bado, *A Closure Chain Toward Williamson's Conjecture*,
+§16–17 (DOI 10.13140/RG.2.2.34840.97281).
+
+## Setting
+
+Restricted-support family, `P^4 < N < P^{14 log log P}` (Th. 17.14), `K := log N / log P`.
+For a dyadic scale `Q < q ≤ 2Q`, put `X := P/Q` and
+
+    S_Q(N) = Σ_{Q<q≤2Q, q prime} Σ_{ℓ ≤ P prime, q | N-ℓ} log q.
+
+Since `(n(q)-1)_+ ≤ n(q)`, the exponent-one part of `log B` on that scale is `≤ S_Q`.
+Expected size: `S_Q ≈ (log 2)·π(P) ≍ P/log P`.
+
+## Change of variables
+
+`ℓ = N - bq`, `b` odd (N even, ℓ, q odd), `b ∈ I_q = [(N-P)/q, (N-3)/q]`, `|I_q| ≈ X`.
+So `S_Q = Σ_q log q · #{b ∈ I_q odd : N - bq prime}`.
+
+Sieve the multiset `{N - bq}` (weights `log q`) by odd primes `p ≤ D`.
+For odd squarefree `d ≤ D² < Q` (so `q ∤ d`):
+
+    d | N - bq  ⟺  b ≡ N q̄ (mod d);  with b odd: one class β_{q,d} mod 2d.
+
+Hence `A_d = X_tot/d + R_d`, `X_tot = Σ_q log q (P-3)/(2q) ≍ P`, with `ω(p) = 1` for every odd `p`
+(also when `p | N`: the condition becomes `p | b`). Linear sieve, dimension 1.
+Small primes `ℓ ≤ D` (removed by the sieve) contribute `≤ π(D)·2K log P = o(P/log P)`.
+
+## Level with trivial remainders = Brun–Titchmarsh
+
+Each `I_q` has only `≈ X` points, so per `q` the remainder is `O(1)` and `|R_d| ≤ Σ_q log q ≍ Q`.
+Selberg's condition `Σ_{d≤D²} τ₃(d)|R_d| ≪ P/log P` forces `D² ≈ X/L^c`, giving
+
+    S_Q ≤ (2 + o(1)) X_tot / log D ≍ P / log X,
+
+exactly Brun–Titchmarsh. **Without cancellation over q, the joint sieve gains nothing.**
+
+## Remainders through reciprocal sums
+
+`#{b ∈ [α,β], b ≡ β_{q,d} (2d)} = (β-α)/(2d) + ψ((α-β_{q,d})/2d) - ψ((β-β_{q,d})/2d)`, `α = (N-P)/q`.
+Vaaler's polynomial (length `H`) gives an error `≪ Q/H` plus sums
+
+    Σ_q log q · e(h(N-P)/(2dq)) · g_h(q),   g_h(q) = e(-h β_{q,d}/(2d)),
+
+where `g_h` depends only on `q mod d` and `|g_h| = 1` on reduced classes. Expanding `g_h` in Dirichlet
+characters mod `d` and using Parseval, `Σ_χ |ĝ_h(χ)| ≤ φ(d)^{1/2}`. Therefore
+
+    |R_d| ≪ Q/H + (log H) · d^{1/2} · max_{χ mod d} |Σ_{Q<q≤2Q} χ(q) log q · e(Y/q)|,   Y = h(N-P)/(2d).
+
+Here `|Y| ≥ N/(4D²) ≥ Q²/64`: the **large-height range of Prop. 16.3**.
+
+## Hypothesis T (not proved)
+
+Uniformly for `d ≤ Q^{1/5}`, `χ mod d`, `|Y| ≥ Q²/64`:
+
+    |Σ_{Q<q≤2Q} χ(q) log q · e(Y/q)| ≪ Q · ℰ,
+    ℰ = L^5 ( Q^{-1/310} + exp(-c (log Q)^3 / (250 (log 2|Y|)^2)) ).
+
+This is Prop. 16.3 twisted by a character of small modulus. The expected proof follows §16.3–16.6:
+Vaughan's identity is compatible with completely multiplicative `χ`. Type I sums split `n ≡ c (d)` into
+shifted reciprocal phases `(Y/(md))/(k + c/d)` on intervals of length `Z/d ≥ Z^{1/2}`. Type II sums
+lose `χ` after Cauchy–Schwarz up to the coprimality `(n,d) = 1`, which is removed by Möbius over
+`e | d`. **Missing point:** checking that the Vinogradov input (16.13) holds for shifted phases
+`a/(k+s)` on intervals of length `≥ Z^{1/2}`, with the same constants. It depends only on the
+derivatives, but the source [5] has to be checked as stated.
+
+## Level and gain under Hypothesis T
+
+Choose `H = D² L⁴`. Then `Σ_{d≤D²} τ₃(d)|R_d| ≪ P/L` as soon as `D³ ≤ X ℰ^{-1} L^{-4}`.
+For `Q ≥ P^{1-δ}` with `δ = 1/5`: `D² ≤ P^{0.14} ≤ Q^{1/5}` ✓. Moreover
+`log(1/ℰ) ≥ c₁ log P / K² - 5 log log P` (since `log Q ≥ 0.8 log P` and `log|Y| ≤ (1+o(1)) K log P`).
+
+    S_Q ≪ P / (log X + c₁ log P / K²)        (P^{4/5} ≤ Q ≤ P/2).
+
+Dyadic sum over `X = 2^j`, `1 ≤ j ≤ δ log₂ P`:
+
+    Σ_j P/(j log 2 + c₁ log P/K²) ≪ P log(1 + δK²/c₁) ≪ P (1 + log K).
+
+Primes `q ≤ P^{4/5}`: Brun–Titchmarsh gives `2P log(1/δ) + O(P)` (integral of Prop. 17.9).
+Higher powers: `H₂ = o(P)` (Prop. 17.10). Hence, **under T**:
+
+    log B ≤ C₀ P (1 + log K).
+
+## Consequence (conditional)
+
+(17.6) and (17.47): `log B ≥ (1 + a + e) log A ≥ (c_g - o(1)) K P`. Therefore
+
+    c_g K ≤ C₀ (1 + log K) + o(1)  ⟹  K ≤ K₀ (absolute, effective):
+
+**under Hypothesis T, every restricted-support family satisfies `N ≤ P^{K₀}` for `P ≥ P₀`.**
+This replaces `14 log log P` by an absolute constant. The quadratic and polynomial range
+`P^{3/2} < N ≤ P^{K₀}` stays open; Wall II is **not** closed.
+
+## Unconditional gain
+
+None. With the untwisted estimates of §16 alone, the remainders `R_d` cannot be controlled
+beyond the trivial level, and the joint sieve reproduces Brun–Titchmarsh.
