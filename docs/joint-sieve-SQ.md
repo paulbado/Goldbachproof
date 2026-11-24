@@ -68,6 +68,45 @@ lose `χ` after Cauchy–Schwarz up to the coprimality `(n,d) = 1`, which is rem
 `a/(k+s)` on intervals of length `≥ Z^{1/2}`, with the same constants. It depends only on the
 derivatives, but the source [5] has to be checked as stated.
 
+### Sources checked (2026-11-24)
+
+* **(16.13)** = Green–Harper, *Inverse questions for the large sieve*, GAFA 24 (2014),
+  Prop. 4.3 (arXiv:1311.6176), via Iwaniec–Kowalski Th. 8.25: for `x > Y^5`,
+  `Σ_{Y≤n≤2Y} e(x/n) ≪ Y exp(-c log³Y / log²x)`. Integers `n`, fixed range `[Y,2Y]`,
+  no shift.
+* **Shifted phases** are covered by Matomäki–Radziwiłł–Shao–Tao–Teräväinen,
+  *Singmaster's conjecture in the interior of Pascal's triangle*, Lemma 4.1
+  (arXiv:2106.03335): any interval `I ⊂ [X,2X]`, any phase with
+  `α^{-r³} F ≤ t^r |f^{(r)}(t)|/r! ≤ α^{r³} F` for `1 ≤ r ≤ 10⌈log F/log X⌉+1`, `F ≥ X⁴`;
+  bound `αX exp(-2^{-18} log³X / log²F)`.
+  For `f_s(t) = a/(t+s)`, `0 ≤ s < 1`, `t ∈ [X,2X]`:
+  `t^r |f_s^{(r)}(t)|/r! = (|a|/(t+s))·(t/(t+s))^r ∈ [F/(3e), F]` with `F = |a|/X`
+  (because `(t/(t+s))^r ≥ e^{-r/X}` and `r ≪ K ≪ X`). So **`α = 3e` works for every `r ≥ 1`,
+  uniformly in `s`.** (The smallness condition of Lemma 4.1 is to be reread on the
+  published version; outside it the bound is trivial anyway.)
+* For `Z^{1/4} ≤ F ≤ Z^4` (relevant when `N` is close to `P^4`), Lemma 16.4 (derivatives of
+  order 2–6) applies to `f_s` without change: it depends only on `|f^{(k)}|`.
+
+### On the `√d` loss (objection raised in review)
+
+The objection: `|R_d| ≪ √d·Q·ℰ` and `√d` can reach `Q^{1/10}`, so `Q^{1/10}ℰ` need not
+tend to 0. **That is not the constraint actually used.** The sieve only involves
+`d ≤ D²`, and the level is fixed **after** the `√d` loss:
+
+    Σ_{d≤D²} τ₃(d)·√d·Q·ℰ ≍ D³ (log D)² Q ℰ ≤ P/L  ⟺  D³ ≤ X ℰ^{-1} L^{-4}.
+
+So `√d·ℰ ≤ D·ℰ ≤ (X/ℰ)^{1/3}·ℰ = X^{1/3}ℰ^{2/3}`, which never has to be small. The range
+`d ≤ Q^{1/5}` of Hypothesis T is only an admissibility condition (`D² ≤ (X/ℰ)^{2/3} ≤ P^{0.14}
+≤ Q^{1/5}`), not the level. The gain comes from `log D = (log X + log ℰ^{-1})/3 - O(log L)`,
+with the `√d` loss already accounted for. A sharper bound (Weil, Kloosterman) would only change
+the constant `1/3`.
+
+### What remains to prove for Hypothesis T
+
+The complete Vaughan bookkeeping with `χ`: Type I sums split into `d` shifted progressions
+of length `Q/(md) ≫ Q^{7/15}`; Type II sums with the coprimality `(n,d)=1` removed by Möbius;
+endpoints; uniformity in `d ≤ Q^{1/5}`. **Not written; Hypothesis T stays a hypothesis.**
+
 ## Level and gain under Hypothesis T
 
 Choose `H = D² L⁴`. Then `Σ_{d≤D²} τ₃(d)|R_d| ≪ P/L` as soon as `D³ ≤ X ℰ^{-1} L^{-4}`.
