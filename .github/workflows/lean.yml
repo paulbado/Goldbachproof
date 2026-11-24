@@ -1,0 +1,41 @@
+name: Build & verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lean:
+    name: Lean build (Mathlib)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build with Lake (uses Mathlib cache)
+        uses: leanprover/lean-action@v1
+        with:
+          use-mathlib-cache: true
+
+      - name: Forbid sorry / new axioms
+        run: |
+          if grep -nE '\bsorry\b|^\s*axiom\s' Goldbach/*.lean; then
+            echo "::error::Found sorry or axiom declaration"; exit 1
+          fi
+
+      - name: Replay finite computation in Lean (expect (229153, 0))
+        run: |
+          out=$(lake env lean scripts/CheckRangeStats.lean)
+          echo "$out"
+          echo "$out" | grep -q '(229153, 0)'
+
+  python:
+    name: Independent Python check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/verify_williamson.py
