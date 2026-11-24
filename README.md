@@ -47,6 +47,14 @@ only when the number of deficient lines is a positive proportion of all lines.
 
 The earlier route (Williamson certificate cover) is kept in `archive/`, not built.
 
+### Analytic write-ups (not formalized, not refereed)
+
+- [`docs/hypothesis-T.md`](docs/hypothesis-T.md): proof of the χ-twisted Proposition 16.3 (Lemma S on shifted
+  reciprocal phases, Type I/II), sieve remainder bound, Selberg level including the √d loss, and
+  Theorem W: every restricted-support family with P ≥ P₀ satisfies N ≤ P^{K₀}. Dependencies and points
+  to check are listed in §0 and §11 of that file. **Wall II is not closed.**
+- [`docs/joint-sieve-SQ.md`](docs/joint-sieve-SQ.md): setup of the joint sieve and source checks.
+
 ## Layout
 
 ```
@@ -56,7 +64,8 @@ Goldbach/WilliamsonMurIIKLines.lean      simultaneous k-line bound
 Goldbach/WilliamsonMurIIBridge.lean      exact bridge to Goldbach
 Goldbach/WilliamsonMurIIClosure.lean     link with manuscript §17 (z ≥ 1+a ≥ 1+G)
 Goldbach/WilliamsonMurIIRatio.lean       exact identities (17.1), (17.4), (17.6)
-docs/joint-sieve-SQ.md                   joint-sieve analysis (conditional on Hypothesis T)
+docs/joint-sieve-SQ.md                   joint-sieve analysis, sources, sqrt(d) accounting
+docs/hypothesis-T.md                     proof of χ-twisted Prop. 16.3, sieve level, Theorem W (N ≤ P^K0)
 scripts/check_small_ranks.py             finite check of small ranks
 archive/                                 previous route (not built)
 ```
