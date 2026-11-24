@@ -1,6 +1,6 @@
 # Residual region $P^{5/3} < N < P^{959}$: repetition mass, injectivity, and a barrier
 
-Status: **research note.** The lemmas marked "proved" have a written, self-audited proof; R2, R2′, R2″ and the ingredients of L1 also have a Lean proof.
+Status: **research note.** The lemmas marked "proved" have a written, self-audited proof; R2, R2′, R2″, MR and the ingredients of L1 also have a Lean proof.
 **No pointwise exclusion is obtained.** Wall II, Williamson and Goldbach are **not** proved.
 
 Context: Theorem W (`theorem-W-dependencies.md`) gives $N < P^{959}$ for every restricted-support family
@@ -242,8 +242,12 @@ uniformly for $K \le 2 - \epsilon$.
 *Proof.*
 - **Lower bound.** $\sum_\ell\log M_\ell = \sum_\ell\sum_{d\mid M_\ell}\Lambda(d) = \mathcal M(N) + H_{\mathrm{high}}$ and $\sum_\ell\log M_\ell \ge |I|\log A \ge KP - O(P/L + KL)$
   (Rosser–Schoenfeld), so L1 gives the bound.
-- **Average.** For odd $d \le P$, $\Pr_N(N \equiv \ell\ (d)) = 1/d + O(d/X)$ (for even $d$, $n(d) = 0$). Hence
-  $\mathbb E\,\mathcal M = |I|\sum_{d\le P\ \text{odd}}\Lambda(d)/d + O(|I|P\log P/X) = \pi(P)(L + O(1)) + o(1) = P(1 + O(1/L))$ (Mertens). $\square$
+- **Average.** For odd $d \le P$, $N = 2n$ with $n \in (X/2, X]$ and $2n \equiv \ell\ (d)$ is one class of $n$ mod $d$, so
+  $\Pr_N(N \equiv \ell\ (d)) = 1/d + O(1/X)$, uniformly in $d \le P \le X$ (for even $d$, $n(d) = 0$). Hence
+  $\mathbb E\,\mathcal M = |I|\sum_{d\le P\ \text{odd}}\Lambda(d)/d + O(|I|\psi(P)/X) = \pi(P)(L + O(1)) + O(P^2/(LX)) = P(1 + O(1/L))$
+  (Mertens; $P^2/(LX) \le P^{1/3}/L$). *(Audit correction: an earlier version wrote the per-modulus error as $O(d/X)$ and
+  the total as $o(1)$; summed over $d \le P$ that would give $O(P^3/(LX))$, which is not $o(P)$ at $X = P^{5/3}$. The error is
+  $O(1/X)$ per modulus and the total is $O(P^{1/3}/L)$; the conclusion is unchanged.)* $\square$
 
 **Reading.** A restricted-support family in $5/3 \le K < 2$ forces $\mathcal M(N)$ to be at least $K \ge 5/3$ times its average:
 **every row, in mass, must divide $L_P$**, whereas a typical row shares only about $1/K$ of its mass with $L_P$. Numerical check
@@ -292,6 +296,237 @@ compared with $d$ and do not treat the additional phase. Our method (characters 
 $\approx X_Q^{2/3}$. **This is the exact missing estimate:** $(\mathrm{LD}_\lambda)$ with $\lambda > 2/(2K-1)$, uniformly for $Q \in [\sqrt P, P]$
 and fixed $N$.
 
+### 7.5 Audit of L1, Theorem A and Proposition C
+
+**L1.** Checked line by line. Points worth recording:
+- **Where each hypothesis enters.** The counting argument uses only $q < P$ and $N - P > P^{3/2}$. The bound $N - P > P^{3/2}$ is
+  used in the case $a \ge 3$ only, through $(N-P)^{2/3} > P$. Restricted support is used **only** to say that the large prime power
+  $q^v > P$ comes from a prime $q < P$. So the count of rows with an excess prime power holds **for every $N$** (Lemma E below).
+- **Multiplicities.** A row with several excess prime powers is charged to one of them; that is an injection into pairs $(q, a)$,
+  hence an upper bound. $H_{\mathrm{high}}$ charges a bad row its whole mass $\log M_\ell \le \log N$, which covers all of its prime powers.
+- **Endpoints.** The $q$-intervals are closed, and a closed interval of length $\lambda$ contains at most $\lfloor\lambda\rfloor + 1$
+  integers. Then $\sum_{k<N/P}k^{-1/2} \le 2\sqrt{N/P}$, and $\sqrt{PN/(N-P)} \le \sqrt{2P}$ for $N \ge 2P$. The bound $a \le 1 + L/\log 2 \le 2L$
+  holds for $P \ge 8$. $\ell = P$ is allowed when $P$ is prime.
+- **Uniformity.** The error is uniform in $K \in [5/3, 2-\epsilon]$: $KL^2P^{K-1} \le 2L^2P^{1-\epsilon}$.
+
+**Theorem A.**
+- **Lower bound.** Correct. It uses $\pi(P) - 1 \ge P/L - 1$ (Rosser–Schoenfeld, $P \ge 17$) and
+  $\log(N-\ell) \ge \log N - 2P/N$. The stated error $O(KL^3P^{K-1})$ can be lowered to $O(KL^2P^{K-1})$; this is harmless.
+- **Average.** Corrected: the error per modulus is $O(1/X)$, not $O(d/X)$ (see the proof above).
+- **Prime powers.** They are included in $\Lambda$ on both sides; even moduli contribute $0$ because $N - \ell$ is odd.
+
+**Proposition C.** The derivation is correct as a conditional statement. Its caveats are now explicit:
+- **(a) Small moduli.** BV with $\max_a$ is pointwise in $N$. Moduli with $\gcd(d, N) > 1$ have $n(d) \le 1$, since
+  $\ell \equiv N \equiv 0 \pmod q$ forces $\ell = q$; they contribute $O(\sqrt P)$. The window $D_0 < d \le \sqrt P$, which was omitted
+  before, is handled by Brun–Titchmarsh: $\sum_{D_0<d\le\sqrt P}\Lambda(d)\,2P/(\varphi(d)\log(P/d)) = O(P\log L/L)$.
+- **(b) Ineffectivity.** BV is ineffective (Siegel), so $P_0$ is ineffective. Replacing BV by Brun–Titchmarsh on $d \le \sqrt P$
+  costs $2\log 2\cdot P \approx 1.39P$ instead of $P/2$. The requirement would become $1/\lambda < K - 1.39$, which forces $\lambda > 1$:
+  **BV (or an effective substitute with constant $< K - 1$) is indispensable.**
+- **(c) Prime powers.** For $q^j > D_0$ with $j \ge 2$, the contribution is $\ll P/\sqrt{D_0} + \sqrt P\,L = o(P)$.
+- **(d) Moduli $d$ with $q \mid d$.** If $q \mid d$, an element $N - bq$ is $\equiv N \pmod q$, so it is divisible by $q$ only if $q \mid N$.
+  Assigning the density $1/d$ anyway puts a discrepancy $O(\log q\,|I_q|/d)$ into $r_d$. Summed with $\tau_3$, it is
+  $O(PL^5/Q) = O(\sqrt P\,L^5)$ for $Q \ge \sqrt P$. It is absorbed in $(\mathrm{LD}_\lambda)$.
+- **(e) Small primes $\ell$.** The sieve discards the primes $\ell < D$ themselves. They are added back separately:
+  $\sum_{\ell<D}\#\{q > D_0 : q \mid N - \ell\}\cdot L \le \pi(D)\cdot\frac{KL}{\log D_0}\cdot L = O(DL) = o(P)$.
+- **(f) Rounding at $d = 1$.** The Selberg main term must be the smooth size $\mathcal X = \sum\log q\,\frac{P-3}{2q}$.
+  - The rounding $\sum_q\log q\,(|I_q| - \frac{P-3}{2q})$ is then the remainder $r_1$. For $Q \ge P/L^3$ it is not trivially small: it
+    is a sum of sawtooth values $\psi(N/(2q))$ over primes $q \sim Q$.
+  - It **is** controlled, with a power saving, by Lemma S of `hypothesis-T.md` (the proved level is $\ge P^{c_2/K^2} > 1$ at every scale).
+  - So the claim $\mathcal X \le \frac P2(\log 2 + O(1/L))$ is correct with this reading. Without it, it would be false for $Q \approx P$
+    (where $|I_q| \in \{0, 1\}$).
+- **(g) Selberg remainder.** $\sum_{d_1,d_2<D}|\lambda_{d_1}\lambda_{d_2}||r_{[d_1,d_2]}| \le \sum_{d<D^2}\tau_3(d)|r_d|$, since $|\lambda_d| \le 1$.
+- **(h) Main term.** $G(D) \ge \sum_{d<D,\ (d,2)=1}\mu^2(d)/\varphi(d) \ge \frac12\log D$, by the classical
+  $\sum_{d<x,(d,k)=1}\mu^2(d)/\varphi(d) \ge \frac{\varphi(k)}k\log x$.
+- **(i) Dyadic summation.** There are $\lceil\log_2(P/D_0)\rceil \le \frac{L}{2\log 2} + O(\log L)$ blocks; the last, partial block only
+  has fewer elements. Summing gives $\frac P\lambda(1+o(1))$.
+
+**Verdict.** $(\mathrm{LD}_\lambda)$ with $\lambda > 2/(2K-1)$, uniformly over dyadic $Q \in [D_0, P]$ and over $N$ in the band, does
+suffice. The exclusion is then valid for $P \ge P_0$, with $P_0$ ineffective.
+
+**Plausibility of $(\mathrm{LD}_\lambda)$.** Square-root cancellation $|r_d| \approx (\mathcal X/d)^{1/2}$ gives
+$\sum_{d<P^\lambda}\tau_3(d)|r_d| \approx P^{(1+\lambda)/2}L^2$, which is $\le P/L^3$ for every $\lambda < 1$. The heuristic covers the
+supremum over $N$ (subgaussian tails, $P^K$ values). **It is not a theorem.**
+
+### 7.6 Lemma E — the mass decomposition holds for every $N$ (proved)
+
+> **Lemma E.** Let $P \ge 17$ and let $N$ be even, with $N - P > P^{3/2}$ and $N < P^2$. Put $e_q := \lfloor\log_q P\rfloor$. Define
+> $$H_{\mathrm{pow}}(N) := \sum_{\ell\in I}\sum_{q\le P}\log q\,(v_q(M_\ell) - e_q)_+,\qquad
+>   H_{\mathrm{big}}(N) := \sum_{p>P}\log p\;n_N(p).$$
+> **No restricted-support hypothesis is made.** Then:
+> 1. $\sum_{\ell\in I}\log(N-\ell) = \mathcal M(N) + H_{\mathrm{pow}}(N) + H_{\mathrm{big}}(N)$ (exact).
+> 2. $0 \le H_{\mathrm{pow}}(N) \le \bigl((2L+1)P^{K-1} + \sqrt{2P}\bigr)KL$.
+> 3. $N$ carries a restricted-support family if and only if $H_{\mathrm{big}}(N) = 0$ and $n_N(P) = 0$.
+>
+> Consequently, for every even $N$ with $P^{5/3} \le N \le P^{2-\epsilon}$,
+> $$H_{\mathrm{big}}(N) + n_N(P)\log P = (\pi(P)-1)\log N - \mathcal M(N) + O_\epsilon\bigl(KL^2P^{K-1} + KL\sqrt P\bigr).$$
+> **Restricted support is the case where $\mathcal M(N)$ reaches its trivial maximum $\sum_\ell\log(N-\ell) - H_{\mathrm{pow}}$.**
+
+*Proof.*
+- **Part 1.** Write $\log M = \sum_q v_q\log q$ and split each $q \le P$ as $\min(v_q, e_q) + (v_q - e_q)_+$. The first parts sum to
+  $\log\gcd(M, L_P)$. Primes $p > P$ appear with $v_p \le 1$, because $p^2 > P^2 > N$.
+- **Part 2.** The L1 injection $\ell \mapsto (q, e_q + 1)$ and its count use neither restricted support nor anything except $q < P$
+  (for $q = P$ we have $v_P \le 1 = e_P$). Each bad row contributes at most $\log N$.
+- **Part 3.** Restricted support means that every prime factor of every $M_\ell$ is $< P$, i.e. $n(p) = 0$ for every $p \ge P$.
+  Compositeness is automatic, because $M_\ell \ge N - P > P$ and all its prime factors are $< P$.
+- **Last display.** $\sum_\ell\log(N-\ell) = (\pi(P)-1)\log N - O(P^2/(NL))$. $\square$
+
+**Reading.** A family exists at $N$ exactly when **no** row has a prime factor $\ge P$. By Lemma E the analytic form of this is
+"$\mathcal M(N)$ is maximal". Excluding $N$ is equivalent to showing that **one** row $N - \ell$ ($\ell \le P$ prime) has
+$P^+(N-\ell) \ge P$. Analytic methods can only prove the quantitative version $H_{\mathrm{big}}(N) \ge \eta P$. That version
+is Lemma Ω (§7.10).
+
+### 7.7 Corollary R7 — repetition mass below $P^2$ (proved)
+
+> **R7.** For every restricted-support family with $5/3 \le K \le 2 - \epsilon$ and $P \ge P(\epsilon)$:
+> $$\log B \ge KP - \psi(P) - o(P) = (K - 1 - o(1))P\qquad(\ge (K - 1.039)P - o(P)\ \text{explicitly}).$$
+
+*Proof.*
+- $\mathrm{lcm}(M_\ell) \mid \mathrm{lcm}(\text{good rows})\cdot\prod_{\text{bad}}M_\ell$, and each good row divides $L_P$ (L1).
+  So $\log\mathrm{lcm} \le \psi(P) + \#\text{bad}\cdot\log N = \psi(P) + o(P)$.
+- $\sum\log M_\ell \ge KP - O(KL)$ (Theorem A's lower bound), and $\psi(P) < 1.03883P$ (Rosser–Schoenfeld). $\square$
+
+**Comparison.**
+- R7 beats R5 on all of $[5/3, 2)$: $K - 1 > \frac{K-1}2 + 0.15 \iff K > 1.3$. At $K = 5/3$: $0.667$ vs $0.483$; as $K \to 2$: $1$ vs $0.65$.
+- **It does not escape R4.** $(K - 1)P < P \le \mathbb E\log B$ for $K < 2$. The barrier is met only in the limit $K \to 2$.
+  This is consistent: R7 is a consequence of Theorem A, whose content is "$\mathcal M \ge KP$", while the average of $\log B$ is $\approx P$.
+
+### 7.8 Multiplicative rigidity (proved; **Lean**: `mult_rigidity`, `mult_near_rigidity_int`) — and why it cannot help
+
+> **Lemma MR.**
+> 1. If $N > P^2$, $0 \le a, b, c, d \le P$ and $(N-a)(N-b) = (N-c)(N-d)$, then $\{a, b\} = \{c, d\}$.
+> 2. For any $N \ge 0$, the same equation implies $N\cdot|(a+b) - (c+d)| \le P^2$.
+
+*Proof.* Expanding, $N\bigl((a+b) - (c+d)\bigr) = ab - cd$ and $|ab - cd| \le P^2$. If $N > P^2$, the sums agree, hence so do the
+products, so $(a - c)(a - d) = 0$. $\square$ (Lean: `WilliamsonResidual.mult_rigidity`, `mult_near_rigidity_int`, standard
+axioms only.)
+
+**Consequences.**
+- Above $P^2$, the multiplicative energy of the rows, $\#\{M_aM_b = M_cM_d\}$, is the trivial $2|I|^2 - |I|$.
+- Below $P^2$, a non-trivial coincidence needs $1 \le |s| \le P^2/N \le P^{1/3}$ with $Ns = ab - cd$.
+
+**Test against Theorem A (negative).** MR holds for **every** $N$, with or without restricted support. It constrains products of
+rows among themselves. It says nothing about $\gcd(M_\ell, L_P)$, which is what Theorem A requires to be maximal. A family of
+rows each dividing $L_P$ can have minimal mutual multiplicative energy, and generic $N$ do too. **Multiplicative energy
+among rows cannot bound $\mathcal M(N)$ from above, and cannot bound $H_{\mathrm{big}}(N)$ from below.**
+
+### 7.9 Failed routes, each tested against Theorem A
+
+The test is the following. A route can exclude a band only if it yields, **for every $N$ in the band**, either
+$\mathcal M(N) \le (K - \eta)P$ or $H_{\mathrm{big}}(N) > 0$. If a route's inequality is equally true for generic $N$ and for
+restricted-support $N$, its bound must exceed $\max_N\mathcal M(N)$.
+
+**(i) Divided differences / gcd–lcm.**
+- *Identity.* For distinct $\ell_1, \dots, \ell_s$, the divided difference of $f(x) = 1/(N-x)$ gives
+  $$\sum_i\frac1{M_{\ell_i}\prod_{j\ne i}(\ell_i - \ell_j)} = \pm\frac1{\prod_iM_{\ell_i}},$$
+  so $\mathrm{lcm}(M)\cdot D_P \ge \prod_\ell M_\ell$, with $D_P := \mathrm{lcm}_i\prod_{j\ne i}|\ell_i - \ell_j|$ depending only on $P$.
+- *With restricted support.* L1 gives $\log\mathrm{lcm} \le \psi(P) + o(P)$, so $KP \le \psi(P) + \log D_P + o(P)$.
+- *Numerically.* `scripts/residual_numerics.py` gives $\log D_P/P = 1.45, 1.57, 1.63$ for $P = 1009, 4001, 10007$, and it is increasing.
+  The reason is that $v_p(D_P) = \max_i\sum_{a\ge1}(\#\{j : \ell_j \equiv \ell_i \bmod p^a\} - 1)$ is $\ge 1$ for almost every prime
+  $p < P$ that is a difference of two primes. So the route excludes nothing below $K \approx 2.6$.
+- *Structural reason.* The identity encodes only $\gcd(M_i, M_j) \mid \ell_i - \ell_j$. That holds for every $N$, and it is used
+  with a $\max$ over $i$ that wastes it.
+
+**(ii) Multiplicative energy.** Covered by §7.8 (negative).
+
+**(iii) Exponent-vector combinatorics / dense divisor sets of $L_P$.**
+- A good row is a divisor of $L_P$ lying in $[N-P, N]$. The divisors of $L_P$ are the $P$-powersmooth numbers. Below $P^2$ their
+  local density near $N$ is $\approx\rho(K) = 1 - \log K \in [0.31, 0.49]$, so every window of length $P$ contains $\gg P$ of them.
+- Requiring $\pi(P)$ of them at the shifted primes has "probability" $\rho(K)^{\pi(P)}$. That heuristic explains why no
+  family exists, but turning it into a proof is the problem itself (correlations).
+- No counting contradiction: there are enough candidates in every window.
+
+**(iv) Primitive divisors and ownership.**
+- The private-certificate identities (17.1) and (17.6) and R1–R3 control $\log B$ from below.
+- R4 shows that lower bounds of size $\le P$ for $\log B$ cannot contradict universal upper bounds. R7 is the best of this type
+  below $P^2$, and it stays $< P$.
+
+**(v) Pointwise Brun–Titchmarsh / Sylvester–Erdős type.**
+- Using $n(q) \le \pi(P; q, N)$ and Montgomery–Vaughan $\pi(x; q, a) \le 2x/(\varphi(q)\log(x/q))$, together with
+  $n(q) \le (P-3)/q + 1$ for $q > P/e^2$, gives **for every $N$** (effective):
+  $$\mathcal M(N) \le 2P\log L + O(P).$$
+- This is the Sylvester–Erdős argument restricted to prime positions. It misses $(K-\eta)P$ by a factor $\asymp\log\log P$.
+- The loss comes entirely from moduli $q = P^\theta$ with $\theta \to 1$, where Brun–Titchmarsh's $2/(1-\theta)$ diverges.
+
+**(vi) Large-sieve duality.** This gives an exceptional-set theorem, not a pointwise one: Theorem LS below.
+
+### 7.10 Theorem LS (large sieve; proved — **exceptional set, not pointwise**)
+
+> **Theorem LS.** Let $P \ge P_0$, let $J$ be any interval of length $Y \ge 1$, and let $Q \in (P, P^2]$. Then
+> $$\#\{N \in J : N \text{ carries a restricted-support family}\} \le \frac{Y + Q^2}{(\pi(P)-1)\sum_{P<p\le Q}1/p}.$$
+> In particular:
+> - (a) **(below $P^2$)** with $Q = 2P$: the bound is $\frac{(Y + 4P^2)L^2}{P\log 2}(1 + O(1/L))$; with $Y = P^2$,
+>   $$\#\{N \le P^2 : \text{family}\} \le (7.22 + o(1))\,P\,L^2,$$
+>   so the proportion of $N \in (X, 2X]$, $X = P^K \le P^2$, carrying a family is $\le (7.3 + o(1))L^2P^{1-K}$;
+> - (b) **($2 < K < 4$)** with $Q = \sqrt X$: at most $(2 + o(1))\,XL/(P\log(K/2))$ in $(X, 2X]$.
+
+*Proof.*
+- Restricted support forbids $p \mid N - \ell$ for every prime $p \ge P$ and every $\ell \in I$. So for each prime
+  $p \in (P, Q]$, $N$ avoids the $\omega(p) = \pi(P) - 1$ classes $\ell \bmod p$, which are distinct because $3 \le \ell \le P < p$.
+- The arithmetic large sieve (Montgomery–Vaughan) gives $\#\le(Y + Q^2)/\mathcal J$, with
+  $\mathcal J = \sum_{q\le Q}\mu^2(q)\prod_{p\mid q}\frac{\omega(p)}{p-\omega(p)}$.
+- Since $Q \le P^2$, every squarefree $q \le Q$ with all prime factors $> P$ is $1$ or prime. So
+  $\mathcal J \ge (\pi(P)-1)\sum_{P<p\le Q}1/p$.
+- For (a): $\sum_{P<p\le2P}1/p = \log(1 + \frac{\log 2}L) + O(L^{-2}) = \frac{\log2}L(1 + O(1/L))$ and $\pi(P) \ge P/L$, so the bound is
+  $\frac{(Y+4P^2)L^2}{P\log 2}(1+O(1/L))$. With $Y = P^2$ this is $\frac5{\log2}PL^2 \le 7.22\,PL^2$.
+- For (b): $\sum_{P<p\le\sqrt X}1/p = \log(K/2) + O(1/L^2)$. $\square$
+
+**Remarks.**
+1. Numerically (`scripts/residual_numerics.py`), there is **no** restricted-support $N \in (2P, P^2)$ for any $11 \le P \le 400$.
+2. **The large sieve cannot prove emptiness.** For $X \le P^2$ every admissible $Q$ exceeds $P$, so the bound is
+   $\ge Q^2/\mathcal J \gg PL^2/\log(\log Q/L)$. It never drops below $1$. Theorem LS is an exceptional-set statement in the sense
+   of §1. It **does not** exclude any given $N$.
+3. In terms of $N$: for $P \ge N^{1/2}$, the restricted-support $N$ up to $P^2$ number $\ll N^{1/K}(\log N)^2$.
+
+### 7.11 The missing lemma
+
+> **Lemma Ω (missing; exact form).** There exist $\epsilon \in (0, 1/3)$, $\eta > 0$ and $P_0$ such that for **every** $P \ge P_0$ and
+> **every** even $N$ with $P^{5/3} \le N \le P^{2-\epsilon}$, writing $K = \log N/\log P$:
+> $$\Sigma_{\mathrm{large}}(N) := \sum_{\substack{\sqrt P<q\le P\\ q\ \mathrm{prime}}}\log q\cdot\#\{\ell\ \mathrm{prime} : 3 \le \ell \le P,\ \ell \equiv N\ (\mathrm{mod}\ q)\} \le \Bigl(K - \frac12 - \eta\Bigr)P.$$
+> (Sub-band version $\Omega_J$: the same for $K$ restricted to an interval $J \subset [5/3, 2-\epsilon]$.)
+
+**Ω ⟹ exclusion (proved, with ineffective $P_0$).**
+- By BV (§7.5(a)) and the prime-power and window estimates, $\mathcal M(N) \le \frac P2 + \Sigma_{\mathrm{large}}(N) + O(P\log L/L)$ for **every** $N$.
+- So Ω gives $\mathcal M(N) \le (K - \eta + o(1))P$, which contradicts Theorem A.
+- Hence no restricted-support family has $P^{5/3} \le N \le P^{2-\epsilon}$ (resp. $K \in J$) for $P$ large.
+
+**Equivalent form (Lemma E).** Up to $o(P)$, Ω says that for every such $N$ the rows carry prime mass $\ge \eta P$ above $P$:
+$H_{\mathrm{big}}(N) + n_N(P)\log P \ge (\eta - o(1))P$. Hence at least $(\eta/K - o(1))\pi(P)$ rows $N - \ell$ have a prime factor $\ge P$.
+
+**Nature of Ω.**
+- It is an **upper bound** for primes in progressions, needed only up to the factor $2K - 1 \in [7/3, 3)$ above the truth.
+  The average of $\Sigma_{\mathrm{large}}$ is $P/2$, and numerically $\max_N\mathcal M(N)/(KP) \approx 0.70, 0.66, 0.65$ for
+  $P = 1009$ (all $N$), $4001$, $10007$ (samples). **Parity is not involved.**
+- It is a **Brun–Titchmarsh-on-average** statement:
+  - for **prime** moduli $q \in (\sqrt P, P]$;
+  - for the **single residue** $N \bmod q$;
+  - with constant $< 2K - 1$ after integrating over $q = P^\theta$, $\theta \in (1/2, 1]$.
+- Brun–Titchmarsh per modulus gives the constant $2/(1-\theta)$, which integrates to $2\log L$ (§7.9(v)).
+
+**Why the available technology does not give Ω.**
+- **(1)** BV stops at $\theta = 1/2$.
+- **(2)** The theorems of Fouvry and Bombieri–Friedlander–Iwaniec beyond $1/2$ need a **fixed** residue $a$ that is small relative to
+  $x$, and well-factorable weights. Here the moduli are primes and the "residue" is $N \ge P^{5/3} \gg q^2$.
+- **(3)** Divisor switching is unavailable. $N - \ell = bq$ with $b \approx N/q \ge P^{K-1}$, and $\lfloor N/q\rfloor$ is constant only on
+  stretches of length $\le q^2/N \le P^{2-K}$. So the problem breaks into $\asymp N/Q$ short pieces. Their recombination requires
+  Kloosterman-type sums over primes with a reciprocal phase, $\sum_{q\sim Q}\log q\,e(a\bar q/d + Y/(dq))$ with $Y \approx P^K$, for $d$
+  up to $P^{6/7}$ (§7.4).
+
+**Assessment.** Ω needs prime-distribution input that is not currently available: a level of distribution beyond $1/2$ for prime
+moduli and a "large" residue. None of the restricted-support constraints we have (L1, R1–R7, MR, near-injectivity, the
+certificate identities) supplies it, for two reasons:
+- every one of them is either true for generic $N$, or is a consequence of "$\mathcal M$ maximal" itself;
+- the only structural inequality that sees restricted support, L1/Lemma E, is exactly the lower bound that Ω must beat.
+
+**Weaker versions that are proved.**
+
+| Version | Statement | Status |
+|---|---|---|
+| Ω-average | $\mathbb E_{N\in(X,2X]}\Sigma_{\mathrm{large}}(N) = (\frac12 + O(\frac1L))P$, $X \ge P^{5/3}$ | proved (Theorem A) |
+| Ω-small | $\mathcal M_{\le\sqrt P}(N) \le (\frac12 + o(1))P$ for **every** $N$ | proved (BV, ineffective) |
+| Ω-BT | $\mathcal M(N) \le 2P\log L + O(P)$ for **every** $N$ | proved (effective); misses by $\asymp\log\log P$ |
+| Ω-exceptional | a family exists for at most $7.3\,PL^2$ values of $N \le P^2$ | proved (Theorem LS); not pointwise |
+| Ω-conditional | $(\mathrm{LD}_\lambda)$, $\lambda > 2/(2K-1)$ ⟹ Ω | derivation (Prop. C, audited §7.5) |
+
 ---
 
 ## 8. Summary (updated)
@@ -308,7 +543,14 @@ and fixed $N$.
 | L1 powersmooth rows ($K < 2$) | proved; Lean ingredients | new |
 | Theorem A (anomaly $\mathcal M \ge K\cdot$average) | proved | new |
 | Corollary B (conditional exclusion) | proved | — |
-| Proposition C ($\mathrm{LD}_\lambda$, $\lambda > 2/(2K-1)$ ⟹ exclusion) | derivation | — |
+| Proposition C ($\mathrm{LD}_\lambda$, $\lambda > 2/(2K-1)$ ⟹ exclusion) | derivation, audited (§7.5) | BV indispensable; $r_1$ via Lemma S |
+| Lemma E (mass decomposition, every $N$) | proved | family ⟺ $H_{\mathrm{big}} = 0$ ⟺ $\mathcal M$ maximal |
+| R7: $\log B \ge (K-1-o(1))P$ for $K < 2$ | proved | improves R5 on $[5/3,2)$; still below R4's barrier |
+| MR multiplicative rigidity | proved, **Lean** | negative for exclusion (true for every $N$) |
+| Ω-BT: $\mathcal M(N) \le 2P\log L + O(P)$ | proved | pointwise, misses by $\log\log P$ |
+| Theorem LS: $\le 7.3PL^2$ families with $N \le P^2$ | proved | exceptional set, **not pointwise** |
+| Lemma Ω | **open** | the single missing estimate (§7.11) |
 
-**No pointwise exclusion is obtained.** The question is reduced, on $5/3 \le K < 2$, to a single level-of-distribution estimate for
-the dual sequences, $(\mathrm{LD}_\lambda)$ with $\lambda > 6/7$ (resp. $2/3$), which **is not proved**. **Wall II remains open.**
+**No pointwise exclusion is obtained.** The question is reduced, on $5/3 \le K < 2$, to Lemma Ω (§7.11): a Brun–Titchmarsh-on-average
+bound for prime moduli $q \in (\sqrt P, P]$ and the single residue $N \bmod q$, with constant $< 2K - 1$. It follows from
+$(\mathrm{LD}_\lambda)$ with $\lambda > 6/7$ (resp. $2/3$). **Neither is proved. Wall II remains open.**
