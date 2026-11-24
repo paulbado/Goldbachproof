@@ -53,4 +53,91 @@ theorem cofactor_injective {P N q q' b C : ℕ} (hP : 3 ≤ P) (hN : P * P ≤ N
 
 #print axioms cofactor_injective
 
+/-! ## Near-injectivity below quadratic height -/
+
+/-- **Near-injectivity.** If `q' < q ≤ P`, `b ≥ 1`, and `C·q^b`, `C·q'^b` both lie in
+    `[N - P, N - 3]`, then `(q - q')·(N - P) ≤ P·(P - 3)`. -/
+theorem near_injective {P N q q' b C : ℕ} (hP : 3 ≤ P) (hPN : P ≤ N) (hq : q ≤ P)
+    (hlt : q' < q) (hb : 1 ≤ b)
+    (h1 : N - P ≤ C * q ^ b) (h2 : C * q ^ b ≤ N - 3)
+    (h3 : N - P ≤ C * q' ^ b) :
+    (q - q') * (N - P) ≤ P * (P - 3) := by
+  obtain ⟨c, rfl⟩ : ∃ c, b = c + 1 := ⟨b - 1, by omega⟩
+  have hpow : q' ^ c ≤ q ^ c := Nat.pow_le_pow_left (le_of_lt hlt) c
+  have ex : C * q ^ (c + 1) = q * (C * q ^ c) := by ring
+  have ey : C * q' ^ (c + 1) = q' * (C * q' ^ c) := by ring
+  rw [ex] at h1 h2
+  rw [ey] at h3
+  set t := C * q ^ c with ht
+  have hyt : q' * (C * q' ^ c) ≤ q' * t := Nat.mul_le_mul_left q' (Nat.mul_le_mul_left C hpow)
+  -- (q - q') * t ≤ P - 3
+  have hdiff : (q - q') * t ≤ P - 3 := by
+    have e : (q - q') * t + q' * t = q * t := by
+      rw [← Nat.add_mul, Nat.sub_add_cancel (le_of_lt hlt)]
+    omega
+  calc (q - q') * (N - P) ≤ (q - q') * (q * t) := Nat.mul_le_mul_left _ h1
+    _ = q * ((q - q') * t) := by ring
+    _ ≤ P * (P - 3) := Nat.mul_le_mul hq hdiff
+
+/-- A finite set of naturals whose pairwise gaps satisfy `(x - y)·D₁ ≤ D₂` (with `D₁ > 0`) has at most
+    `D₂ / D₁ + 1` elements. -/
+theorem card_le_of_gaps (S : Finset ℕ) {D₁ D₂ : ℕ} (hD : 0 < D₁)
+    (hgap : ∀ x ∈ S, ∀ y ∈ S, y < x → (x - y) * D₁ ≤ D₂) :
+    S.card ≤ D₂ / D₁ + 1 := by
+  classical
+  rcases S.eq_empty_or_nonempty with h | hne
+  · simp [h]
+  set m := S.min' hne
+  have hbound : ∀ x ∈ S, x - m ≤ D₂ / D₁ := by
+    intro x hx
+    rcases Nat.eq_or_lt_of_le (S.min'_le x hx) with he | hl
+    · rw [← he, Nat.sub_self]; exact Nat.zero_le _
+    · exact (Nat.le_div_iff_mul_le hD).2 (hgap x hx m (S.min'_mem hne) hl)
+  generalize D₂ / D₁ = k at hbound ⊢
+  have hsub : S ⊆ Finset.Icc m (m + k) := by
+    intro x hx
+    have hmx : m ≤ x := S.min'_le x hx
+    have := hbound x hx
+    rw [Finset.mem_Icc]
+    omega
+  calc S.card ≤ (Finset.Icc m (m + k)).card := Finset.card_le_card hsub
+    _ = k + 1 := by rw [Nat.card_Icc]; omega
+
+/-- **Counting by fibers `(b, C)`.** Let `Q` be a set of naturals `≤ P`, each with an exponent
+    `1 ≤ e q ≤ β` and a cofactor `1 ≤ c q ≤ Cmax` such that `c q · q^(e q) ∈ [N - P, N - 3]`. Then
+    `#Q ≤ (P(P-3)/(N-P) + 1) · (β · Cmax)`. -/
+theorem card_small_cofactor (Q : Finset ℕ) {P N β Cmax : ℕ} (e c : ℕ → ℕ)
+    (hP : 3 ≤ P) (hPN : P < N)
+    (hQ : ∀ q ∈ Q, q ≤ P ∧ 1 ≤ e q ∧ e q ≤ β ∧ 1 ≤ c q ∧ c q ≤ Cmax ∧
+      N - P ≤ c q * q ^ e q ∧ c q * q ^ e q ≤ N - 3) :
+    Q.card ≤ (P * (P - 3) / (N - P) + 1) * (β * Cmax) := by
+  classical
+  let f : ℕ → ℕ × ℕ := fun q => (e q, c q)
+  have himg : Q.image f ⊆ Finset.Icc 1 β ×ˢ Finset.Icc 1 Cmax := by
+    intro x hx
+    obtain ⟨q, hq, rfl⟩ := Finset.mem_image.1 hx
+    obtain ⟨-, h1, h2, h3, h4, -, -⟩ := hQ q hq
+    simp [f, Finset.mem_product, Finset.mem_Icc, h1, h2, h3, h4]
+  have hfib : ∀ x ∈ Q.image f, (Q.filter fun q => f q = x).card ≤ P * (P - 3) / (N - P) + 1 := by
+    intro x _
+    apply card_le_of_gaps _ (by omega)
+    intro q hq q' hq' hlt
+    obtain ⟨hqQ, hfq⟩ := Finset.mem_filter.1 hq
+    obtain ⟨hq'Q, hfq'⟩ := Finset.mem_filter.1 hq'
+    obtain ⟨hqP, he1, -, -, -, h1, h2⟩ := hQ q hqQ
+    obtain ⟨-, -, -, -, -, h3, -⟩ := hQ q' hq'Q
+    have hee : e q' = e q := congrArg Prod.fst (hfq'.trans hfq.symm)
+    have hcc : c q' = c q := congrArg Prod.snd (hfq'.trans hfq.symm)
+    rw [hee, hcc] at h3
+    exact near_injective hP (le_of_lt hPN) hqP hlt he1 h1 h2 h3
+  calc Q.card ≤ (P * (P - 3) / (N - P) + 1) * (Q.image f).card :=
+        Finset.card_le_mul_card_image Q _ hfib
+    _ ≤ (P * (P - 3) / (N - P) + 1) * (Finset.Icc 1 β ×ˢ Finset.Icc 1 Cmax).card :=
+        Nat.mul_le_mul_left _ (Finset.card_le_card himg)
+    _ = (P * (P - 3) / (N - P) + 1) * (β * Cmax) := by
+        rw [Finset.card_product]; simp
+
+#print axioms near_injective
+#print axioms card_small_cofactor
+
 end WilliamsonResidual
