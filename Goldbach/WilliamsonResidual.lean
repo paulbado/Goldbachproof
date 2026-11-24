@@ -140,4 +140,54 @@ theorem card_small_cofactor (Q : Finset ℕ) {P N β Cmax : ℕ} (e c : ℕ → 
 #print axioms near_injective
 #print axioms card_small_cofactor
 
+/-! ## Structure of the complements below `P^2`: powersmooth rows -/
+
+/-- A divisor `t > P - 3` divides at most one complement `N - ℓ` with `3 ≤ ℓ ≤ P`. -/
+theorem high_power_unique_row {P N ℓ ℓ' t : ℕ} (hℓ : ℓ ≤ P) (hℓ' : ℓ' ≤ P)
+    (h3 : 3 ≤ ℓ) (h3' : 3 ≤ ℓ') (hN : P < N) (ht : P - 3 < t)
+    (h1 : t ∣ N - ℓ) (h2 : t ∣ N - ℓ') : ℓ = ℓ' := by
+  by_contra hne
+  rcases Nat.lt_or_gt_of_ne hne with h | h
+  · have hd : t ∣ (N - ℓ) - (N - ℓ') := Nat.dvd_sub h1 h2
+    have he : (N - ℓ) - (N - ℓ') = ℓ' - ℓ := by omega
+    rw [he] at hd
+    have := Nat.le_of_dvd (by omega) hd
+    omega
+  · have hd : t ∣ (N - ℓ') - (N - ℓ) := Nat.dvd_sub h2 h1
+    have he : (N - ℓ') - (N - ℓ) = ℓ - ℓ' := by omega
+    rw [he] at hd
+    have := Nat.le_of_dvd (by omega) hd
+    omega
+
+/-- A number whose prime-power components are all `≤ P` divides `lcm(1, …, P)`. -/
+theorem powersmooth_dvd_lcm {m P : ℕ} (hm : m ≠ 0)
+    (h : ∀ p : ℕ, p.Prime → p ^ (m.factorization p) ≤ P) :
+    m ∣ (Finset.Icc 1 P).lcm id := by
+  classical
+  have hpos : ∀ n ∈ Finset.Icc 1 P, id n ≠ 0 := by
+    intro n hn
+    simp only [Finset.mem_Icc] at hn
+    simp only [id]
+    omega
+  have hL : (Finset.Icc 1 P).lcm id ≠ 0 := by
+    intro h0
+    have hd : (Finset.Icc 1 P).lcm id ∣ ∏ n ∈ Finset.Icc 1 P, id n := Finset.lcm_dvd_prod _ _
+    rw [h0, zero_dvd_iff] at hd
+    exact Finset.prod_ne_zero_iff.mpr hpos hd
+  rw [← Nat.factorization_le_iff_dvd hm hL, Finsupp.le_def]
+  intro p
+  by_cases hp : p.Prime
+  · rw [Finset.factorization_lcm hpos p]
+    have hmem : p ^ (m.factorization p) ∈ Finset.Icc 1 P := by
+      rw [Finset.mem_Icc]
+      exact ⟨Nat.one_le_pow _ _ hp.pos, h p hp⟩
+    have hle := Finset.le_sup (f := fun n => (id n).factorization p) hmem
+    simp only [id] at hle ⊢
+    rw [hp.factorization_pow, Finsupp.single_eq_same] at hle
+    exact hle
+  · simp [Nat.factorization_eq_zero_of_not_prime _ hp]
+
+#print axioms high_power_unique_row
+#print axioms powersmooth_dvd_lcm
+
 end WilliamsonResidual
