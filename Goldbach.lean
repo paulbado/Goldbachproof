@@ -1,2 +1,4 @@
 import Goldbach.WilliamsonMurII
 import Goldbach.WilliamsonMurIIExtensions
+import Goldbach.WilliamsonMurIIKLines
+import Goldbach.WilliamsonMurIIBridge

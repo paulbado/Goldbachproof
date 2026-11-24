@@ -3,10 +3,22 @@ import Goldbach.WilliamsonMurII
 /-! Arithmetic extensions for Mur II. Compiles against Mathlib v4.36.0. No new axioms are declared; the closure is not asserted. -/
 namespace WilliamsonMurII
 
-/-- A rank fails for some height, and every smaller odd-prime rank succeeds. -/
+/-- A rank fails for some height, and every smaller odd-prime rank succeeds
+    at every height `N ≥ 6`. The guard `6 ≤ N` is necessary: `BadFamily 3 4`
+    holds trivially (`4 - 3 = 1`), so without it `FirstFailure P` would be
+    false for every `P ≥ 5` (see `not_firstFailure_unguarded` in
+    `WilliamsonMurIIBridge`). Since `P < N`, the guard is automatic for `P ≥ 5`. -/
 def FirstFailure (P : ℕ) : Prop :=
   Nat.Prime P ∧ (∃ N, BadFamily P N) ∧
-    ∀ q : ℕ, Nat.Prime q → 3 ≤ q → q < P → ∀ N, ¬ BadFamily q N
+    ∀ q : ℕ, Nat.Prime q → 3 ≤ q → q < P → ∀ N, 6 ≤ N → ¬ BadFamily q N
+
+private theorem six_le_of_prev {p P N : ℕ} (hp : PreviousPrime p P)
+    (hb : BadFamily P N) : 6 ≤ N := by
+  have h1 := hp.1.2.1
+  have h2 := hp.2.1
+  have h3 := hb.1
+  obtain ⟨k, hk⟩ := hb.2.1
+  omega
 
 private theorem index_mod_two {P i : ℕ} (hi : Index P i) : i % 2 = 1 := by
   rcases hi.1.eq_two_or_odd with h | h
@@ -45,7 +57,7 @@ theorem previous_prime_divides {P p N : ℕ}
 theorem first_failure_previous_conditions {P p N : ℕ}
     (hf : FirstFailure P) (hp : PreviousPrime p P)
     (hb : BadFamily P N) : PreviousRankConditions p P N := by
-  have hs := hf.2.2 p hp.1.1 hp.1.2.1 hp.2.1 N
+  have hs := hf.2.2 p hp.1.1 hp.1.2.1 hp.2.1 N (six_le_of_prev hp hb)
   obtain ⟨j, hj, hd⟩ := previous_prime_divides hp hb hs
   have hjP : Index P j := ⟨hj.1, hj.2.1, le_trans hj.2.2 (le_of_lt hp.2.1)⟩
   have ho := complement_mod_two hb hjP
@@ -149,7 +161,7 @@ theorem previous_prime_has_private_owner {P p N : ℕ}
     (hf : FirstFailure P) (hp : PreviousPrime p P) (hb : BadFamily P N) :
     ∃ j, Index P j ∧ p ∣ N - j ∧ Private P N j := by
   obtain ⟨j, hj, hd⟩ := previous_prime_divides hp hb
-    (hf.2.2 p hp.1.1 hp.1.2.1 hp.2.1 N)
+    (hf.2.2 p hp.1.1 hp.1.2.1 hp.2.1 N (six_le_of_prev hp hb))
   have hjP : Index P j := ⟨hj.1, hj.2.1, le_trans hj.2.2 (le_of_lt hp.2.1)⟩
   exact ⟨j, hjP, hd, large_prime_private hb hjP hp.1.1 hp.1.2.1
     (previous_prime_large hf.1 hp) hd⟩
