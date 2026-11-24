@@ -287,8 +287,11 @@ That derivation assumes $K > 4$ and $Q \le P/4$, which guarantee $|Y| = h(N-3)/(
 - **Scales $Q \le c\sqrt{N/d}$:** Prop. 16.3χ applies; the level is $\lambda \approx \frac23\bigl(\frac{\log X_Q}{L} + c(K)\bigr)$, with $c(K) \asymp c_*/K^2$
   tiny. These scales have $X_Q \ge P^{1-K/2}/c$.
 - **Scales $Q > c\sqrt N$** (for $K < 2$ this includes every $Q \in (6P^{K/2}, P]$): Prop. 16.3χ does not apply even for $d = 1$.
-  - Prop. 16.2 of [CC] covers $d = 1$ only (§7.5(f)). **No character-twisted estimate is available for $d > 1$.**
-  - So no level beyond the trivial one ($D^2 \approx X_Q/L^4$, i.e. Brun–Titchmarsh) is established at these scales.
+  - *Update.* Proposition 16.2χ (`prop-16-2-chi-top-range.md`, proved) now covers the twisted sums for every $d \le X^{1/10}$ and
+    $|Y| \le X^2$, with saving $X^{-1/248}$.
+  - With the character-expansion loss, this supports at most a level of order $P^{c}$ with $c$ about $10^{-3}$. That is a rough estimate,
+    not written out.
+  - **No level anywhere near $2/(2K-1)$ is established at these scales.**
 
 ### 7.4 Why the missing step is difficult
 
@@ -348,15 +351,15 @@ and fixed $N$.
     - *Case A: $|Y| \ge X^2/64$.* Prop. 16.3χ with $\chi$ trivial gives $\ll XL^5(X^{-1/310} + e^{-c_*(\log X)^3/\Omega^2})$, with
       $\Omega \le (K+1)L$ and $\log X \ge L/2 - 1$. That is a power saving $P^{-c'}$.
     - *Case B: $|Y| < X^2/64$.* This occurs exactly at scales $X > \sqrt{32(N-P)}$, which exist for $K < 2$. Then
-      $T := |Y|/X$ satisfies $(\log X)^{32} \le P^{2/3}/3 \le T \le X/64$. Prop. 16.2 of [CC] (interval $(3X/4, X)$, trivial character;
-      audited in `theorem-W-dependencies.md` B.2) gives $|S| \ll X(\log X)^{-3} + X^{1-1/248}L^5$.
+      $T := |Y|/X$ satisfies $(\log X)^{32} \le P^{2/3}/3 \le T \le X/64$. Proposition 16.2χ with $d = 1$ (`prop-16-2-chi-top-range.md`,
+      an independent proof) gives $|S| \ll X(L^4T^{-1/2} + L^4X^{-1/248})$. Prop. 16.2 of [CC] (audited in `theorem-W-dependencies.md` B.2)
+      gives the same shape; it is no longer needed.
     - *Total.* In both cases $|r_1| \ll X/L^2$ per block, hence $O(P/L^2)$ over all blocks. **So $r_1$ is controlled independently of
       $(\mathrm{LD}_\lambda)$.**
-  - **Status of the inputs.** Prop. 16.2 of [CC] is an audited reconstruction, not independently verified. Prop. 16.3χ has a written,
-    self-audited proof.
-  - **What is not covered.** For $d > 1$ the same computation needs $\sum\Lambda(n)\chi(n)e(Y/n)$ with $Y = hN/(2d)$. In Case B, no
-    twisted version of Prop. 16.2 exists, so the terms $d > 1$ at those scales rest on $(\mathrm{LD}_\lambda)$ alone (see the corrected
-    "Level proved" in §7.3).
+  - **Status of the inputs.** Propositions 16.2χ and 16.3χ have written, self-audited proofs.
+  - **What is not covered.** For $d > 1$ the same computation needs $\sum\Lambda(n)\chi(n)e(Y/n)$ with $Y = hN/(2d)$. Proposition 16.2χ supplies
+    this only for $d \le X^{1/10}$, with a saving too small for a large level. So the terms $d > 1$ up to $P^\lambda$ rest on
+    $(\mathrm{LD}_\lambda)$ (see the corrected "Level proved" in §7.3).
 - **(g) Selberg remainder.** $\sum_{d_1,d_2<D}|\lambda_{d_1}\lambda_{d_2}||r_{[d_1,d_2]}| \le \sum_{d<D^2}\tau_3(d)|r_d|$, since $|\lambda_d| \le 1$.
 - **(h) Main term.** $G(D) \ge \sum_{d<D,\ (d,2)=1}\mu^2(d)/\varphi(d) \ge \frac12\log D$, by the classical
   $\sum_{d<x,(d,k)=1}\mu^2(d)/\varphi(d) \ge \frac{\varphi(k)}k\log x$.
@@ -636,8 +639,15 @@ requires a smaller bound on the rest.
   - A dispersion argument would compare pairs $N - bq$, $N - b'q'$ and produce Kloosterman-type sums in which $N$ enters through
     $N\bar q \bmod d$ and the phase $hN/(dq)$ (§7.4). Nothing in the restriction $q \le P/2$ removes this; I did not obtain any such argument.
 
-**A reduction in the useful direction (conditional).**
-- *Hypothesis 16.2χ$_{\mathrm{fix}}$ (not proved).* For every fixed modulus $d$ and character $\chi \bmod d$,
+**A reduction in the useful direction — now unconditional.** *Update:* the hypothesis below is now **proved**, as Proposition 16.2χ,
+and the conclusion is **Theorem B**; see `prop-16-2-chi-top-range.md`. As a result:
+- $\sum_{P/\mathcal T<q\le P}\log q\,n_N(q) = o(P)$ for every fixed $\mathcal T$, uniformly in $N$;
+- Corollary G is superseded by Corollary B2: $\sum_{\sqrt P<q\le P/\mathcal T}\log q\,n(q) \ge (K - \frac12 - o(1))P$;
+- $\Omega_{1/2}$ is obsolete;
+- $\Omega \iff \Omega_{\mathcal T}$.
+
+The original conditional discussion is kept below for the record.
+- *Hypothesis 16.2χ$_{\mathrm{fix}}$ (proved since; see above).* For every fixed modulus $d$ and character $\chi \bmod d$,
   $\sum_{n\in(3X/4,X)}\Lambda(n)\chi(n)e(Y/n) = o(X)$ uniformly for $(\log X)^{32} \le |Y|/X \le X$.
 - *Plausibility.* This is Prop. 16.2 of [CC] with a fixed character. Splitting $n \bmod d$ turns the Type I phases into the shifted
   phases of Lemma S range (i), so it is plausible that the proof of [CC] §16.4 extends. **This has not been written or checked.**
@@ -655,13 +665,15 @@ requires a smaller bound on the rest.
 | Statement | Type | Status |
 |---|---|---|
 | Theorem A: $\mathcal M(N) \ge (K - o(1))P$ | necessary condition | proved |
-| Corollary G: $\Sigma_{\mathrm{mid}}(N) \ge (K - 0.847 - o(1))P$ | necessary condition | proved (BV, Lemma 17.12) |
+| Corollary G: $\Sigma_{\mathrm{mid}}(N) \ge (K - 0.847 - o(1))P$ | necessary condition | proved; **superseded by Corollary B2** |
+| Corollary B2: $\sum_{\sqrt P<q\le P/\mathcal T}\log q\,n(q) \ge (K - \frac12 - o(1))P$ | necessary condition | proved (Theorem B) |
+| Theorem B: $\sum_{P/\mathcal T<q\le P}\log q\,n_N(q) = o(P)$ for every $N$ | pointwise upper bound | **proved** (`prop-16-2-chi-top-range.md`) |
 | Lemma E: family $\iff H_{\mathrm{big}}(N) = 0$ and $n_N(P) = 0$ | equivalence | proved |
 | $\Omega$: $\Sigma_{\mathrm{large}} \le (K - \frac12 - \eta)P$ for all $N$ | sufficient condition | **open** |
-| $\Omega_{1/2}$: $\Sigma_{\mathrm{mid}} \le (K - 0.847 - \eta)P$ for all $N$ | sufficient condition (stronger than $\Omega$) | **open**; sieve-infeasible for $K \le 1.847$ |
-| $\Omega_T$ (given 16.2χ$_{\mathrm{fix}}$) | sufficient condition (weaker than $\Omega$) | **open**; 16.2χ$_{\mathrm{fix}}$ unproved |
+| $\Omega_{1/2}$: $\Sigma_{\mathrm{mid}} \le (K - 0.847 - \eta)P$ for all $N$ | sufficient condition (stronger than $\Omega$) | open; obsolete after Theorem B |
+| $\Omega_{\mathcal T}$: $\sum_{\sqrt P<q\le P/\mathcal T} \le (K - \frac12 - \eta)P$ for all $N$ | sufficient condition, **equivalent to $\Omega$** (Theorem B) | **open** |
 | $(\mathrm{LD}_\lambda)$, $\lambda > 2/(2K-1)$ | sufficient for $\Omega$ | **open** |
-| Pointwise upper bounds proved | — | $\mathcal M(N) \le 2P\log L + O(P)$; $T(N) \le 0.347P$ |
+| Pointwise upper bounds proved | — | $\mathcal M(N) \le 2P\log L + O(P)$; top range $o(P)$ (Theorem B) |
 | Theorem LS | exceptional set | proved; excludes no individual $N$ |
 | **Proven pointwise exclusions in this band** | — | **none** |
 
@@ -691,7 +703,10 @@ requires a smaller bound on the rest.
 | Lemma G: $\sum_{q>(P-3)/2}\log q\,n_N(q) \le (\frac{\log2}2 + o(1))P$ | proved | every $N$; loses a factor $\asymp L$ |
 | Corollary G: $\Sigma_{\mathrm{mid}} \ge (K - 0.847 - o(1))P$ for families | proved | necessary condition |
 | Lemma Ω | **open** | the single missing estimate (§7.11) |
-| Lemma $\Omega_{1/2}$ | **open** | stronger than Ω; beyond sieve methods for $K \le 1.847$ (§7.12) |
+| Lemma $\Omega_{1/2}$ | open, obsolete | stronger than Ω; beyond sieve methods for $K \le 1.847$ (§7.12) |
+| Proposition 16.2χ (twisted reciprocal sums, $d \le X^{1/10}$, $|Y| \le X^2$) | **proved** | new; `prop-16-2-chi-top-range.md` |
+| Theorem B (top range $o(P)$, every $N$) | **proved** | new; Corollary B2 supersedes Corollary G |
+| Lemma $\Omega_{\mathcal T}$ ($\iff$ Ω) | **open** | the missing estimate is $(\mathrm{LD}_\lambda)$, $\lambda > 2/(2K-1)$, on blocks $X \in [\sqrt P, P/\mathcal T]$ |
 
 **No pointwise exclusion is obtained.** The question is reduced, on $5/3 \le K < 2$, to Lemma Ω (§7.11): a Brun–Titchmarsh-on-average
 bound for prime moduli $q \in (\sqrt P, P]$ and the single residue $N \bmod q$, with constant $< 2K - 1$. It follows from
