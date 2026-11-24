@@ -24,18 +24,10 @@ jobs:
             echo "::error::Found sorry or axiom declaration"; exit 1
           fi
 
-      - name: Replay finite computation in Lean (expect (229153, 0))
+      - name: Check axioms used by the proved theorems
         run: |
-          out=$(lake env lean scripts/CheckRangeStats.lean)
+          out=$(lake env lean Goldbach/WilliamsonMurII.lean 2>&1)
           echo "$out"
-          echo "$out" | grep -q '(229153, 0)'
-
-  python:
-    name: Independent Python check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: python scripts/verify_williamson.py
+          if echo "$out" | grep -q sorryAx; then
+            echo "::error::A theorem depends on sorryAx"; exit 1
+          fi

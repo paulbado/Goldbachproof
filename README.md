@@ -7,29 +7,33 @@ attack on first failing endpoints of Goldbach-type decompositions.
 
 ## Status — read this first
 
-This repository does **not** prove the Goldbach conjecture.
+This repository does **not** prove the Goldbach conjecture. The current
+strategy is **Mur II (arithmetic route)**, in `Goldbach/WilliamsonMurII.lean`.
 
 | Item | Status |
 |---|---|
-| `exists_nonprivate` (pigeonhole step) | ✅ proved in Lean |
-| `dvd_index_difference` | ✅ proved in Lean |
-| `polynomial_of_linear` (linear cover ⇒ polynomial cover) | ✅ proved in Lean |
-| `excludes_line` | ✅ proved in Lean |
-| `UniformCertificateExclusion` | ❓ **open** — stated as a `Prop`, not proved |
-| `LinearCertificateExclusion` | ❓ **open** — supported only by finite experiments |
-| Finite cover for primes `5 ≤ P ≤ 151`, `C = 13` | ✅ computed: 229153 admissible lines, 0 uncovered (Lean `#eval` and Python agree) |
-| Completeness of the divisor enumeration vs `DifferenceCertificate` | ⏳ not yet formalized |
+| `dvd_difference` | ✅ proved in Lean |
+| `shared_power` (no private prime power ⇒ every prime power is shared) | ✅ proved in Lean |
+| `deficient_certificate` | ✅ proved in Lean |
+| `joint_certificate` (two deficient lines, common `N`) | ✅ proved in Lean |
+| `combine_walls` (Wall I + Wall II ⇒ no bad family) | ✅ proved in Lean (logical assembly only) |
+| `WallIIAt P₀` — exclude bad families with multiple deficits | ❓ **open** — stated as a `Prop` |
+| `WallIAt P₀` — complementary branch | ❓ **open** — must be connected to the old Wall I via private-owner counting |
+| `PreviousRankConditions` derived from a first failure | ⏳ proved in the manuscript, not formalized |
 
 All proved theorems depend only on the standard axioms
-(`propext`, `Classical.choice`, `Quot.sound`); CI rejects `sorry` and new `axiom`s.
+(`propext`, `Classical.choice`, `Quot.sound`); CI rejects `sorry`, `axiom`
+declarations and any dependency on `sorryAx`.
+
+The earlier route (Williamson certificate cover, finite check up to `P ≤ 151`)
+is kept in `archive/` for reference and is not built.
 
 ## Layout
 
 ```
-Goldbach/WilliamsonWall.lean   definitions, lemmas, executable checker
-scripts/CheckRangeStats.lean   Lean replay of the finite computation
-scripts/verify_williamson.py   independent Python check
-.github/workflows/lean.yml     CI: build + no-sorry + both checks
+Goldbach/WilliamsonMurII.lean  current strategy (Mur II)
+archive/                       previous route + its Python check (not built)
+.github/workflows/lean.yml     CI: build + no-sorry + axiom check
 ```
 
 ## Build locally
@@ -38,8 +42,6 @@ scripts/verify_williamson.py   independent Python check
 curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh
 lake exe cache get      # download prebuilt Mathlib
 lake build
-lake env lean scripts/CheckRangeStats.lean   # expect (229153, 0)
-python3 scripts/verify_williamson.py
 ```
 
 Pinned to Lean `v4.36.0` / Mathlib `v4.36.0`.
