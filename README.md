@@ -47,13 +47,18 @@ only when the number of deficient lines is a positive proportion of all lines.
 
 The earlier route (Williamson certificate cover) is kept in `archive/`, not built.
 
-### Analytic write-ups (not formalized, not refereed)
+### Analytic write-ups (not formalized in Lean, not independently verified)
 
-- [`docs/hypothesis-T.md`](docs/hypothesis-T.md): proof of the χ-twisted Proposition 16.3 (Lemma S on shifted
-  reciprocal phases, Type I/II), sieve remainder bound, Selberg level including the √d loss, and
-  Theorem W: every restricted-support family with P ≥ P₀ satisfies N ≤ P^{K₀}. Dependencies and points
-  to check are listed in §0 and §11 of that file. **Wall II is not closed.**
-- [`docs/joint-sieve-SQ.md`](docs/joint-sieve-SQ.md): setup of the joint sieve and source checks.
+| Document | Content | Status |
+|---|---|---|
+| [`docs/hypothesis-T.md`](docs/hypothesis-T.md) | χ-twisted Prop. 16.3 (Lemma S, Type I/II); joint sieve on (q, ℓ); Selberg level including the √d loss; Theorem W | Prop. 16.3χ: **written, self-audited proof**, from published results only (van der Corput, MRSTT Lemma 4.1). Theorem W (N ≤ P^959, P ≥ P₀): **conditional** on [CC] Th. 15.1 and (17.47), not verified. Audit log at the top of the file. |
+| [`docs/joint-sieve-SQ.md`](docs/joint-sieve-SQ.md) | initial setup of the joint sieve, source checks | historical note; `hypothesis-T.md` takes precedence |
+
+**What is proved in Lean** (Mathlib v4.36.0, no `sorry`, standard axioms only): exactly the statements in the table
+above (`Goldbach/*.lean`), including (17.1), (17.4), (17.6) and a ≥ G. **Nothing** from `docs/` is formalized.
+
+**Not proved:** Wall I, Wall II, the emptiness of the residual region, Williamson, Goldbach. Theorem W
+(polynomial height) does **not** close Wall II: the region P < N ≤ P^{K₀} remains.
 
 ## Layout
 

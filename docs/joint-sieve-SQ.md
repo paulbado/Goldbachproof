@@ -1,7 +1,11 @@
 # Joint sieve on the incidences (q, ℓ) — analysis note
 
-Status: **mathematical analysis, not formalized.** One analytic input
-(Hypothesis T below) is **not proved**. No lock is declared closed.
+Status (updated 2026-11-24): **historical analysis note.** Hypothesis T now has a **written,
+self-audited proof** in [`hypothesis-T.md`](hypothesis-T.md) (Prop. 16.3χ), **not independently
+verified**. The corrected sieve (partition, remainders, level) and Theorem W are in that file;
+**in case of discrepancy, `hypothesis-T.md` is authoritative.** The parameters below
+(`δ = 1/5`, `P^{4/5} ≤ Q`, Type II via (16.15)) were corrected there. Theorem W remains conditional
+on [CC] Th. 15.1 and (17.47). No lock is declared closed; Wall II remains open.
 
 Reference: I. O. Bado, *A Closure Chain Toward Williamson's Conjecture*,
 §16–17 (DOI 10.13140/RG.2.2.34840.97281).
@@ -53,7 +57,7 @@ characters mod `d` and using Parseval, `Σ_χ |ĝ_h(χ)| ≤ φ(d)^{1/2}`. There
 
 Here `|Y| ≥ N/(4D²) ≥ Q²/64`: the **large-height range of Prop. 16.3**.
 
-## Hypothesis T (not proved)
+## Hypothesis T (statement; written proof: `hypothesis-T.md` §1–§6)
 
 Uniformly for `d ≤ Q^{1/5}`, `χ mod d`, `|Y| ≥ Q²/64`:
 
@@ -105,7 +109,8 @@ the constant `1/3`.
 
 The complete Vaughan bookkeeping with `χ`: Type I sums split into `d` shifted progressions
 of length `Q/(md) ≫ Q^{7/15}`; Type II sums with the coprimality `(n,d)=1` removed by Möbius;
-endpoints; uniformity in `d ≤ Q^{1/5}`. **Not written; Hypothesis T stays a hypothesis.**
+endpoints; uniformity in `d ≤ Q^{1/5}`. **Since written in `hypothesis-T.md`** (with `d ≤ X^{1/4}`,
+Type II via Lemma S at `s = 0`, coprimality removed by Cauchy–Schwarz). Not independently verified.
 
 ## Level and gain under Hypothesis T
 
