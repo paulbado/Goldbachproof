@@ -53,7 +53,7 @@ The earlier route (Williamson certificate cover) is kept in `archive/`, not buil
 |---|---|---|
 | [`docs/hypothesis-T.md`](docs/hypothesis-T.md) | χ-twisted Prop. 16.3 (Lemma S, Type I/II); joint sieve on (q, ℓ); Selberg level including the √d loss; budget log B ≤ C₀P(1+log K) | **written, self-audited proof**, from published results only (van der Corput, MRSTT Lemma 4.1, Vaaler, Selberg, Brun–Titchmarsh). Audit log at the top. |
 | [`docs/theorem-W-dependencies.md`](docs/theorem-W-dependencies.md) | reconstruction of [CC] Th. 15.1 (Lemmas 14.2–14.4, Prop. 14.5, Lemmas 15.2–15.4) and Prop. 17.13 / (17.47); final assembly of **Theorem W: N < P^959 for P ≥ P\*** | **written, self-audited**; no remaining internal dependency on [CC]; P\* effective, not computed (astronomical). **Not independently verified.** |
-| [`docs/residual-region.md`](docs/residual-region.md) | residual region P^{5/3} < N < P^{959}: mass identity, **cofactor injectivity above P²** (Lean), **necessary repetition mass log B ≥ (1/2 − o(1))P**, improved N < P^{950}, **barrier**: no universal budget bound can exclude 5/3 < K ≤ 4.26; exact obstruction (fixed-residue EH-type at level 1 − o(1)) | research note; lemmas R1–R4 proved (R2 in Lean); **no pointwise exclusion** |
+| [`docs/residual-region.md`](docs/residual-region.md) | residual region P^{5/3} < N < P^{959}: mass identity; cofactor injectivity above P² and **near-injectivity below P²** (Lean); small-cofactor count o(P/log P) for θ < 2/3; repetition mass log B ≥ ((K−1)/2 + 0.15 − o(1))P on 5/3 ≤ K < 3; N < P^{950}; R4 barrier (relative to the current structural bounds: universal budgets cannot exclude K ≤ 2.7); obstructions (O1), (T) | research note; R1–R5 proved (R2, R2′, R2″ in Lean); **no pointwise exclusion** |
 | [`docs/joint-sieve-SQ.md`](docs/joint-sieve-SQ.md) | initial setup of the joint sieve, source checks | historical note; `hypothesis-T.md` takes precedence |
 
 **What is proved in Lean** (Mathlib v4.36.0, no `sorry`, standard axioms only): exactly the statements in the table
@@ -71,7 +71,7 @@ Goldbach/WilliamsonMurIIKLines.lean      simultaneous k-line bound
 Goldbach/WilliamsonMurIIBridge.lean      exact bridge to Goldbach
 Goldbach/WilliamsonMurIIClosure.lean     link with manuscript §17 (z ≥ 1+a ≥ 1+G)
 Goldbach/WilliamsonMurIIRatio.lean       exact identities (17.1), (17.4), (17.6)
-Goldbach/WilliamsonResidual.lean         cofactor injectivity above P² (residual region)
+Goldbach/WilliamsonResidual.lean         cofactor injectivity (≥ P²), near-injectivity, fiber counting
 docs/joint-sieve-SQ.md                   joint-sieve analysis, sources, sqrt(d) accounting
 docs/hypothesis-T.md                     proof of χ-twisted Prop. 16.3, sieve level, Theorem W (N ≤ P^K0)
 scripts/check_small_ranks.py             finite check of small ranks

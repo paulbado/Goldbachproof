@@ -1,6 +1,6 @@
 # Residual region $P^{5/3} < N < P^{959}$: repetition mass, injectivity, and a barrier
 
-Status: **research note.** The lemmas marked "proved" have a written, self-audited proof (and R2 a Lean proof).
+Status: **research note.** The lemmas marked "proved" have a written, self-audited proof; R2, R2′, R2″ also have a Lean proof.
 **No pointwise exclusion is obtained.** Wall II, Williamson and Goldbach are **not** proved.
 
 Context: Theorem W (`theorem-W-dependencies.md`) gives $N < P^{959}$ for every restricted-support family
@@ -88,6 +88,60 @@ $0.15K + 0.34 \le 10.6 + \frac{3}{\log2}\log(1 + 0.8K^2/c_2)$ fails for $K \ge 9
 
 ---
 
+## 4bis. R2′ — near-injectivity below quadratic height (proved; **Lean**: `near_injective`, `card_small_cofactor`)
+
+> **Lemma R2′.** Let $3 \le P \le N$, $q' < q \le P$, $b \ge 1$, $C \ge 1$. If $Cq^b \in [N-P, N-3]$ and $Cq'^b \ge N - P$, then
+> $$(q - q')(N - P) \le P(P-3).$$
+
+*Proof.* Put $t = Cq^{b-1}$. Then $Cq'^b \le q't$, so $(q - q')t \le Cq^b - Cq'^b \le P - 3$. Multiplying by $q \le P$ and using
+$qt = Cq^b \ge N - P$ gives $(q - q')(N-P) \le (q-q')qt \le P(P-3)$. $\square$
+(Neither $q > P/2$ nor $N \ge P^2$ is needed. For $N \ge P^2$ we get $q - q' < 1$, which is R2.)
+
+> **Corollary R2″ (small cofactors).** Let $\Delta := \lfloor P(P-3)/(N-P)\rfloor$. The present primes $q \in \mathcal L$ with
+> $C_q \le P^\theta$ number at most $\beta\lfloor P^\theta\rfloor(1 + \Delta)$. **Lean** (`card_small_cofactor`): $\#Q \le (\Delta + 1)\beta C_{\max}$.
+
+*Proof.* Group by the fiber $(b_q, C_q) \in [1,\beta] \times [1, \lfloor P^\theta\rfloor]$. In a fiber, R2′ gives
+$\max - \min \le \Delta$, so at most $\Delta + 1$ integers (`card_le_of_gaps`). $\square$
+
+*Uniformity.* For $P^{5/3} \le N \le P^{950}$ and $P$ large: $N - P \ge N/2$ gives $\Delta \le 2P^{2-K} \le 2P^{1/3}$, and
+$\beta \le \log N/\log(P/2) \le 951$. So
+$$\#\{q \in \mathcal L\ \text{present}: C_q \le P^\theta\} \le 951\,P^\theta(1 + 2P^{1/3}) \le 2853\,P^{\theta+1/3},$$
+which is **$o(P/\log P)$ uniformly** in $N$ as soon as $\theta < 2/3$ is fixed. (For $N \ge P^2$, R2 alone gives $\le \beta P^\theta$ for every $\theta < 1$.)
+
+## 4ter. R5 — reinforced repetition mass for $5/3 \le K < 3$ (proved; new)
+
+> **Lemma R5.** Fix $\epsilon \in (0, 1)$. For $P \ge P(\epsilon)$ (effective) and every restricted-support family with
+> $5/3 \le K \le 3 - \epsilon$:
+> $$\log B \ge \Bigl(\frac{K-1}{2} + 0.15\Bigr)P - 1.3(K-1)\frac{P}{L} - 361\,P^{\max(1/3,\,K-2)}L.$$
+> In particular, **uniformly for $5/3 \le K \le 2$: $\log B \ge \bigl(\frac{K-1}{2} + 0.15 - O(1/L)\bigr)P$.**
+
+*Proof (multiplicity counting).*
+1. **(R1′).** $\log B \ge \log A - E_1 + \sum_{q\in\mathcal L}\delta_q$, with $E_1 = |S|\log(N/A) \le \pi(P)\cdot2P/N \le 2.6P^{2-K}/L \le 2.6P^{1/3}/L$ (absorbed in the term $P^{\max(1/3,K-2)}L$; *correction: a first version wrote $\le 3$, which is false for $K < 2$*).
+2. **Split $\mathcal L$:** absent ($a_L$), present with $E_q = 1$, present with $E_q \ge 2$ ($m_2$).
+   - Absent: $\delta_q = KL$.
+   - $E_q = 1$: $\delta_q = \log N - \log q > (K-1)L$ (since $q < P$). **No cofactor argument is needed here.**
+   - $E_q \ge 2$: $\delta_q > 0$.
+3. **Bound on $m_2$.** $C_q < N/(P/2)^{b} = 2^bP^{K-b}$, so for $b = 2$ there are at most $4P^{K-2}$ values of $C$,
+   and for $3 \le b \le \beta \le 4$, at most $2^b$ values (since $K < 3$). By R2″ with $\Delta \le 2P^{2-K}$:
+   $m_2 \le (1 + 2P^{2-K})(4P^{K-2} + 56) \le 180\,P^{\max(K-2,\,2-K)} \le 180\,P^{\max(1/3,\,K-2)}$.
+4. **Summation.** $\sum_{\mathcal L}\delta_q \ge a_LKL + (R - a_L - m_2)(K-1)L = a_LL + R(K-1)L - m_2(K-1)L$.
+5. **Inputs.**
+   - $a_L \ge G \ge 0.15P/L$ (17.47; `theorem-W-dependencies.md` Part B; $N > P^{3/2}$).
+   - $RL \ge \sum_{q\in\mathcal L}\log q \ge \theta(P) - \theta(P/2) - L \ge P/2 - 1.3P/L$ (Rosser–Schoenfeld Th. 4).
+   - $\log A \ge 0$.
+6. **Uniformity.** For $K \le 3 - \epsilon$, $P^{K-2}L = o(P/L)$ uniformly, and the constants do not depend on $K$. $\square$
+
+**Comparison with R3(ii)** ($0.15K + 0.35$): R5 is better as soon as $K > 2$ (the difference is $0.35K - 0.7$). It coincides
+with R3(ii) at $K = 2$. On $[5/3, 2)$ R5 is weaker than R3(ii), whose proof needs $N \ge P^2$ (R2); R5 holds for every
+$K \ge 5/3$. **On $[5/3, 2)$, R5 is the only valid mass bound beyond $\frac3{20}KP - P$.** At $K = 5/3$ it gives $0.483P$.
+
+**What is new, and what follows immediately from R2.**
+- The small-cofactor count for $N \ge P^2$ (old (O2) candidate): an **immediate consequence of R2**.
+- R2′ (below $P^2$): **new**, a quantitative extension of R2's proof.
+- R2″: an immediate consequence of R2′ (counting by fibers).
+- R5: **new**. The key step is elementary ($E_q = 1 \Rightarrow \delta_q > (K-1)L$); R2′ only controls the exceptional
+  primes ($E_q \ge 2$).
+
 ## 5. R4 — barrier for budget arguments (proved)
 
 > **Lemma R4.** For $P$ large and every $X \ge P^2$, averaging over the even $N \in (X, 2X]$ (with no restricted-support
@@ -101,39 +155,39 @@ $$\mathbb E\log B \ge \sum_{3\le q\le Q_1}\log q\Bigl(\frac{\pi(P)-1}{q} - 1 - \
 by Rosser–Schoenfeld ($\sum_{p\le x}\log p/p > \log x - 1.34$, minus $\frac{\log 2}2$ for $p = 2$; $\theta(x) < 1.01624x$). With
 $\pi(P) \ge P/L$, this is $\ge P(1 - (2\log L + 2)/L) - O(P/L^2)$. $\square$
 
-**Barrier corollary.** A "budget" contradiction compares an upper bound $\log B \le U$ with a lower bound coming from the
-structure of a family. The best structural lower bound available today is R3(ii) with the absence density
-$c = 3/20$, or at best $c_g = (1-\log2)/2$ if one used the full asymptotics of (17.37). If $U$ is proved for **all** $N$
-(as the sieve bound of `hypothesis-T.md` is), R4 forces $U \ge (1-o(1))P$, so a contradiction requires
-$$cK + \tfrac12 - c > 1 \iff K > 1 + \frac{1}{2c} \approx 4.26\ (c = c_g),\quad 4.33\ (c = 0.15).$$
-**Consequence (rigorous, about the method):** no universal upper bound on $\log B$, however sharp, can exclude
-$5/3 < K \le 4.26$ by this comparison. **The region $P^{5/3} < N \le P^{4.26}$ requires an upper bound that uses the
-restricted support of the family itself**, or an argument other than the budget.
+**Barrier corollary (scope corrected).** R4 says only this: a bound $\log B(N) \le U(P)$ proved **for every** even $N$ in
+the range (the sieve bound of `hypothesis-T.md` is of this type) satisfies $U \ge (1 - o(1))P$. So comparing such a $U$
+with the **currently established** structural lower bounds, namely
+$\max\bigl(\frac3{20}K - 1,\ 0.15K + 0.35\ (K \ge 2),\ \frac{K-1}{2} + 0.15\ (K < 3)\bigr)P$, can only produce a contradiction if that
+maximum exceeds $P$, i.e. **$K > 2.7$** (via R5; before R5 the threshold was $4.26$–$4.33$).
+
+**R4 does not rule out:**
+- **(a)** stronger structural lower bounds (more absent primes, finer counting of $\delta_q$);
+- **(b)** upper bounds that use the restricted support itself (so not valid for every $N$);
+- **(c)** arguments of another type.
+
+It only shows that **for $5/3 < K \le 2.7$, any successful budget argument must improve the structural lower bound
+above $P$, or use the restricted support in the upper bound.**
 
 ---
 
-## 6. Exact remaining obstruction
+## 6. Exact remaining obstruction (updated)
 
-Two regimes:
+**(O1) $2.7 < K < 950$: constant gap.** A **universal** bound $\log B(N) \le (\lambda(K) - \epsilon)P$ would suffice, where
+$\lambda(K) = \max(0.15K + 0.35, \frac{K-1}{2} + 0.15)$; that is, at most $\approx 1.1P$ near $K = 3$. The current sieve gives
+$C_0(1 + \log K)P$ with $C_0 \approx 10$ (Selberg factor $\ge 2$, level $D^3 \approx X\mathcal E^{-1}$, cost $\log(K^2/c_2)$). Closing this
+would require an **asymptotic** for $S_Q(N) = \#_{\log q}\{N = \ell + kq\}$ for a fixed $N$, with $Q$ up to $P/4$: equidistribution of
+$\ell \le P$ in the fixed class $N \bmod q$ on average over $q \sim Q \le P^{1-o(1)}$. That is an Elliott–Halberstam-type statement for a
+fixed residue at level $1 - o(1)$, beyond Bombieri–Vinogradov ($1/2$) and Bombieri–Friedlander–Iwaniec ($4/7$, well-factorable weights).
 
-**(O1) $4.26 < K < 950$: constant gap.** The comparison would suffice with a universal bound
-$\log B(N) \le (0.15K + 0.35 - \epsilon)P$; at $K \approx 5$ that is $\approx 1.1P$, which is the average order (R4). But the
-sieve of `hypothesis-T.md` gives $C_0(1 + \log K)P$ with $C_0 \approx 10$, because of:
-- the Selberg factor ($\ge 2$, parity) and the level $D^3 \approx X\mathcal E^{-1}$ (factor 3);
-- the cost $\log(1 + K^2/c_2)$ of the exponential saving $\mathcal E = P^{-c_2/K^2}$.
+**(O2) $5/3 < K \le 2.7$: structural gap.** The universal budget is not enough (R4, relative to R3/R5). We would need,
+**for restricted-support families**, either $\log B < (\frac{K-1}{2} + 0.15)P$, i.e. a budget **below its average value**
+(R4: average $\ge (1 - o(1))P$), or a structural lower bound $> P$. Precise target statement, **open**:
+> *(T) For every restricted-support family with $5/3 < K \le 2.7$: $\log B \le (\frac{K-1}{2} + 0.15 - \eta)P$ for a fixed $\eta > 0$.*
 
-Closing (O1) requires an **asymptotic**, not just an upper bound, for the incidences
-$$S_Q(N) = \sum_{\ell\le P}\ \sum_{q\in(Q,2Q]}\log q\,\mathbf 1_{q\mid N-\ell} = \#_{\log q}\{(\ell, q, k) : N = \ell + kq\},$$
-uniformly for $Q$ up to $P/4$ and for **a fixed $N$**. That is equidistribution of the primes $\ell \le P$ in the fixed class
-$N \bmod q$, on average over prime moduli $q \sim Q$ up to $P^{1-o(1)}$: an Elliott–Halberstam-type statement for a
-fixed residue at level $1 - o(1)$. That is beyond Bombieri–Vinogradov (level $1/2$) and beyond the Bombieri–Friedlander–Iwaniec
-results for a fixed residue (level $4/7$, with well-factorable weights). **This is the precise obstruction.**
+Together with R5, (T) would give a contradiction, hence emptiness of the residual region on $5/3 < K \le 2.7$.
 
-**(O2) $5/3 < K \le 4.26$: structural gap.** By R4, no universal budget is enough. One must exploit, inside the upper
-bound, the fact that every $M_\ell$ is $P$-smooth. A natural candidate, not proved: show that for a
-restricted-support family, the number of large primes $q$ with $C_q \le P^{\theta}$ is $o(P/L)$, through the injectivity of R2
-combined with equidistribution of $\{N/q^b\}$. Note that R2 forces the cofactors $C_q \approx N/q^{b_q}$ to be pairwise distinct.
-**Not done.**
-
-**Summary.** R1–R4 are proved (R2 in Lean). R3′ improves $K_0$ from $959$ to $950$. **No pointwise exclusion is
-obtained** in $P^{5/3} < N < P^{950}$. Wall II stays open, with the obstruction stated in (O1)–(O2).
+**Summary.**
+- Proved: R1, R2 (Lean), R2′ (Lean), R2″ (Lean), R3, R3′ ($N < P^{950}$), R4 (correct scope), R5.
+- **No pointwise exclusion** on $P^{5/3} < N < P^{950}$.
+- **Wall II remains open**; the exact obstructions are (O1) and (T).
