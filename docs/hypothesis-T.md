@@ -25,7 +25,8 @@ Corrections made during the audit (details in the sections indicated):
    hence an explicit $K_0$ (§9). Only the threshold $P_0$ stays effective but not computed.
 6. **Lower bound** stated without $o(1)$: $\log B \ge \frac3{20}KP - P$ (§9).
 7. **§6:** $\mathcal E_I \le \sqrt2\,\mathcal E_I^{1/2}$ (instead of $\le \mathcal E_I^{1/2}$).
-8. **Dependencies** corrected in §0 and §11: Th. 15.1 and Prop. 17.13/(17.47) of [CC] remain
+8. **§9.3:** the $10P/L$ from §9.2(a) is absorbed explicitly in the slack of (b) ($1.5403P$ instead of $1.6P$), for $\log P \ge 168$; $10.6$ and $K_0 = 959$ are unchanged.
+9. **Dependencies** corrected in §0 and §11: Th. 15.1 and Prop. 17.13/(17.47) of [CC] remain
    **unverified** inputs.
 
 **Status: written and self-audited proof, NOT independently verified.**
@@ -339,14 +340,19 @@ $Q_1 = P/4$, and $Q_J = P/2^{J+1} \in [P^{4/5}/2, P^{4/5})$ because $2^{J+1} > P
 - **(a) $b = 1$, $3 \le q \le Q_J$, $q \nmid N$.** Brun–Titchmarsh: $n(q) \le 2P/((q-1)\log(P/q))$, and $\log(P/q) \ge L/5$. Hence
 $$\le \frac{10P}{L}\sum_{q<P^{4/5}}\frac{\log q}{q-1} \le \frac{10P}{L}\Bigl(\tfrac45L + 1\Bigr) \le 8P + \frac{10P}{L}.$$
 - **(b) $b \ge 2$.** $q^b \le P/2$ gives $\log(P/q^b) \ge \log 2$, so
-$$\le \frac{2P}{\log 2}\sum_{q\ge3}\frac{\log q}{(q-1)^2} \le \frac{2P}{\log 2}\cdot0.54 \le 1.6P.$$
+$$\le \frac{2P}{\log 2}\sum_{q\ge3}\frac{\log q}{(q-1)^2} \le \frac{2P}{\log 2}\cdot0.533824 \le 1.5403P.$$
+  The constant $0.533824$ is the exact sum over $q \le 10^7$ ($0.5338215$, computed) plus a tail
+  $\le \sum_{n>10^7}\log n/(n-1)^2 \le (\log 10^7 + 2)/(10^7-1) < 2\cdot10^{-6}$.
 - **(c) $b = 1$, $Q_J < q \le P/2$.** Since $(n-1)_+ \le n$, this is $\le \sum_{j=1}^JS_{Q_j}$. By (8.1) with $X_{Q_j} = 2^{j+1}$,
   comparing with an integral (the integrand is decreasing):
 $$\sum_{j=1}^J\frac{3P}{(j+1)\log 2 + \Lambda_K/2} \le \int_0^J\frac{3P\,dt}{t\log 2 + \Lambda_K/2} = \frac{3P}{\log 2}\log\Bigl(1 + \frac{2J\log2}{\Lambda_K}\Bigr),$$
   and $\sum_j 2P/L \le 2JP/L \le P$. Since $J\log 2 \le L/5$ and $L/\Lambda_K \le 2\max(400, K^2/c_2)$ for $P \ge P_0$:
 $$(c) \le \frac{3P}{\log 2}\log\Bigl(1 + \frac45\max\Bigl(400,\frac{K^2}{c_2}\Bigr)\Bigr) + P.$$
 
-**9.3 Upper bound.** For $4 < K \le 32000(1+\log L)$ and $P \ge P_0$:
+**9.3 Upper bound.** *Bookkeeping (correction):* (a) contains an extra $10P/L$. We absorb it explicitly in the
+slack of (b): $(a)+(b) \le 8P + \frac{10P}{L} + 1.5403P \le 9.6P$ as soon as $10/L \le 0.0597$, i.e. $\log P \ge 168$,
+which $P \ge P_0$ already implies ($\log P_0 \gtrsim 2.3\cdot10^{23}$, §9.5). Together with the $+P$ from (c), this gives exactly the
+constant $10.6$ below; neither $10.6$ nor $K_0$ changes. For $4 < K \le 32000(1+\log L)$ and $P \ge P_0$:
 $$\log B \le P\Bigl(10.6 + \frac{3}{\log 2}\log\Bigl(1 + \frac{4K^2}{5c_2}\Bigr)\Bigr) \le C_0P(1 + \log K),$$
 with $C_0$ absolute: $\frac{3}{\log 2}(2\log K + \log(2\cdot10^7) + 1) + 10.6$, since $K^2/c_2 > 400$.
 
