@@ -209,4 +209,22 @@ theorem deficit_height_bound {P N : ℕ} (D : Finset ℕ) (hb : BadFamily P N)
 #print axioms deficit_product_dvd_budget
 #print axioms deficit_height_bound
 
+/-- **Wall II height ceiling.** In a bad family with two deficient lines,
+    `(N - P)^2 ≤ deficitBudget P 2`. -/
+theorem wallII_height_ceiling {P N : ℕ} (hb : BadFamily P N)
+    (hII : MultipleDeficits P N) : (N - P) ^ 2 ≤ deficitBudget P 2 := by
+  classical
+  obtain ⟨i, j, hij, hi, hj⟩ := hII
+  have hD : ∀ x ∈ ({i, j} : Finset ℕ), Deficient P N x := by
+    intro x hx
+    simp only [mem_insert, mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact hi
+    · exact hj
+  have hcard : #({i, j} : Finset ℕ) = 2 := card_pair hij
+  have := deficit_height_bound {i, j} hb hD
+  rwa [hcard] at this
+
+#print axioms wallII_height_ceiling
+
 end WilliamsonMurII

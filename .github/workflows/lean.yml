@@ -26,8 +26,22 @@ jobs:
 
       - name: Check axioms used by the proved theorems
         run: |
-          out=$(lake env lean Goldbach/WilliamsonMurII.lean 2>&1)
-          echo "$out"
-          if echo "$out" | grep -q sorryAx; then
-            echo "::error::A theorem depends on sorryAx"; exit 1
-          fi
+          for f in Goldbach/*.lean; do
+            out=$(lake env lean "$f" 2>&1)
+            echo "$out" | grep "depends on axioms" || true
+            if echo "$out" | grep -q sorryAx; then
+              echo "::error::$f depends on sorryAx"; exit 1
+            fi
+          done
+
+  small-ranks:
+    name: Finite check of ranks 5 <= P <= 199 (Python)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: |
+          python scripts/check_small_ranks.py 199 13 | tee out.txt
+          ! grep -q SURVIVOR out.txt
