@@ -550,6 +550,121 @@ certificate identities) supplies it, for two reasons:
 | Ω-exceptional | a family exists for at most $7.3\,PL^2$ values of $N \le P^2$ | proved (Theorem LS); not pointwise |
 | Ω-conditional | $(\mathrm{LD}_\lambda)$, $\lambda > 2/(2K-1)$ ⟹ Ω | derivation (Prop. C, audited §7.5) |
 
+### 7.12 The top range $(P/2, P]$: a geometric bound, a necessary condition, and why it does not simplify the problem
+
+**Lemma P (parity; proved, **Lean**: `large_prime_unique_row`).** For every even $N > P$ and every odd $q$ with $2q > P - 3$, at most one
+$\ell \in I$ has $q \mid N - \ell$. So $n_N(q) \le 1$ for every prime $q > (P-3)/2$.
+
+*Proof.* If $q \mid N - \ell$ and $q \mid N - \ell'$ with $\ell \ne \ell'$, then $q \mid \ell - \ell'$. This difference is even and nonzero,
+and $q$ is odd, so $2q \mid \ell - \ell'$. But $0 < |\ell - \ell'| \le P - 3 < 2q$. $\square$
+(No restricted-support hypothesis is used.)
+
+**Lemma G (geometric bound; proved, every $N$).** For every even $N$ with $P^{3/2} < N \le P^2$:
+$$T(N) := \sum_{(P-3)/2<q\le P}\log q\;n_N(q) \le \Bigl(\frac{\log 2}{2} + o(1)\Bigr)P = (0.3466 + o(1))P,$$
+uniformly in $N$ and effectively. The explicit version from (17.47) is $(\frac12 - 0.1503 + o(1))P$.
+
+*Proof.*
+- Let $g_N(q) = \#\{b \text{ odd} : bq \in [N-P, N-3]\}$. For $q > (P-3)/2$ the interval has length $< 2q$, so $g_N(q) \le 1$. If $q \mid N - \ell$, then
+  $b = (N-\ell)/q$ is odd (as $N - \ell$ and $q$ are odd), so $n_N(q) \le g_N(q)$, using Lemma P.
+- By (7.1) with $m = 2$: $g_N(q) = \frac{P-3}{2q} - \psi(x'_q) - \psi(x_q)$, where $e(hx'_q) = \pm e\bigl(h\frac{N-3}{2q}\bigr)$ and $e(hx_q) = \pm e\bigl(-h\frac{N-P}{2q}\bigr)$.
+- The main term is $\sum_{P/2<q\le P}\log q\,\frac{P-3}{2q} = \frac P2(\log 2 + O(1/L))$. The primes $q \in ((P-3)/2, P/2]$ number at most two.
+- For the sawtooth sums, use Vaaler with a fixed $H$, then let $H \to \infty$. The sums $\sum_{P/2<q\le P}\log q\,e(\pm hA/(2q))$ with
+  $A \in \{N-3, N-P\}$ are $o(P)$ for each fixed $h$, uniformly in $N$: this is Lemma 17.12 as reconstructed in
+  `theorem-W-dependencies.md` B.2. Its proof uses only $|Y| = |h|A/2 \ge P^{3/2}/3$ and a bound on $\log N$, which is automatic for
+  $K \le 2$. The integer points cost $O(KL)$.
+- With $\log q \le L$ and the count $G \ge \frac3{20}P/L$ of (17.47), one also gets the slightly weaker $(0.35 + o(1))P$. $\square$
+
+*Dependencies.* Prop. 16.2 of [CC] (audited reconstruction) and Prop. 16.3χ (self-audited), through Lemma 17.12. In this band there is
+no dependency on Th. 15.1.
+
+*Size.* The true average of $T(N)$ is $\pi(P)\sum_{P/2<q\le P}\log q/q \approx (\log 2)P/L = o(P)$. Numerically
+(`scripts/residual_numerics.py`, part 4), over 100 000 sampled $N$:
+
+| $P$ | geometric bound: mean / max | true $T(N)$: mean / max |
+|---|---|---|
+| 4001 | $0.343P$ / $0.398P$ | $0.094P$ / $0.149P$ |
+| 10007 | $0.345P$ / $0.384P$ | $0.085P$ / $0.121P$ |
+
+**Lemma G ignores the primality of $\ell$** and loses a factor $\asymp L$.
+
+> **Corollary G (necessary condition; proved, with BV's ineffective $P_0$).** Every restricted-support family with
+> $5/3 \le K \le 2 - \epsilon$ and $P \ge P_0(\epsilon)$ satisfies
+> $$\Sigma_{\mathrm{mid}}(N) := \sum_{\sqrt P<q\le(P-3)/2}\log q\;n_N(q) \ge \Bigl(K - \frac12 - \frac{\log 2}2 - o(1)\Bigr)P \ge (K - 0.847 - o(1))P.$$
+
+*Proof.* Theorem A gives $\mathcal M(N) \ge (K - o(1))P$. Decompose $\mathcal M(N)$ as
+- $\sum_{d\le\sqrt P}\Lambda(d)n(d)$, which is $\le (\frac12 + o(1))P$ for every $N$ (BV for $d \le D_0$, Brun–Titchmarsh on $(D_0, \sqrt P]$, §7.5(a));
+- prime powers $q^j \in (\sqrt P, P]$ with $j \ge 2$: $o(P)$ (§7.5(c));
+- $\Sigma_{\mathrm{mid}}(N)$;
+- $T(N) \le (\frac{\log2}2 + o(1))P$ (Lemma G). $\square$
+
+The implication proposed (with $0.85$) is therefore **verified**, with constant $\frac12 + \frac{\log 2}2 = 0.8466$ (or $0.8497$ with the
+explicit $0.1503$). The average of $\Sigma_{\mathrm{mid}}$ is $(\frac12 + O(1/L))P$. Numerically $\max_N\Sigma_{\mathrm{mid}}(N)/((K - 0.847)P) \approx 0.63, 0.62$
+($P = 4001, 10007$, sampled $N$ with $5/3 \le K \le 1.98$).
+
+**The corresponding sufficient condition.**
+
+> **Lemma $\Omega_{1/2}$ (open).** There exist $\epsilon, \eta > 0$ and $P_0$ such that for every $P \ge P_0$ and every even $N$ with
+> $P^{5/3} \le N \le P^{2-\epsilon}$:
+> $$\Sigma_{\mathrm{mid}}(N) \le \Bigl(K - \frac12 - \frac{\log 2}2 - \eta\Bigr)P.$$
+
+$\Omega_{1/2}$ contradicts Corollary G, so it excludes the band. By Lemma G, $\Omega_{1/2} \Rightarrow \Omega$ (with $\eta$ unchanged). The converse
+does not follow. **So $\Omega_{1/2}$ is a stronger sufficient condition than $\Omega$, not a weaker one**: it drops the moduli $q > P/2$ but
+requires a smaller bound on the rest.
+
+**Does the restriction $q \le P/2$ make the analytic problem easier? No.**
+- **(a) The required constant crosses the parity limit.** On $(\sqrt P, P/2]$, write the target as a per-scale constant $C$ times the true size.
+  - $\Sigma_{\mathrm{mid}}$ has true size $\approx P/2$, so $\Omega_{1/2}$ needs $C < 2K - 1 - \log 2 \in [1.64, 2.31)$.
+  - An upper-bound sieve using level-of-distribution information alone gives at best $C = 2/\lambda \ge 2$. This is optimal for such
+    information, by Selberg's parity examples; the classical barrier is a statement about methods, not about $\Omega_{1/2}$.
+  - **For $K \le 1.847$, $\Omega_{1/2}$ is therefore out of reach of any sieve-only argument, even with level $\lambda = 1$.** For
+    $K \in (1.847, 2)$ it needs $\lambda > 1/(K - 0.847) \in (0.867, 1)$.
+  - **By contrast, $\Omega$ needs only $\lambda > 2/(2K-1) \in (2/3, 6/7]$, with no parity issue.**
+  - The reason: Lemma G bounds the top range by $0.347P$, while its truth is $o(P)$. That lost slack must be recovered in the middle range.
+- **(b) Brun–Titchmarsh.** The divergence $\int^{1}\frac{d\theta}{1-\theta}$ comes from all scales $X_Q = P/q \in [2, P^{o(1)}]$, not only from
+  $X_Q < 2$. For every fixed $T$, the best pointwise bound remains
+  $\Sigma_{\mathrm{mid}}(N) \le \frac P2\log\frac T2 + 2P\log\frac L{2\log T} + O(P) = 2P\log L + O(P)$, uniformly in $N$.
+  - Lemma G's method on $(P/T, P/2]$ and Brun–Titchmarsh below.
+- **(c) Divisor switching.** $N - \ell = bq$ with $b \ge 2N/P \ge 2P^{K-1}$.
+  - In modulus $q \in (\sqrt P, P/2]$ the progression has length $(P-3)/(2q) \in [1, \sqrt P/2]$. In modulus $b$ it has length $\le P^{2-K}/4$.
+  - Switching to $b$ loses the primality of $q = (N-\ell)/b$. Dropping it costs a factor $\asymp L$. Keeping it gives a two-dimensional
+    sieve on progressions of length $\le P^{2-K}$, whose upper bound loses a factor $\ge 4(2-K)^{-2} \ge 36$.
+  - The restriction $q \le P/2$ changes neither length.
+- **(d) Level of distribution.** The scales without any twisted estimate are $Q \in (6P^{K/2}, P]$ (§7.3, corrected). Removing
+  $(P/2, P]$ leaves $(6P^{K/2}, P/2]$, a range of the same logarithmic length.
+- **(e) Large sieve / bilinear / dispersion.**
+  - The dual large sieve gives exceptional-set bounds only (Theorem LS).
+  - A dispersion argument would compare pairs $N - bq$, $N - b'q'$ and produce Kloosterman-type sums in which $N$ enters through
+    $N\bar q \bmod d$ and the phase $hN/(dq)$ (§7.4). Nothing in the restriction $q \le P/2$ removes this; I did not obtain any such argument.
+
+**A reduction in the useful direction (conditional).**
+- *Hypothesis 16.2χ$_{\mathrm{fix}}$ (not proved).* For every fixed modulus $d$ and character $\chi \bmod d$,
+  $\sum_{n\in(3X/4,X)}\Lambda(n)\chi(n)e(Y/n) = o(X)$ uniformly for $(\log X)^{32} \le |Y|/X \le X$.
+- *Plausibility.* This is Prop. 16.2 of [CC] with a fixed character. Splitting $n \bmod d$ turns the Type I phases into the shifted
+  phases of Lemma S range (i), so it is plausible that the proof of [CC] §16.4 extends. **This has not been written or checked.**
+- *What it would give.* For every fixed $T$, Selberg at a fixed level $D$ (then $D \to \infty$) on $(P/T, P]$ gives
+  $$\sum_{P/T<q\le P}\log q\;n_N(q) \le \frac{(P/2)\log T}{\frac12(\log D - 1)} + o_D(P) \to o(P),$$
+  for every $N$ in the band. This uses $q > P/T > D^2$, (7.0), and $r_d = o(P)$ for each of the finitely many $d < D^2$, via Vaaler and
+  16.2χ$_{\mathrm{fix}}$.
+- *Consequence.* The necessary condition would become $\sum_{\sqrt P<q\le P/T}\log q\,n(q) \ge (K - \frac12 - o(1))P$. The sufficient condition
+  would become $\Omega_T$: the same sum $\le (K - \frac12 - \eta)P$. $\Omega_T$ is **implied by** $\Omega$, so it is a genuine weakening, still with
+  $\lambda > 2/(2K-1)$ and no parity problem.
+- **$\Omega_T$ remains open; the conditional step only removes the top constant range of scales.**
+
+**Status in the band $5/3 \le K \le 2-\epsilon$.**
+
+| Statement | Type | Status |
+|---|---|---|
+| Theorem A: $\mathcal M(N) \ge (K - o(1))P$ | necessary condition | proved |
+| Corollary G: $\Sigma_{\mathrm{mid}}(N) \ge (K - 0.847 - o(1))P$ | necessary condition | proved (BV, Lemma 17.12) |
+| Lemma E: family $\iff H_{\mathrm{big}}(N) = 0$ and $n_N(P) = 0$ | equivalence | proved |
+| $\Omega$: $\Sigma_{\mathrm{large}} \le (K - \frac12 - \eta)P$ for all $N$ | sufficient condition | **open** |
+| $\Omega_{1/2}$: $\Sigma_{\mathrm{mid}} \le (K - 0.847 - \eta)P$ for all $N$ | sufficient condition (stronger than $\Omega$) | **open**; sieve-infeasible for $K \le 1.847$ |
+| $\Omega_T$ (given 16.2χ$_{\mathrm{fix}}$) | sufficient condition (weaker than $\Omega$) | **open**; 16.2χ$_{\mathrm{fix}}$ unproved |
+| $(\mathrm{LD}_\lambda)$, $\lambda > 2/(2K-1)$ | sufficient for $\Omega$ | **open** |
+| Pointwise upper bounds proved | — | $\mathcal M(N) \le 2P\log L + O(P)$; $T(N) \le 0.347P$ |
+| Theorem LS | exceptional set | proved; excludes no individual $N$ |
+| **Proven pointwise exclusions in this band** | — | **none** |
+
 ---
 
 ## 8. Summary (updated)
@@ -572,7 +687,11 @@ certificate identities) supplies it, for two reasons:
 | MR multiplicative rigidity | proved, **Lean** | negative for exclusion (true for every $N$) |
 | Ω-BT: $\mathcal M(N) \le 2P\log L + O(P)$ | proved | pointwise, misses by $\log\log P$ |
 | Theorem LS: $\le 7.3PL^2$ families with $N \le P^2$ | proved | exceptional set, **not pointwise** |
+| Lemma P (parity: $n_N(q) \le 1$ for $q > (P-3)/2$) | proved, **Lean** | every $N$ |
+| Lemma G: $\sum_{q>(P-3)/2}\log q\,n_N(q) \le (\frac{\log2}2 + o(1))P$ | proved | every $N$; loses a factor $\asymp L$ |
+| Corollary G: $\Sigma_{\mathrm{mid}} \ge (K - 0.847 - o(1))P$ for families | proved | necessary condition |
 | Lemma Ω | **open** | the single missing estimate (§7.11) |
+| Lemma $\Omega_{1/2}$ | **open** | stronger than Ω; beyond sieve methods for $K \le 1.847$ (§7.12) |
 
 **No pointwise exclusion is obtained.** The question is reduced, on $5/3 \le K < 2$, to Lemma Ω (§7.11): a Brun–Titchmarsh-on-average
 bound for prime moduli $q \in (\sqrt P, P]$ and the single residue $N \bmod q$, with constant $< 2K - 1$. It follows from
