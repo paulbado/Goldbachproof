@@ -150,10 +150,15 @@ $K \ge 5/3$. **On $[5/3, 2)$, R5 is the only valid mass bound beyond $\frac3{20}
 > Hence any bound $\log B(N) \le U(P)$ valid **for all** even $N$ in such a range satisfies $U(P) \ge (1 - o(1))P$.
 
 *Proof.* Let $q \le Q_1 := P/L^2$ be an odd prime. As $N = 2n$ runs over $(X, 2X]$, each class $\ell \bmod q$ receives
-$X/(2q) + O(1)$ values of $N$, so $\mathbb E\,n_N(q) \ge (\pi(P)-1)(1/q - 2/X) \ge (\pi(P)-1)/q - 2P/X$. *Extension (correction): the proof only uses $X \ge P^2$ in this error term; for $X \ge P^{5/3}$, $\sum_{q\le Q_1}\log q\cdot 2P/X \le 2.1\,PQ_1/X = o(P)$. So R4 holds for every $X \ge P^{5/3}$.* Since $v_q(B) \ge (n(q)-1)_+ \ge n(q) - 1$,
-$$\mathbb E\log B \ge \sum_{3\le q\le Q_1}\log q\Bigl(\frac{\pi(P)-1}{q} - 1 - \frac2P\Bigr) \ge (\pi(P)-1)(\log Q_1 - 2) - 1.03Q_1,$$
-by Rosser–Schoenfeld ($\sum_{p\le x}\log p/p > \log x - 1.34$, minus $\frac{\log 2}2$ for $p = 2$; $\theta(x) < 1.01624x$). With
-$\pi(P) \ge P/L$, this is $\ge P(1 - (2\log L + 2)/L) - O(P/L^2)$. $\square$
+$X/(2q) + O(1)$ values of $N$, so $\mathbb E\,n_N(q) \ge (\pi(P)-1)(1/q - 2/X) \ge (\pi(P)-1)/q - 2P/X$
+(using $\pi(P) - 1 \le P$). Since $v_q(B) \ge (n(q)-1)_+ \ge n(q) - 1$,
+$$\mathbb E\log B \ge \sum_{3\le q\le Q_1}\log q\Bigl(\frac{\pi(P)-1}{q} - 1 - \frac{2P}{X}\Bigr) \ge (\pi(P)-1)(\log Q_1 - 2) - 1.03\,Q_1 - 2.1\,\frac{PQ_1}{X},$$
+by Rosser–Schoenfeld ($\sum_{p\le x}\log p/p > \log x - 1.34$, minus $\frac{\log 2}2$ for $p = 2$; $\theta(x) < 1.01624x$,
+so $\frac{2P}{X}\theta(Q_1) \le 2.1\,PQ_1/X$). The last term is $2.1\,P^2/(L^2X)$: it is $\le 2.1\,P^{1/3}/L^2$ for
+$X \ge P^{5/3}$ and $\le 2.1\,P/L^4$ for $X \ge PL^2$, so $o(P/L)$ in both cases. (This is the only place where the size
+of $X$ enters; earlier versions stated R4 for $X \ge P^2$ and wrote this error as $2/P$, which is its value at $X = P^2$
+only.) With $\pi(P) \ge P/L$ and $\log Q_1 = L - 2\log L$, the right side is $\ge P(1 - (2\log L + 2)/L) - O(P/L^2)
+\ge (1 - 3\log L/L)P$ for $P$ large. $\square$
 
 **Barrier corollary (scope corrected).** R4 says only this: a bound $\log B(N) \le U(P)$ proved **for every** even $N$ in
 the range (the sieve bound of `hypothesis-T.md` is of this type) satisfies $U \ge (1 - o(1))P$. So comparing such a $U$
