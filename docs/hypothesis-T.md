@@ -30,6 +30,12 @@ Corrections made during the audit (details in the sections indicated):
 
 **Status: written and self-audited proof, NOT independently verified.**
 
+**Update (dependency reconstruction):** the two inputs [CC] Th. 15.1 and Prop. 17.13 / (17.47), marked
+"unverified" below, are reconstructed in [`theorem-W-dependencies.md`](theorem-W-dependencies.md) (Parts A and B),
+from published results only (Matveev–BMS, Brun–Titchmarsh, Rosser–Schoenfeld, an effective PNT, van der Corput,
+Beurling–Selberg). Theorem W is therefore **free of internal dependencies on [CC]**, but still **not independently
+verified**. The tables of §0 and §11 below describe the state before that reconstruction.
+
 ## 0. Status and dependencies
 
 This document contains a **written, self-audited** proof of Proposition 16.3χ (§1–§6), using only
