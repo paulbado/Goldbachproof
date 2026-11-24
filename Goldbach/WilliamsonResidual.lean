@@ -263,9 +263,35 @@ theorem mult_near_rigidity_int {N P a b c d : ℤ} (hN : 0 ≤ N)
   rw [← abs_of_nonneg hN, ← abs_mul, key, abs_le]
   constructor <;> linarith
 
+/-- **Parity lemma.** An odd `q` with `P - 3 < 2q` divides at most one complement `N - ℓ`
+with `ℓ` odd, `3 ≤ ℓ ≤ P < N`. In particular every odd prime `q > (P-3)/2` has `n_N(q) ≤ 1`. -/
+theorem large_prime_unique_row {P N ℓ ℓ' q : ℕ} (hq : q % 2 = 1) (hqP : P - 3 < 2 * q)
+    (hℓ : ℓ ≤ P) (hℓ' : ℓ' ≤ P) (h3 : 3 ≤ ℓ) (h3' : 3 ≤ ℓ')
+    (ho : ℓ % 2 = 1) (ho' : ℓ' % 2 = 1) (hN : P < N)
+    (h1 : q ∣ N - ℓ) (h2 : q ∣ N - ℓ') : ℓ = ℓ' := by
+  have hcop : Nat.Coprime 2 q := by
+    rw [Nat.coprime_two_left]; exact Nat.odd_iff.mpr hq
+  rcases lt_trichotomy ℓ ℓ' with hlt | heq | hgt
+  · exfalso
+    have hd : q ∣ (N - ℓ) - (N - ℓ') := Nat.dvd_sub h1 h2
+    have he : (N - ℓ) - (N - ℓ') = ℓ' - ℓ := by omega
+    rw [he] at hd
+    have h2d : 2 ∣ ℓ' - ℓ := by omega
+    have := Nat.le_of_dvd (by omega) (hcop.mul_dvd_of_dvd_of_dvd h2d hd)
+    omega
+  · exact heq
+  · exfalso
+    have hd : q ∣ (N - ℓ') - (N - ℓ) := Nat.dvd_sub h2 h1
+    have he : (N - ℓ') - (N - ℓ) = ℓ - ℓ' := by omega
+    rw [he] at hd
+    have h2d : 2 ∣ ℓ - ℓ' := by omega
+    have := Nat.le_of_dvd (by omega) (hcop.mul_dvd_of_dvd_of_dvd h2d hd)
+    omega
+
 #print axioms high_power_unique_row
 #print axioms powersmooth_dvd_lcm
 #print axioms mult_rigidity
 #print axioms mult_near_rigidity_int
+#print axioms large_prime_unique_row
 
 end WilliamsonResidual
