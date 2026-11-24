@@ -9,7 +9,7 @@ import Goldbach.WilliamsonMurIIKLines
 * `first_failure_rank_chain`: the owner constraint that a first failure
   imposes at *every* smaller rank, not only the previous prime.
 
-No `sorry`, no axiom. -/
+Fully proved: only the standard axioms are used. -/
 
 namespace WilliamsonMurII
 

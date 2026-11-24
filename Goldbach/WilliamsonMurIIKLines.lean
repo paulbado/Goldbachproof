@@ -7,7 +7,7 @@ the product of the complements `N - i` (`i ∈ D`) divides an explicit
 number `deficitBudget P #D` depending only on `P` and `#D`. Consequently
 `(N - P) ^ #D ≤ deficitBudget P #D`.
 
-No `sorry`, no axiom. -/
+Fully proved: only the standard axioms are used. -/
 
 namespace WilliamsonMurII
 open Finset
