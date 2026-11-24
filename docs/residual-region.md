@@ -1,6 +1,6 @@
 # Residual region $P^{5/3} < N < P^{959}$: repetition mass, injectivity, and a barrier
 
-Status: **research note.** The lemmas marked "proved" have a written, self-audited proof; R2, R2′, R2″ also have a Lean proof.
+Status: **research note.** The lemmas marked "proved" have a written, self-audited proof; R2, R2′, R2″ and the ingredients of L1 also have a Lean proof.
 **No pointwise exclusion is obtained.** Wall II, Williamson and Goldbach are **not** proved.
 
 Context: Theorem W (`theorem-W-dependencies.md`) gives $N < P^{959}$ for every restricted-support family
@@ -144,13 +144,13 @@ $K \ge 5/3$. **On $[5/3, 2)$, R5 is the only valid mass bound beyond $\frac3{20}
 
 ## 5. R4 — barrier for budget arguments (proved)
 
-> **Lemma R4.** For $P$ large and every $X \ge P^2$, averaging over the even $N \in (X, 2X]$ (with no restricted-support
+> **Lemma R4.** For $P$ large and every $X \ge P^{5/3}$ (indeed $X \ge PL^2$ suffices), averaging over the even $N \in (X, 2X]$ (with no restricted-support
 > hypothesis; $B(N) = \prod_\ell M_\ell/\mathrm{lcm}$ and $v_q(B) = \sum_a(n(q^a)-1)_+$ hold for every $N$):
 > $$\mathbb E_N\log B(N) \ge \Bigl(1 - \frac{3\log L}{L}\Bigr)P.$$
 > Hence any bound $\log B(N) \le U(P)$ valid **for all** even $N$ in such a range satisfies $U(P) \ge (1 - o(1))P$.
 
 *Proof.* Let $q \le Q_1 := P/L^2$ be an odd prime. As $N = 2n$ runs over $(X, 2X]$, each class $\ell \bmod q$ receives
-$X/(2q) + O(1)$ values of $N$, so $\mathbb E\,n_N(q) \ge (\pi(P)-1)(1/q - 2/X) \ge (\pi(P)-1)/q - 2/P$ (since $X \ge P^2$). Since $v_q(B) \ge (n(q)-1)_+ \ge n(q) - 1$,
+$X/(2q) + O(1)$ values of $N$, so $\mathbb E\,n_N(q) \ge (\pi(P)-1)(1/q - 2/X) \ge (\pi(P)-1)/q - 2P/X$. *Extension (correction): the proof only uses $X \ge P^2$ in this error term; for $X \ge P^{5/3}$, $\sum_{q\le Q_1}\log q\cdot 2P/X \le 2.1\,PQ_1/X = o(P)$. So R4 holds for every $X \ge P^{5/3}$.* Since $v_q(B) \ge (n(q)-1)_+ \ge n(q) - 1$,
 $$\mathbb E\log B \ge \sum_{3\le q\le Q_1}\log q\Bigl(\frac{\pi(P)-1}{q} - 1 - \frac2P\Bigr) \ge (\pi(P)-1)(\log Q_1 - 2) - 1.03Q_1,$$
 by Rosser–Schoenfeld ($\sum_{p\le x}\log p/p > \log x - 1.34$, minus $\frac{\log 2}2$ for $p = 2$; $\theta(x) < 1.01624x$). With
 $\pi(P) \ge P/L$, this is $\ge P(1 - (2\log L + 2)/L) - O(P/L^2)$. $\square$
@@ -171,23 +171,139 @@ above $P$, or use the restricted support in the upper bound.**
 
 ---
 
-## 6. Exact remaining obstruction (updated)
+## 6. R6 — sawtooth mass bound for $K \ge 2$ (proved), and the corrected scope of (O1)
 
-**(O1) $2.7 < K < 950$: constant gap.** A **universal** bound $\log B(N) \le (\lambda(K) - \epsilon)P$ would suffice, where
-$\lambda(K) = \max(0.15K + 0.35, \frac{K-1}{2} + 0.15)$; that is, at most $\approx 1.1P$ near $K = 3$. The current sieve gives
-$C_0(1 + \log K)P$ with $C_0 \approx 10$ (Selberg factor $\ge 2$, level $D^3 \approx X\mathcal E^{-1}$, cost $\log(K^2/c_2)$). Closing this
-would require an **asymptotic** for $S_Q(N) = \#_{\log q}\{N = \ell + kq\}$ for a fixed $N$, with $Q$ up to $P/4$: equidistribution of
-$\ell \le P$ in the fixed class $N \bmod q$ on average over $q \sim Q \le P^{1-o(1)}$. That is an Elliott–Halberstam-type statement for a
-fixed residue at level $1 - o(1)$, beyond Bombieri–Vinogradov ($1/2$) and Bombieri–Friedlander–Iwaniec ($4/7$, well-factorable weights).
+> **Lemma R6.** Fix $\epsilon > 0$. For $P \ge P(\epsilon)$ and every restricted-support family with $2 \le K < 950$ and
+> $\{K\} \le 1 - \epsilon$ (where $n = \lfloor K\rfloor$):
+> $$\log B \ge \bigl(0.15(n-1) + \tfrac{1+\{K\}}{2}\bigr)P - O(P/L) - 2^{n+1}P^{1-\epsilon}L.$$
 
-**(O2) $5/3 < K \le 2.7$: structural gap.** The universal budget is not enough (R4, relative to R3/R5). We would need,
-**for restricted-support families**, either $\log B < (\frac{K-1}{2} + 0.15)P$, i.e. a budget **below its average value**
-(R4: average $\ge (1 - o(1))P$), or a structural lower bound $> P$. Precise target statement, **open**:
-> *(T) For every restricted-support family with $5/3 < K \le 2.7$: $\log B \le (\frac{K-1}{2} + 0.15 - \eta)P$ for a fixed $\eta > 0$.*
+*Proof.* $N \ge P^2$, so $\Delta = 0$ (R2: injectivity). For present $q \in \mathcal L$ with $b = E_q$, $C_q < 2^bP^{K-b}$.
+- $b \ge n+1$: impossible, since $2^{n+1}P^{\{K\}-1} \le 2^{951}P^{-\epsilon} < 1$.
+- $b = n$: at most $2^nP^{\{K\}}$ primes (distinct $C$).
+- $b \le n-1$: $\delta_q \ge KL - (n-1)L = (1+\{K\})L$.
 
-Together with R5, (T) would give a contradiction, hence emptiness of the residual region on $5/3 < K \le 2.7$.
+Absent primes: $\delta_q = KL$. As in R5,
+$\sum_{\mathcal L}\delta_q \ge a_L(n-1)L + R(1+\{K\})L - 2^{n+1}P^{\{K\}}L$, with $a_LL \ge 0.15P$, $RL \ge P/2 - 1.3P/L$, $E_1 \le 3$. $\square$
 
-**Summary.**
-- Proved: R1, R2 (Lean), R2′ (Lean), R2″ (Lean), R3, R3′ ($N < P^{950}$), R4 (correct scope), R5.
-- **No pointwise exclusion** on $P^{5/3} < N < P^{950}$.
-- **Wall II remains open**; the exact obstructions are (O1) and (T).
+For $n = 2$ this is R5; when $\{K\} \to 0$ it coincides with R3(ii); and it is always $\ge$ R3(ii) (by $0.35\{K\}$).
+
+**Corrected scope of the structural lower bounds** ($\log B \ge \lambda(K)P - o(P)$):
+
+| Range of $K$ | $\lambda(K)$ | Source |
+|---|---|---|
+| $[5/3, 2)$ | $\frac{K-1}{2} + 0.15$ | R5 |
+| $[2, 950)$, $\{K\} \le 1-\epsilon$ | $0.15(\lfloor K\rfloor - 1) + \frac{1+\{K\}}2$ | R6 (contains R5 on $[2, 3-\epsilon]$) |
+| $[2, 950)$, $\{K\} > 1-\epsilon$ | $0.15K + 0.35$ | R3(ii) |
+
+**(O1), corrected.** A universal bound (R4: $U \ge (1-o(1))P$) can contradict $\lambda(K)$ only where $\lambda(K) > 1$, i.e. outside
+$$\mathcal Z_{\mathrm{blocked}} = [5/3,\ 2.7]\ \cup\ (3-\epsilon,\ 3.4]\ \cup\ (4-\epsilon,\ 4.1].$$
+**Outside $\mathcal Z_{\mathrm{blocked}}$ (and $K < 950$), the obstruction is the constant:** we would need a universal $U \le (\lambda(K) - \eta)P$,
+which is within a factor $\lambda(K)$ of the average order ($\approx P$, R4), whereas the sieve of `hypothesis-T.md` gives $C_0(1+\log K)P$ with
+$C_0 \approx 10$. Closing it requires an asymptotic for $S_Q(N)$ (an EH-type statement for a fixed residue, at level $1-o(1)$).
+
+---
+
+## 7. Below $P^2$: powersmooth rows, an anomaly theorem, and an exact reduction
+
+Throughout this section $5/3 \le K \le 2 - \epsilon$. Put $L_P := \mathrm{lcm}(1,\dots,P)$ and
+$$\mathcal M(N) := \sum_{d\le P}\Lambda(d)\,n_N(d) = \sum_{\ell\in I}\log\gcd(N-\ell, L_P).$$
+(The identity holds because $\sum_{d\mid m,\ d\le P}\Lambda(d) = \sum_q\log q\min(v_q(m), \lfloor\log_qP\rfloor) = \log\gcd(m, L_P)$.)
+
+### 7.1 L1 — the rows are powersmooth (proved; Lean: `high_power_unique_row`, `powersmooth_dvd_lcm`)
+
+> **Lemma L1.** For a restricted-support family with $N - P > P^{3/2}$, at most $(2L+1)P^{K-1} + \sqrt{2P}$ rows $\ell$
+> satisfy $N - \ell \nmid L_P$. Every other row divides $L_P$.
+
+*Proof.*
+- **Bad rows.** If $M_\ell \nmid L_P$, some $q^{v} \Vert M_\ell$ has $q^v > P$, with $q < P$ (restricted support), so $v \ge 2$
+  (Lean `powersmooth_dvd_lcm`, contrapositive). Let $a$ be minimal with $q^a > P$: then $a \ge 2$, $q^a \le Pq < P^2$, $q^a \mid M_\ell$.
+  By `high_power_unique_row`, $t = q^a$ divides only this row, so bad rows inject into such pairs $(q, a)$.
+- **$a = 2$ ($q > \sqrt P$).** Write $M_\ell = kq^2$ with $1 \le k < N/P$. For fixed $k$, $q$ lies in an interval of length
+  $\sqrt{N/k} - \sqrt{(N-P)/k} \le P/(2\sqrt{k(N-P)})$, so at most $1 + P/(2\sqrt{k(N-P)})$ values. Summing over $k < N/P$:
+  $\le N/P + \frac{P}{2\sqrt{N-P}}\cdot2\sqrt{N/P} \le P^{K-1} + \sqrt{2P}$.
+- **$a \ge 3$.** $M_\ell = kq^a$ with $k < N/P$. For fixed $(k, a)$, $q$ lies in an interval of length
+  $\le P/(a k^{1/a}(N-P)^{1-1/a}) \le P/(N-P)^{2/3} < 1$, so at most one $q$. Moreover $a \le 1 + L/\log 2 \le 2L$.
+  At most $2L\cdot P^{K-1}$. $\square$
+
+**Consequence.** $H_{\mathrm{high}} := \sum_\ell\sum_{d\mid M_\ell,\ d>P}\Lambda(d) \le \#\{\text{bad rows}\}\cdot\log N \le ((2L+1)P^{K-1} + \sqrt{2P})KL = o(P)$,
+uniformly for $K \le 2 - \epsilon$.
+
+### 7.2 Anomaly theorem (proved)
+
+> **Theorem A.** For every restricted-support family with $5/3 \le K \le 2 - \epsilon$ and $P \ge P(\epsilon)$:
+> $$\mathcal M(N) \ge KP - O\bigl(KL^3P^{K-1} + KL\sqrt P + P/L\bigr) = (K - o(1))P.$$
+> On the other hand, for every $X \ge P^{5/3}$, the average of $\mathcal M(N)$ over the even $N \in (X, 2X]$ is $P(1 + O(1/L))$.
+
+*Proof.*
+- **Lower bound.** $\sum_\ell\log M_\ell = \sum_\ell\sum_{d\mid M_\ell}\Lambda(d) = \mathcal M(N) + H_{\mathrm{high}}$ and $\sum_\ell\log M_\ell \ge |I|\log A \ge KP - O(P/L + KL)$
+  (Rosser–Schoenfeld), so L1 gives the bound.
+- **Average.** For odd $d \le P$, $\Pr_N(N \equiv \ell\ (d)) = 1/d + O(d/X)$ (for even $d$, $n(d) = 0$). Hence
+  $\mathbb E\,\mathcal M = |I|\sum_{d\le P\ \text{odd}}\Lambda(d)/d + O(|I|P\log P/X) = \pi(P)(L + O(1)) + o(1) = P(1 + O(1/L))$ (Mertens). $\square$
+
+**Reading.** A restricted-support family in $5/3 \le K < 2$ forces $\mathcal M(N)$ to be at least $K \ge 5/3$ times its average:
+**every row, in mass, must divide $L_P$**, whereas a typical row shares only about $1/K$ of its mass with $L_P$. Numerical check
+($P \in \{1009, 4001, 10007\}$, random $N \approx P^{1.7}, P^{1.9}$): $\mathcal M(N)/P \approx 0.87$–$0.96$, versus the $1.7$–$1.9$ required.
+
+> **Corollary B (conditional exclusion, rigorous).** If, for an interval $J \subset [5/3, 2-\epsilon]$ and some $\eta > 0$, every even $N$
+> with $\log N/\log P \in J$ satisfies $\mathcal M(N) \le (K - \eta)P$, then **no restricted-support family has its height in
+> $J$**, for $P$ large.
+
+### 7.3 Exact reduction to a level of distribution (derivation)
+
+$\mathcal M = \mathcal M_{\le D_0} + \mathcal M_{>D_0}$, with $D_0 = \sqrt P/L^B$.
+
+**Small moduli.** Bombieri–Vinogradov, applied with the max over residues (hence pointwise in $N$), gives
+$\mathcal M_{\le D_0} \le \pi(P)\sum_{d\le D_0}\Lambda(d)/\varphi(d) + O(P/L^A) \le (\frac12 + O(\frac{\log L}{L}))P$.
+(The BV constant is ineffective because of Siegel–Walfisz; this affects only the effectivity of the threshold.)
+
+**Large moduli.** It suffices to show
+$$\mathcal M_{>D_0} = \sum_{D_0<q\le P}\log q\,n(q) + o(P) \le (K - \tfrac12 - \eta)P\qquad(\ge (\tfrac76 - \eta)P),$$
+whose average is $\frac12P$. **This is an upper bound within a factor $2K-1 \ge 7/3$ of the truth.** In particular, **parity is not the
+obstruction**: Selberg's sieve loses a factor exactly $2/\lambda$ at level $D^2 = P^\lambda$.
+
+> **Proposition C (sufficient condition; derivation, with the Selberg bookkeeping of `hypothesis-T.md` §8).** Suppose that for
+> every dyadic $Q \in [D_0, P]$ and every even $N$ with $K \in J$, the dual sequence $\mathcal A_Q(N) = \{N - bq\}$ of
+> `hypothesis-T.md` §7 satisfies
+> $$\sum_{d<P^\lambda,\ d\mid\Pi}\tau_3(d)|r_d(Q,N)| \le P/L^3\qquad(\mathrm{LD}_\lambda)$$
+> with $\lambda > 2/(2K-1)$ for all $K \in J$. Then the hypothesis of Corollary B holds, so $J$ is excluded.
+
+*Derivation.* Selberg at level $D = P^{\lambda/2}$: $S_Q \le \mathcal X/G(D) + P/L^3$ with $\mathcal X \le \frac P2(\log 2 + O(1/L))$ and
+$G(D) \ge \frac{\lambda L}{4}(1 - o(1))$, so $S_Q \le \frac{2\log 2}{\lambda}\frac PL(1+o(1))$. There are $\le \frac{L}{2\log2} + O(\log L)$ scales, so
+$\mathcal M_{>D_0} \le \frac P\lambda(1 + o(1)) < (K - \frac12 - \eta)P$. $\square$
+
+**Level required:** $\lambda > 6/7$ at $K = 5/3$, $\lambda > 2/3$ as $K \to 2$.
+**Level proved** (`hypothesis-T.md`, Prop. 16.3χ + Parseval): $D^3 \approx X_Q\,P^{c_2/K^2}$, i.e. $\lambda \approx \frac23\bigl(\frac{\log X_Q}{L} + \frac{c_2}{K^2}\bigr) \le \frac13 + 10^{-8}$,
+and $\to 10^{-8}$ for $Q$ close to $P$.
+
+### 7.4 Why the missing step is difficult
+
+For $d > X_Q$ (beyond the trivial level), $r_d$ detects whether the short interval $\mathcal I_q$ (length $\approx X_Q$) meets the class
+$N\bar q \bmod d$. Controlling $\sum_d\tau_3|r_d|$ up to $d \approx P^{6/7}$ requires equidistribution of $N\bar q \bmod d$ as $q$ runs over
+the primes $\sim Q$, **jointly** with the reciprocal phase $hN/(2dq)$ of height $\approx P^K/d$. That means sums of the form
+$$\sum_{q\sim Q}\log q\;e\Bigl(\frac{a\bar q}{d} + \frac{Y}{dq}\Bigr),\qquad d \le P^{6/7},\ Q \in [\sqrt P, P],\ Y \approx P^K:$$
+incomplete Kloosterman sums over primes twisted by a high-height reciprocal phase, with modulus up to $P^{6/7}$, possibly larger
+than $Q$. The known bounds for Kloosterman sums over primes (Fouvry–Michel, Bourgain–Garaev, Irving type) require $Q$ to be large
+compared with $d$ and do not treat the additional phase. Our method (characters + Parseval) loses $\sqrt d$ and caps the level at
+$\approx X_Q^{2/3}$. **This is the exact missing estimate:** $(\mathrm{LD}_\lambda)$ with $\lambda > 2/(2K-1)$, uniformly for $Q \in [\sqrt P, P]$
+and fixed $N$.
+
+---
+
+## 8. Summary (updated)
+
+| Result | Status | New / consequence |
+|---|---|---|
+| R1 mass identity | proved | elementary |
+| R2 injectivity ($N \ge P^2$) | proved, Lean | new |
+| R2′ near-injectivity | proved, Lean | new (extends the proof of R2) |
+| R2″ small cofactors | proved, Lean | immediate consequence of R2′ |
+| R3, R3′ ($N < P^{950}$) | proved | new |
+| R4 average barrier ($X \ge P^{5/3}$) | proved | new; scope: comparisons with the **current** structural bounds |
+| R5 ($5/3 \le K < 3$), R6 ($K \ge 2$, $\{K\} \le 1-\epsilon$) | proved | new |
+| L1 powersmooth rows ($K < 2$) | proved; Lean ingredients | new |
+| Theorem A (anomaly $\mathcal M \ge K\cdot$average) | proved | new |
+| Corollary B (conditional exclusion) | proved | — |
+| Proposition C ($\mathrm{LD}_\lambda$, $\lambda > 2/(2K-1)$ ⟹ exclusion) | derivation | — |
+
+**No pointwise exclusion is obtained.** The question is reduced, on $5/3 \le K < 2$, to a single level-of-distribution estimate for
+the dual sequences, $(\mathrm{LD}_\lambda)$ with $\lambda > 6/7$ (resp. $2/3$), which **is not proved**. **Wall II remains open.**
