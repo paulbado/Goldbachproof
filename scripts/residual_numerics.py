@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Numerical companions to docs/residual-region.md, sections 7.5-7.9.
+"""Numerical companions to docs/residual-region.md, sections 7.5-7.12.
 
 1. M(N) = sum_{l in I} log gcd(N - l, lcm(1..P)) over ALL even N in [P^{5/3}, P^2)
    (P = 1009) and over a random sample (P = 4001, 10007): max of M(N)/P and of
    M(N)/(K P), K = log N / log P.  Theorem A says a restricted-support family needs
    M(N) >= (K - o(1)) P.
-2. log D_P / P, where D_P = lcm_i prod_{j != i} |l_i - l_j| (divided-difference route, 7.7).
+2. log D_P / P, where D_P = lcm_i prod_{j != i} |l_i - l_j| (divided-difference route, 7.9).
 3. Number of even N in (2P, P^2) with restricted support (BadFamily), compared with the
-   large-sieve bound of Theorem LS (7.8).
+   large-sieve bound of Theorem LS (7.10).
+4. Top range (P/2, P]: the geometric bound (7.12) vs the true sum; middle range (sqrt P, P/2]
+   vs the lower bound (K - 0.847) P of Corollary G.
 
 Usage: python3 scripts/residual_numerics.py
 """
@@ -121,7 +123,46 @@ def part3(Pmax=400):
           f"max count/(P log^2 P) = {worst[0]:.4f} at {worst[1]}")
 
 
+def part4():
+    """Top range (P/2, P]: geometric bound vs truth; middle range (sqrt P, P/2] vs K - 0.847."""
+    print("== 4. top range (P/2,P] and middle range (sqrt P, P/2] ==")
+    for P in (4001, 10007):
+        ps = primes_upto(P)
+        I = [int(l) for l in ps if 3 <= l <= P]
+        rng = np.random.default_rng(2)
+        lo, hi = int(P ** (5 / 3)), int(P ** 1.98)
+        Ns = 2 * rng.integers(lo // 2, hi // 2, size=100_000, dtype=np.int64)
+        K = np.log(Ns.astype(float)) / math.log(P)
+        geo = np.zeros(len(Ns))
+        top = np.zeros(len(Ns))
+        mid = np.zeros(len(Ns))
+        for q in ps:
+            q = int(q)
+            if q * q <= P or q < 3:
+                continue
+            lq = math.log(q)
+            cnt = np.zeros(q, dtype=np.int64)
+            for l in I:
+                cnt[l % q] += 1
+            n = cnt[Ns % q]
+            if 2 * q > P:
+                b0 = -((-(Ns - P)) // q)          # ceil((N-P)/q)
+                b1 = (Ns - 3) // q                # floor((N-3)/q)
+                b0 = b0 + (b0 % 2 == 0)           # first odd b >= b0
+                geo += lq * (b0 <= b1)
+                top += lq * n
+            else:
+                mid += lq * n
+        print(f"P={P}: geometric top bound mean={geo.mean() / P:.4f} max={geo.max() / P:.4f} "
+              f"(log2/2 = {math.log(2) / 2:.4f}); true top sum mean={top.mean() / P:.4f} "
+              f"max={top.max() / P:.4f}")
+        r = mid / ((K - 0.847) * P)
+        print(f"        middle sum mean={mid.mean() / P:.3f}, max={mid.max() / P:.3f}; "
+              f"max of middle/((K-0.847)P) = {r.max():.3f}")
+
+
 if __name__ == "__main__":
     part1()
     part2()
     part3()
+    part4()

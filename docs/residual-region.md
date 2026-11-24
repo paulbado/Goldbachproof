@@ -281,8 +281,14 @@ $G(D) \ge \frac{\lambda L}{4}(1 - o(1))$, so $S_Q \le \frac{2\log 2}{\lambda}\fr
 $\mathcal M_{>D_0} \le \frac P\lambda(1 + o(1)) < (K - \frac12 - \eta)P$. $\square$
 
 **Level required:** $\lambda > 6/7$ at $K = 5/3$, $\lambda > 2/3$ as $K \to 2$.
-**Level proved** (`hypothesis-T.md`, Prop. 16.3χ + Parseval): $D^3 \approx X_Q\,P^{c_2/K^2}$, i.e. $\lambda \approx \frac23\bigl(\frac{\log X_Q}{L} + \frac{c_2}{K^2}\bigr) \le \frac13 + 10^{-8}$,
-and $\to 10^{-8}$ for $Q$ close to $P$.
+**Level proved — scope corrected.** `hypothesis-T.md` §7–8 derives $D^3 \approx X_Q\,\mathcal E_Q^{-1}$ from Prop. 16.3χ + Parseval.
+That derivation assumes $K > 4$ and $Q \le P/4$, which guarantee $|Y| = h(N-3)/(2d) \ge X^2/64$ for every $d < D^2$
+($X = 2Q$). For $5/3 \le K < 2$ this condition reads $d \le 32hN/X^2$, so:
+- **Scales $Q \le c\sqrt{N/d}$:** Prop. 16.3χ applies; the level is $\lambda \approx \frac23\bigl(\frac{\log X_Q}{L} + c(K)\bigr)$, with $c(K) \asymp c_*/K^2$
+  tiny. These scales have $X_Q \ge P^{1-K/2}/c$.
+- **Scales $Q > c\sqrt N$** (for $K < 2$ this includes every $Q \in (6P^{K/2}, P]$): Prop. 16.3χ does not apply even for $d = 1$.
+  - Prop. 16.2 of [CC] covers $d = 1$ only (§7.5(f)). **No character-twisted estimate is available for $d > 1$.**
+  - So no level beyond the trivial one ($D^2 \approx X_Q/L^4$, i.e. Brun–Titchmarsh) is established at these scales.
 
 ### 7.4 Why the missing step is difficult
 
@@ -328,12 +334,29 @@ and fixed $N$.
   $O(PL^5/Q) = O(\sqrt P\,L^5)$ for $Q \ge \sqrt P$. It is absorbed in $(\mathrm{LD}_\lambda)$.
 - **(e) Small primes $\ell$.** The sieve discards the primes $\ell < D$ themselves. They are added back separately:
   $\sum_{\ell<D}\#\{q > D_0 : q \mid N - \ell\}\cdot L \le \pi(D)\cdot\frac{KL}{\log D_0}\cdot L = O(DL) = o(P)$.
-- **(f) Rounding at $d = 1$.** The Selberg main term must be the smooth size $\mathcal X = \sum\log q\,\frac{P-3}{2q}$.
-  - The rounding $\sum_q\log q\,(|I_q| - \frac{P-3}{2q})$ is then the remainder $r_1$. For $Q \ge P/L^3$ it is not trivially small: it
-    is a sum of sawtooth values $\psi(N/(2q))$ over primes $q \sim Q$.
-  - It **is** controlled, with a power saving, by Lemma S of `hypothesis-T.md` (the proved level is $\ge P^{c_2/K^2} > 1$ at every scale).
-  - So the claim $\mathcal X \le \frac P2(\log 2 + O(1/L))$ is correct with this reading. Without it, it would be false for $Q \approx P$
-    (where $|I_q| \in \{0, 1\}$).
+- **(f) Rounding at $d = 1$ (corrected).** The Selberg main term must be the smooth size $\mathcal X = \sum\log q\,\frac{P-3}{2q}$.
+  The rounding $\sum_q\log q\,(|I_q| - \frac{P-3}{2q})$ is then the remainder $r_1$. For $Q \ge P/L^3$ it is not trivially small: it is a
+  sum of sawtooth values over **primes** $q$.
+  - **The earlier version was wrong to cite Lemma S.** Lemma S (`hypothesis-T.md` §2) bounds **unweighted sums over integers**
+    $\sum_k e(A/(k+s))$. It is an ingredient inside the proof of Prop. 16.3χ, not an estimate for sums over primes.
+  - **Conditional control.** $(\mathrm{LD}_\lambda)$ contains the term $d = 1$, so Proposition C as a conditional statement is unaffected.
+  - **Independent control.** The prime-sum estimates that apply are the following.
+    - *Setup.* Use blocks $\mathcal J = (3X/4, X]$ instead of dyadic blocks; there are $L/\log(4/3) + O(1)$ of them, each with
+      $\mathcal X = \frac P2(\log\frac43 + O(1/L))$, so the product, and hence $P/\lambda$, is unchanged. Vaaler (as in `hypothesis-T.md` §7.4, $d = 1$)
+      reduces $r_1$ to $S(Y) = \sum_{q\in\mathcal J}\log q\,e(Y/q)$ with $Y = \pm h(N-3)/2$ or $\pm h(N-P)/2$, $1 \le h \le H := L^2$, plus
+      $O(X/H + KL)$. Replacing primes by $\Lambda$ costs $O(\sqrt X L)$.
+    - *Case A: $|Y| \ge X^2/64$.* Prop. 16.3χ with $\chi$ trivial gives $\ll XL^5(X^{-1/310} + e^{-c_*(\log X)^3/\Omega^2})$, with
+      $\Omega \le (K+1)L$ and $\log X \ge L/2 - 1$. That is a power saving $P^{-c'}$.
+    - *Case B: $|Y| < X^2/64$.* This occurs exactly at scales $X > \sqrt{32(N-P)}$, which exist for $K < 2$. Then
+      $T := |Y|/X$ satisfies $(\log X)^{32} \le P^{2/3}/3 \le T \le X/64$. Prop. 16.2 of [CC] (interval $(3X/4, X)$, trivial character;
+      audited in `theorem-W-dependencies.md` B.2) gives $|S| \ll X(\log X)^{-3} + X^{1-1/248}L^5$.
+    - *Total.* In both cases $|r_1| \ll X/L^2$ per block, hence $O(P/L^2)$ over all blocks. **So $r_1$ is controlled independently of
+      $(\mathrm{LD}_\lambda)$.**
+  - **Status of the inputs.** Prop. 16.2 of [CC] is an audited reconstruction, not independently verified. Prop. 16.3χ has a written,
+    self-audited proof.
+  - **What is not covered.** For $d > 1$ the same computation needs $\sum\Lambda(n)\chi(n)e(Y/n)$ with $Y = hN/(2d)$. In Case B, no
+    twisted version of Prop. 16.2 exists, so the terms $d > 1$ at those scales rest on $(\mathrm{LD}_\lambda)$ alone (see the corrected
+    "Level proved" in §7.3).
 - **(g) Selberg remainder.** $\sum_{d_1,d_2<D}|\lambda_{d_1}\lambda_{d_2}||r_{[d_1,d_2]}| \le \sum_{d<D^2}\tau_3(d)|r_d|$, since $|\lambda_d| \le 1$.
 - **(h) Main term.** $G(D) \ge \sum_{d<D,\ (d,2)=1}\mu^2(d)/\varphi(d) \ge \frac12\log D$, by the classical
   $\sum_{d<x,(d,k)=1}\mu^2(d)/\varphi(d) \ge \frac{\varphi(k)}k\log x$.
@@ -543,7 +566,7 @@ certificate identities) supplies it, for two reasons:
 | L1 powersmooth rows ($K < 2$) | proved; Lean ingredients | new |
 | Theorem A (anomaly $\mathcal M \ge K\cdot$average) | proved | new |
 | Corollary B (conditional exclusion) | proved | — |
-| Proposition C ($\mathrm{LD}_\lambda$, $\lambda > 2/(2K-1)$ ⟹ exclusion) | derivation, audited (§7.5) | BV indispensable; $r_1$ via Lemma S |
+| Proposition C ($\mathrm{LD}_\lambda$, $\lambda > 2/(2K-1)$ ⟹ exclusion) | derivation, audited (§7.5) | BV indispensable; $r_1$ via Prop. 16.2/16.3χ ($d=1$), **not** Lemma S; $d>1$ at scales $Q > c\sqrt N$ only via $\mathrm{LD}_\lambda$ |
 | Lemma E (mass decomposition, every $N$) | proved | family ⟺ $H_{\mathrm{big}} = 0$ ⟺ $\mathcal M$ maximal |
 | R7: $\log B \ge (K-1-o(1))P$ for $K < 2$ | proved | improves R5 on $[5/3,2)$; still below R4's barrier |
 | MR multiplicative rigidity | proved, **Lean** | negative for exclusion (true for every $N$) |
