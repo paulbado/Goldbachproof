@@ -187,7 +187,85 @@ theorem powersmooth_dvd_lcm {m P : ℕ} (hm : m ≠ 0)
     exact hle
   · simp [Nat.factorization_eq_zero_of_not_prime _ hp]
 
+
+/-! ### Multiplicative rigidity of the rows (residual note, §7.6)
+
+Two products of two rows coincide only trivially once `N > P²`; below `P²` the
+coincidence forces `N · |(a+b) − (c+d)| ≤ P²`. -/
+
+/-- Integer core: `(N-a)(N-b) = (N-c)(N-d)` with `0 ≤ a,b,c,d ≤ P < N/P` forces equal sums and products. -/
+theorem mult_rigidity_int {N P a b c d : ℤ} (hPN : P * P < N)
+    (ha0 : 0 ≤ a) (hb0 : 0 ≤ b) (hc0 : 0 ≤ c) (hd0 : 0 ≤ d)
+    (ha : a ≤ P) (hb : b ≤ P) (hc : c ≤ P) (hd : d ≤ P)
+    (h : (N - a) * (N - b) = (N - c) * (N - d)) :
+    a + b = c + d ∧ a * b = c * d := by
+  have key : N * ((a + b) - (c + d)) = a * b - c * d := by linear_combination -h
+  have hab : a * b ≤ P * P := mul_le_mul ha hb hb0 (by linarith)
+  have hcd : c * d ≤ P * P := mul_le_mul hc hd hd0 (by linarith)
+  have hab0 : 0 ≤ a * b := mul_nonneg ha0 hb0
+  have hcd0 : 0 ≤ c * d := mul_nonneg hc0 hd0
+  have hs : a + b = c + d := by
+    by_contra hne
+    rcases lt_or_gt_of_ne hne with hlt | hgt
+    · have : (a + b) - (c + d) ≤ -1 := by linarith
+      have hN0 : 0 < N := by nlinarith
+      nlinarith
+    · have : 1 ≤ (a + b) - (c + d) := by linarith
+      have hN0 : 0 < N := by nlinarith
+      nlinarith
+  refine ⟨hs, ?_⟩
+  rw [hs, sub_self, mul_zero] at key
+  linarith
+
+/-- Two pairs with the same sum and product coincide (as unordered pairs). -/
+theorem pair_eq_of_sum_prod {a b c d : ℤ} (hs : a + b = c + d) (hp : a * b = c * d) :
+    (a = c ∧ b = d) ∨ (a = d ∧ b = c) := by
+  have h0 : (a - c) * (a - d) = 0 := by
+    have : b = c + d - a := by linarith
+    subst this
+    linear_combination -hp
+  rcases mul_eq_zero.mp h0 with h1 | h1
+  · left; constructor <;> linarith
+  · right; constructor <;> linarith
+
+/-- **Multiplicative rigidity.** For `N > P²` and shifts `a,b,c,d ≤ P`,
+`(N-a)(N-b) = (N-c)(N-d)` implies `{a,b} = {c,d}`. -/
+theorem mult_rigidity {N P a b c d : ℕ} (hPN : P * P < N)
+    (ha : a ≤ P) (hb : b ≤ P) (hc : c ≤ P) (hd : d ≤ P)
+    (h : (N - a) * (N - b) = (N - c) * (N - d)) :
+    (a = c ∧ b = d) ∨ (a = d ∧ b = c) := by
+  have hPle : P ≤ N := by nlinarith
+  have hz : ((N : ℤ) - a) * ((N : ℤ) - b) = ((N : ℤ) - c) * ((N : ℤ) - d) := by
+    have := congrArg (fun x : ℕ => (x : ℤ)) h
+    push_cast [Nat.cast_sub (le_trans ha hPle), Nat.cast_sub (le_trans hb hPle),
+      Nat.cast_sub (le_trans hc hPle), Nat.cast_sub (le_trans hd hPle)] at this
+    exact this
+  have hPN' : (P : ℤ) * P < N := by exact_mod_cast hPN
+  obtain ⟨hs, hp⟩ := mult_rigidity_int hPN' (by positivity) (by positivity) (by positivity)
+    (by positivity) (by exact_mod_cast ha) (by exact_mod_cast hb) (by exact_mod_cast hc)
+    (by exact_mod_cast hd) hz
+  rcases pair_eq_of_sum_prod hs hp with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · left; exact ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩
+  · right; exact ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩
+
+/-- **Near-rigidity below `P²`.** If `(N-a)(N-b) = (N-c)(N-d)` with `0 ≤ a,b,c,d ≤ P`,
+then `N · |(a+b) − (c+d)| ≤ P²`. -/
+theorem mult_near_rigidity_int {N P a b c d : ℤ} (hN : 0 ≤ N)
+    (ha0 : 0 ≤ a) (hb0 : 0 ≤ b) (hc0 : 0 ≤ c) (hd0 : 0 ≤ d)
+    (ha : a ≤ P) (hb : b ≤ P) (hc : c ≤ P) (hd : d ≤ P)
+    (h : (N - a) * (N - b) = (N - c) * (N - d)) :
+    N * |(a + b) - (c + d)| ≤ P * P := by
+  have key : N * ((a + b) - (c + d)) = a * b - c * d := by linear_combination -h
+  have hab : a * b ≤ P * P := mul_le_mul ha hb hb0 (by linarith)
+  have hcd : c * d ≤ P * P := mul_le_mul hc hd hd0 (by linarith)
+  have hab0 : 0 ≤ a * b := mul_nonneg ha0 hb0
+  have hcd0 : 0 ≤ c * d := mul_nonneg hc0 hd0
+  rw [← abs_of_nonneg hN, ← abs_mul, key, abs_le]
+  constructor <;> linarith
+
 #print axioms high_power_unique_row
 #print axioms powersmooth_dvd_lcm
+#print axioms mult_rigidity
+#print axioms mult_near_rigidity_int
 
 end WilliamsonResidual
