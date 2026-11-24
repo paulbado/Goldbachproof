@@ -16,7 +16,7 @@ $B = \prod_\ell M_\ell/\mathrm{lcm}_\ell M_\ell$, $n(t) = \#\{\ell \in I : t \mi
 |---|---|
 | **[BT]** Montgomery–Vaughan (1973) | $\pi(x;k,a) \le 2x/(\varphi(k)\log(x/k))$ for $(a,k)=1$, $1 \le k < x$ |
 | **[RS]** Rosser–Schoenfeld (1962) | $\pi(x) > x/\log x$ ($x \ge 17$), $\pi(x) < 1.25506\,x/\log x$ ($x > 1$), $\theta(x) < 1.01624x$, $\sum_{p\le x}\log p/p < \log x$ |
-| **[PNT]** effective PNT | $|\theta(x) - x| \le x/\log x$ for $x \ge x_0$ (de la Vallée Poussin with an effective error; e.g. Dusart 2010, $|\theta(x)-x| < x/(40\log x)$, $x \ge 678407$) |
+| **[PNT]** explicit PNT | $x(1 - 1/\log x) < \theta(x) < x(1 + 1/(2\log x))$ for $x \ge 41$ (Rosser–Schoenfeld 1962, Th. 4). Only $|\theta(x)-x| < x/\log x$ is used. *(Correction: an earlier version cited a Dusart constant that I have not verified; it is not needed.)* |
 | **[Mat]** Matveev, in the form of Bugeaud–Mignotte–Siksek (2006) Th. 9 | for $\gamma_j \in \mathbb Q_{>0}$, $b_j \in \mathbb Z$, $\Lambda = \prod\gamma_j^{b_j} - 1 \ne 0$: $\log|\Lambda| > -1.4\cdot30^{n+3}n^{4.5}(1+\log B)A_1\cdots A_n$, with $B \ge \max|b_j|$, $A_j \ge \max\{h(\gamma_j), |\log\gamma_j|, 0.16\}$ |
 | **[vdC]** van der Corput, $k$-th derivative test | (13.3) of [CC] |
 | **[MRSTT]** Lemma 4.1 | see `hypothesis-T.md` §2 |
@@ -254,3 +254,55 @@ false, $g$ decreases up to $\approx 58$; the argument above uses convexity inste
 > thresholds of Part A, which come from Matveev's constant $10^{12}$).
 
 **What is not proved.** The emptiness of the residual region $P < N \le P^{959}$ (Wall II), Williamson, Goldbach.
+
+
+---
+
+# Part D — Adversarial verification (2026-11-24)
+
+Each point was re-derived, not copied from the previous audits.
+
+**D.1 Hypotheses of the external theorems**
+- *Selberg with real weights.* HR Th. 3.2 is stated for sequences; the proof only uses
+  $\sum_a w_a\mathbf 1_{(a,\Pi)=1} \le \sum_a w_a(\sum_{d\mid(a,\Pi),\,d<D}\lambda_d)^2$ ($\lambda_1 = 1$), which is linear in $w_a \ge 0$,
+  and Selberg's optimal weights satisfy $|\lambda_d| \le 1$ (HR Lemma 3.4). It holds for the weights $\log q$. ✓
+- *$G(D) \ge \frac12(\log D - 1)$.* Every odd $n < D$ is $n = dm$ with $d = \mathrm{rad}(n)$ odd squarefree, $d < D$, and the primes of $m$
+  dividing $d$. Hence $\sum_{d<D,\ d\ \text{odd}}\mu^2(d)/\varphi(d) = \sum_d\frac{\mu^2(d)}{d}\prod_{p\mid d}(1-\frac1p)^{-1} \ge \sum_{n<D\ \text{odd}}\frac1n \ge \frac12\sum_{n<D}\frac1n$. ✓
+- *Matveev–BMS Th. 9:* $\alpha_j$ positive reals in a number field of degree $D$ (here $\mathbb Q$, $D = 1$, factor $D^2(1+\log D) = 1$),
+  $b_j \in \mathbb Z$, $\Lambda \ne 0$, $A_j \ge \max\{Dh, |\log\alpha_j|, 0.16\}$, $B \ge \max|b_j|$. All checked in A.5, including the
+  omitted factor $C_q/C_r = 1$ ($n = 2$: smaller constant). ✓
+- *[MRSTT] 4.1:* rechecked from the downloaded text: $F \ge X^4$, $I \subset [X, 2X]$, (4.2) for $1 \le r \le 10\lceil\log F/\log X\rceil+1$, (4.3).
+  Lemma S checks them for $\alpha = 3e$. ✓
+- *Brun–Titchmarsh (MV):* modulus $q^a \le (P-3)/2 < P = x$, residue coprime ($q \nmid N$). ✓
+- *Vaaler:* valid for every real $x$ with $\psi^*$; the passage $\psi \to \psi^*$ is in `hypothesis-T.md` §7.4. ✓
+- *Beurling–Selberg:* $m \le \mathbf 1_J$ pointwise, $\deg m \le K$, $\hat m(0) = |J| - 1/(K+1)$, $|\hat m(h)| \le |J| + 1/(K+1) \le 1$. ✓
+- *van der Corput (13.3):* the constant depends on $(k, B)$, with $k \le 6$ and $B \le 3^7$. ✓
+
+**D.2 Asymptotic thresholds (order of magnitude, computed)**
+
+| Step | Condition | Threshold |
+|---|---|---|
+| A.4 ($R \ge P/4u$) | Rosser–Schoenfeld | moderate |
+| A.7, Prop. 14.5 ($\alpha = 3200$, $\beta = 1/16$) | $B_Hk(1+P/h) < P/(16u)$ | $\log P \gtrsim 6.6\cdot10^7$ |
+| B.2–B.3 | $L^5e^{-c_*L^3/\Omega^2} \le 2\cdot10^{-9}$, $\Omega \le 32000L(1+\log L)$ | $\log P \gtrsim 6.5\cdot10^{21}$ |
+| `hypothesis-T.md` §8 | $\Lambda_K \ge 40\log L$ for $K \le 32000(1+\log L)$ | $\log P \gtrsim 2.3\cdot10^{23}$ |
+| `hypothesis-T.md` §9.3 | $10/L \le 0.0597$ | $\log P \ge 168$ |
+
+Every condition compares explicit functions of $P$ with constants that are either explicit or come from published
+theorems with effective constants. **$P_* = \exp(O(10^{23}))$ up to the implied constants of van der Corput/MRSTT.**
+
+**D.3 Points checked for circularity**
+- Th. 15.1 (Part A) uses neither (17.47) nor Theorem W.
+- (17.47) (Part B) uses Th. 15.1 and Prop. 16.3χ; Prop. 16.3χ uses no height bound.
+- Theorem W uses Th. 15.1 (bound on $K$), (17.47), the sieve, and Lean. **No cycle.** ✓
+
+**D.4 Points where an argument could break, examined**
+- *Prop. 16.3χ, Type I, $k$-range:* $k \le (X/a - \rho)/d \le 2Z$ ✓; lower end $> Z - 1$ ✓.
+- *$|Y| \ge X^2/64$ in the sieve:* $N/(4D^2) \ge P^{3.8}$ ✓ (requires $N > P^4$, the only region where the improved sieve is used).
+- *For $P^{3/2} < N \le P^4$:* Theorem W is trivial ($K \le 4$). ✓
+- *Lemma 14.4:* "interval of length $h$" ⟹ $q_k - q_0 \le h$ ⟹ $V \le h^{k(k+1)/2}$ ✓; the floor $\lfloor h\rfloor$ in Prop. 14.5 is harmless ✓.
+- *Definitions:* [CC] families (composite complements) are Lean `BadFamily` families (non-prime complements), so the Lean
+  results apply to them. ✓
+
+**Verdict D.** No gap found. Theorem W **survives the adversarial verification**, with the dependencies listed
+(published results + Lean). **This is still not an independent verification by a third party.**
