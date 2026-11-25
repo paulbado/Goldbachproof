@@ -385,43 +385,87 @@ uniformly in $N$.
 Assume $(\mathrm{Sm}'_\lambda)$ for some fixed $\lambda\le1$, with $K\in[5/3,30/17)$ fixed. Then, uniformly in even $N$ with
 $\log N/\log P\to K$,
 \[
-T(P,N)\le\Bigl(\frac2\lambda+o(1)\Bigr)\,\mathfrak F_N\,\rho(K)\,|I|,\qquad
-\mathfrak F_N=\prod_{p<P^{\lambda/2}}\frac{1-g_N(p)}{1-1/p}=1+O\Bigl(\frac{\log\log N}{\log P}\Bigr).
+T(P,N)\le\Bigl(\frac{2\rho(K)}\lambda+o(1)\Bigr)\,|I| .
 \]
 In particular the sieve constant and the sufficient threshold are \emph{unchanged} to first order: $\lambda>2\rho(K)$ excludes bad
 families for $P$ large. Explicitly the threshold lies in $(0.864,0.978]$ on $[5/3,30/17)$.
 \end{proposition}
-\begin{proof}
-\emph{Selberg's $\Lambda^2$ with the model densities.} Take Selberg weights $\lambda_d$ optimal for the multiplicative density
-$g^*(d)=\prod_{p\mid d}g_N(p)$, supported on $d<P^{\lambda/2}$, $d\mid\Pi(P^{\lambda/2})$. Then
-\[
-T\le\sum_{n\in S}\Bigl(\sum_{d\mid N-n}\lambda_d\Bigr)^2+(\text{primes }\ell<P^{\lambda/2})
-=|S|\sum_{d,e}\lambda_d\lambda_e\,g_N([d,e])+\sum_{d,e}\lambda_d\lambda_e\,r_{[d,e]}+O(P^{\lambda/2}).
-\]
-The remainder is $\le\sum_m\tau_3(m)|r_m|=o(|S|/\log P)$ by $(\mathrm{Sm}'_\lambda)$, since $|\lambda_d|\le1$.
+\begin{proof}[Proof (corrected 25 Nov.~2026)]
+The first version controlled the non-multiplicative part of $g_N$ by a maximum of $\log m_1/\log P$ over divisors
+$m_1\mid N$. That step was false: a product of small distinct primes dividing $N$ can have size $P^{c}$ with $c$ fixed.
+The argument below, communicated by I.\,O.~Bado and checked line by line here, separates the small primes dividing $N$
+exactly. It uses no hypothesis beyond $(\mathrm{Sm}'_\lambda)$.
 
-\emph{Main term.} Write $g_N=g^*(1+\varepsilon)$. Here $\varepsilon(m)$ depends only on $m_1=(m,N)$, and $\varepsilon(m)=0$ unless $m_1$ has
-at least two prime factors.
+\emph{Notation.} $L=\log P$, $L_2=\log L$, $z=L/L_2^{6}$, $W=\prod_{p\mid N,\,p\le z}p$, so that $\log W\le\theta(z)\ll z=o(L)$ and
+$W=P^{o(1)}$. Put $D=(P^\lambda/(2W))^{1/2}$; then $WD^2<P^\lambda$ and $\log D=(\lambda/2+o(1))L$.
+
+\emph{Step 1 (sieve with moduli coprime to $N$).} For squarefree $d$ coprime to $N$, the model density is
+$g(d)=\prod_{p\mid d}\frac{1-c(\beta_p)/p}{p-1}$, which is multiplicative. Let $\xi_d$ be the optimal Selberg weights for $g$, supported
+on squarefree $d\le D$ with $(d,N)=1$, $\xi_1=1$, $|\xi_d|\le1$.
 \begin{itemize}
-\item For $\beta_{m_1}\le\beta^*$ a Taylor expansion of $\log c$ gives $|\varepsilon(m)|\ll\beta_{m_1}^2\ll(\log m_1)^2/\log^2P$.
-\item Splitting the quadratic form along the divisors $m_1\mid N$ bounds the perturbation by
-$\max|\varepsilon|\cdot\prod_{p\mid N}(1+3g_N(p))$ times the unperturbed form.
-\item The divisors with $m_1\ge P^{\beta^*}$ contribute $\le\tau(N)P^{-\beta^*}(\log P)^{O(1)}=o(1/\log P)$ relative.
-\item Since $\prod_{p\mid N}(1+3/p)\ll(\log\log N)^3$ and $\max_{m_1<P^{\beta^*},\,m_1\mid N}\beta_{m_1}\ll\log\log N/\log P$ for the relevant (small-prime)
-part, the main term is $|S|(1+o(1))/G^*(P^{\lambda/2})$.
-\item The usual evaluation gives $1/G^*(D)=(1+o(1))\frac{2}{\lambda\log P}\cdot\mathfrak F_N\cdot e^{\gamma}\prod_{p<D}(1-\frac1p)\cdot\log D$, i.e. the main term is
-$(2/\lambda+o(1))\mathfrak F_N|S|/\log P$, with $|S|=(\rho(K)+o(1))P$ by 8.1.
+\item For a prime row $\ell>\max(D,z)$, $\ell$ is coprime to $W$ and $\sum_{d\mid\ell}\xi_d=\xi_1=1$.
+\item Hence $T\le\sum_{n\in S}\mathbf 1_{(N-n,W)=1}\bigl(\sum_{d\mid N-n}\xi_d\bigr)^2+O(D)$.
+\item With $\mathbf 1_{(N-n,W)=1}=\sum_{a\mid(W,N-n)}\mu(a)$, this is
+$T\le\sum_{a\mid W}\mu(a)\sum_{d,e}\xi_d\xi_eA_{a[d,e]}+O(D)$, where $A_m=\#\{n\in S:n\equiv N\ (m)\}$.
 \end{itemize}
 
-\emph{Size of $\mathfrak F_N$.}
+\emph{Step 2 (exact factorisation of the density).} Since $a\mid N$ and $([d,e],N)=1$, the definition of $g_N$ gives exactly
+$g_N(a[d,e])=\frac{c(\beta_a)}a\,g([d,e])$. Write $A_m=|S|g_N(m)+r_m$.
+
+\emph{Step 3 (remainder).}
 \begin{itemize}
-\item For $p\mid N$, the factor is $1-(c(\beta_p)-1)/(p-1)$, with $0\le c(\beta_p)-1\ll\beta_p$.
-\item For $p\nmid N$, it is $1+O(\beta_p/p^2)$.
-\item Hence $|\log\mathfrak F_N|\ll\sum_{p\mid N}\frac{\log p}{p\log P}+\sum_p\frac{\log p}{p^2\log P}\ll\frac{\log\log N}{\log P}$.
+\item Every modulus is squarefree with $m=a[d,e]\le WD^2<P^\lambda$.
+\item The factorisation $a=(m,N)$, $[d,e]=m/a$ is unique.
+\item A given $b=[d,e]$ arises from at most $\tau_3(b)$ pairs $(d,e)$.
+\item Since $|\xi_d|\le1$, the remainder is at most $\sum_{m<P^\lambda}\mu^2(m)\tau_3(m)|r_m|=o(|S|/L)$ by $(\mathrm{Sm}'_\lambda)$.
 \end{itemize}
-This is a written argument, not independently checked. $\square$
+
+\emph{Step 4 (the factor from $W$).} The main term is $|S|\,H_W\,Q$, with $Q=\sum\xi_d\xi_eg([d,e])=1/G_N(D)$ and
+$H_W=\sum_{a\mid W}\mu(a)c(\beta_a)/a$.
+\begin{itemize}
+\item For $a\mid W$, $\beta_a\le\log W/L\ll L_2^{-6}$, and $c$ is $C^1$ near $0$ ($\rho'(u)=-1/u$ on $[1,2]$), so $c(\beta_a)=1+O(L_2^{-6})$.
+\item Hence $H_W=\prod_{p\mid W}(1-\frac1p)+O\bigl(L_2^{-6}\prod_{p\mid W}(1+\frac1p)\bigr)$.
+\item By Mertens, $\prod_{p\le z}\frac{1+1/p}{1-1/p}\ll(\log z)^2\ll L_2^2$, so $H_W=\prod_{p\mid W}(1-\frac1p)\,(1+O(L_2^{-4}))$.
+\end{itemize}
+
+\emph{Step 5 (the Selberg denominator).} Let $V_N=\prod_{p\mid N}(1-\frac1p)$. Then
+$G_N(D)=\sum_{d\le D}h(d)$, where $h$ is multiplicative, supported on squarefree integers, with $h(p)=0$ for $p\mid N$ and
+$h(p)=g(p)/(1-g(p))$ otherwise (extended by $1/(p-1)$ for $p>D$, $p\nmid N$, which does not change the sum).
+\begin{itemize}
+\item Write $h=b*(1/n)$. Then $b(p)=h(p)-1/p$, $b(p^2)=-h(p)/p$, and $b(p^j)=0$ for $j\ge3$. (Checked: $b(p)+1/p=h(p)$, and the
+coefficients at $p^2$ and $p^3$ vanish.)
+\item For $p\nmid N$: $g(p)=\frac1p-\frac{c(\beta_p)-1}{p(p-1)}$ with $0\le c(\beta_p)-1\ll\beta_p$, so $b(p)\ll p^{-2}$ and $b(p^2)\ll p^{-2}$.
+\item For $p\mid N$: $b(p)=-1/p$.
+\item Hence $\sum|b(m)|\ll\prod_{p\mid N}(1+\frac1p)\ll\log\log N$ and $\sum|b(m)|\log m\ll(\log\log N)^2$.
+\item So $G_N(D)=\sum_{m\le D}b(m)\bigl(\log(D/m)+\gamma+O(m/D)\bigr)=\log D\sum_{m\ge1}b(m)+O((\log\log P)^2)$, using
+$\sum_{m>D}|b(m)|\le(\log D)^{-1}\sum|b(m)|\log m$.
+\item Finally $\sum_mb(m)=\prod_p(1-\frac1p)(1+h(p))=V_N\prod_{p\nmid N}\frac{1-1/p}{1-g(p)}=V_N(1+O(1/L))$, and
+$V_N\gg1/\log\log N$. Therefore $G_N(D)=(1+o(1))V_N\log D$.
+\end{itemize}
+
+\emph{Step 6 (the primes of $N$ above $z$).}
+\begin{itemize}
+\item With $Y=LL_2^2$: $\sum_{z<p\le Y}\frac1p=\log\frac{\log Y}{\log z}+o(1)=o(1)$, and $\sum_{p\mid N,\,p>Y}\frac1p\le\omega(N)/Y\ll KL/(L_2Y)=o(1)$.
+\item Hence $\prod_{p\mid W}(1-\frac1p)=(1+o(1))V_N$, and $H_W=(1+o(1))V_N$.
+\end{itemize}
+
+\emph{Conclusion.} $T\le|S|H_W/G_N(D)+o(|S|/L)+O(D)=(1+o(1))|S|/\log D=(2\rho(K)/\lambda+o(1))P/L$, i.e.\
+$T\le(2\rho(K)/\lambda+o(1))|I|$. $\square$
 \end{proof}
-The secondary term has a sign: $\mathfrak F_N<1$, which is favourable for exclusion. The prime $2$ always divides $N$, contributing
+
+\noindent\emph{Status and uniformity.}
+\begin{itemize}
+\item The proof uses the Younis input only for $|S|$ (the modulus $1$). Lemma~\ref{lem:dens0} is used only to motivate the
+model densities in $(\mathrm{Sm}'_\lambda)$. Wherever it is invoked for divisors $d=P^\beta$, uniformity is claimed only for
+$\beta\le\beta^*(K)-\eta$ with $\eta>0$ fixed, i.e.\ at a positive distance from the Younis exponent boundary.
+\item This is a checked written proof of a \emph{conditional} statement. It is not independently verified, and it does not
+establish $(\mathrm{Sm}'_\lambda)$.
+\item The quantity $\mathfrak F_N$ defined in the statement is not used by this proof. The earlier claim
+$\mathfrak F_N=1+O(\log\log N/\log P)$ rested on the faulty maximum argument and is withdrawn. The sign of the second-order
+correction is not established; the remarks below are a model heuristic.
+\end{itemize}
+
+\emph{Heuristic, in the model:} with $\mathfrak F_N=\prod_{p<P^{\lambda/2}}(1-g_N(p))/(1-1/p)$, one expects $\mathfrak F_N<1$, which is favourable for exclusion. The prime $2$ always divides $N$, contributing
 $2-c(\log2/\log P)=1-\frac{\log2}{K\rho(K)\log P}+O(\log^{-2}P)$. Primes $p\mid N$ contribute $1-(c(\beta_p)-1)/(p-1)$.
 
 \emph{Numerical check} (\texttt{scripts/local\_factors\_numerics.py}, $P=3001$, $K=5/3$, 120 values of $N$, primes $p<60$):
@@ -490,6 +534,38 @@ $\lambda>2\rho(K)$, or a bilinear substitute for it.
 \item It includes the unproved equidistribution of $S$ in nonzero classes, already for fixed moduli.
 \item Proposition~\ref{prop:sm} being valid does \textbf{not} establish $(\mathrm{Sm}'_\lambda)$.
 \end{itemize}
+
+
+\section{Compulsory private certificates (Lean) and what they add}
+Proved in Lean (\texttt{Goldbach/WilliamsonCertificates.lean}, standard axioms):
+\begin{itemize}
+\item \texttt{private\_of\_dvd\_N}: if $P<N$, $p\in I$ and $p\mid N$, then $p$ is a private certificate of row $p$. Indeed $p\mid N-p$, and
+$p\mid N-j$ forces $p\mid j$, i.e.\ $j=p$.
+\item \texttt{not\_deficient\_of\_dvd\_N}, and \texttt{deficient\_coprime\_odd\_divisors}: no deficient complement is divisible by
+any $q\in I$ dividing $N$.
+\item \texttt{previous\_prime\_private\_of\_prc}: under \texttt{PreviousRankConditions} and \texttt{BadFamily} (no first-failure
+hypothesis), the preceding prime $p$ divides some row and is a private certificate of it. Hence that row is not deficient.
+\item \texttt{not\_absent\_of\_dvd\_N}: a prime $3\le q<P$ dividing $N$ is never absent.
+\end{itemize}
+
+\paragraph{Combination with the Wall~II constraints.}
+\begin{itemize}
+\item \emph{Counting.} The deficient rows lie in $I$ minus the $\omega^*(N)$ rows $q\mid N$ minus the previous-prime row. The absent
+primes lie among the primes $<P$ not dividing $N$. The identity $z\ge1+a$ therefore stays consistent: both sides lose at most
+$\omega^*(N)+1$. No contradiction.
+\item \emph{Pairwise divisibility.} For deficient $i\ne j$, $\gcd(N-i,N-j)$ divides $\gcd(B_1,\mathrm{odd}(|i-j|))$ and is coprime to
+every $q\in I$ dividing $N$. This only sharpens the exponential ceiling (factors $q^{e_q}$, $q\mid N$, removed from $B_1$). It is
+vacuous in the polynomial band.
+\item \emph{Already implied.} A row $i\mid N$ already fails \texttt{DifferenceCertificate}: $i\mid N-i$ would need $i\mid i-j$ for a
+prime $j\ne i$. So the exclusion of such rows was already built into the low-height enumeration
+(\texttt{scripts/wall\_ii\_low\_height\_pairs.py}). Likewise \texttt{previous\_prime\_has\_private\_owner} existed under
+\texttt{FirstFailure}; the new version only needs \texttt{PreviousRankConditions}.
+\item \emph{Rank chain.} \texttt{first\_failure\_rank\_chain} gives, for every prime $q<P$, a row $j\le q$ with a prime $r\in[q,P)$
+dividing $N-j$. For $q>(P-3)/2$ such a row is private. But a single row (the previous-prime row, if $j_{\rm prev}\le(P-3)/2$)
+can serve all these $q$. So the chain forces no further private rows in general.
+\end{itemize}
+\textbf{Outcome.} These are exact, Lean-verified restrictions. They are refinements or restatements of constraints already in
+the chain. No new region of Wall~II is excluded by them, with or without the smooth-number hypothesis.
 
 \section{Conclusion}
 \begin{itemize}
