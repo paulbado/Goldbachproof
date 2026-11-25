@@ -177,3 +177,69 @@ these apply. **No bridge found.**
 
 **Assessment.** The obstruction is a mean-value statement over moduli. The only reformulation that changes its status is §2: it
 becomes a consequence of a standard conjecture. It remains open unconditionally.
+
+
+---
+
+## 4. Audit of Theorem S (2026-11-25)
+
+Checked step by step against the sources available; no gap found. Points recorded:
+
+- **The sieve input.** The statement used is the one quoted from [HR, Th. 5.7] in recent papers. In that quotation the only hypotheses on
+  the forms are that $a_i, b_i$ are integers with $E \ne 0$, that $\omega(p) < p$ for all $p$, and that $1 < y \le z$. There is **no sign
+  condition**, so the form $N - bn$ with negative leading coefficient is admissible. The constant appears there as
+  $\prod_p(1 - \frac{\omega(p)-1}{p-1})(1-\frac1p)^{-g+1}$, which equals the product used in Step 3. The book itself was not consulted.
+- **Interval and error term.** $z = (N-3)/b$, $y = (P-3)/b$; $y \ge P^{1+\theta_0-K-o(1)} \ge P^{\delta/2}$, so the relative error
+  $O((\log\log 3y + \log\log 3|E|)/\log y)$ is $O_\delta(\log L/L)$ uniformly in $b$ and $N$ ($|E| = bN \le N^2$).
+- **Local densities.** Rechecked: $\omega(2) = 1$, and for odd $p$, $\omega(p) = 1$ if $p \mid bN$ and $2$ otherwise. The pairs with
+  $\gcd(b, N) > 1$ were removed in Step 2.
+- **Mean of the singular series.** Rechecked: the coefficient of $x$ in $S(x)$ is $1$. The identity
+  $\bigl(1 - \frac1{(p-1)^2}\bigr)\bigl(1 + \frac1{p(p-2)}\bigr) = 1$ cancels $C_2$, and the factors at $p \mid N$ cancel exactly.
+- **Error terms.** $E(x) \ll h(N)(x^{1/2} + 2^{\omega(N)}\log x)$ with $h(N) \ll \log L$; the partial-summation error is
+  $\ll P^{1-(K-1)/2+o(1)}$.
+- **Not covered by Theorem S.** The moduli $q \le P^{K-1}$, where $P/b < 1$.
+
+**Verdict:** Theorem S stands as stated, conditional only on the correctness of the quoted [HR, Th. 5.7].
+
+## 5. The intermediate moduli: two further mechanisms tested
+
+**Target** ($K = 5/3$, $\theta = 0.999$): $\sum_{\sqrt P<q\le P^{0.999}}\log q\,n_N(q) \le (1.0943 - \eta)P$, whose expected size is $0.499P$.
+This is a bound within a factor $2.19$ of the truth. For comparison, Brun–Titchmarsh gives $2\log 500 \approx 12.4$.
+
+**(i) Dual form (Lean: `WilliamsonDual.lean`).**
+
+```lean
+theorem badFamily_iff_residues (hP : 3 ≤ P) (hPN : 2 * P ≤ N) (hN : Even N) :
+    BadFamily P N ↔ ∀ r, Nat.Prime r → P ≤ r → ∀ ℓ, Index P ℓ → ¬ ℓ ≡ N [MOD r]
+theorem not_badFamily_iff_rep (hP : 3 ≤ P) (hPN : 2 * P ≤ N) (hN : Even N) :
+    ¬ BadFamily P N ↔ ∃ ℓ r m, Index P ℓ ∧ Nat.Prime r ∧ P ≤ r ∧ ℓ + m * r = N
+```
+
+So excluding a family at $N$ means finding one solution of $\ell + mr = N$ with $\ell \le P$ and $r \ge P$ both prime. This is a **lower-bound
+problem** with two prime variables.
+- *Circle method.* It cannot give it pointwise: $\sum_{\ell\le P}$ has length $P = N^{1/K}$, so
+  $\int|S_\ell T| \le \|S_\ell\|_2\|T\|_2 \gg PL$ already exceeds the main term.
+
+**(ii) Chen-type route.**
+- *Lower bound (unconditional).* By the linear sieve with Bombieri–Vinogradov for the primes $\ell \le P$ (level $P^{1/2}$, maximum over
+  the class, hence pointwise in $N$), at least $f(s)\,XV(z)$ rows $N - \ell$ have no prime factor below $z = P^{1/(2s)}$.
+- *What is needed.* It suffices to show that fewer rows are "bad", i.e. $z$-rough and $P$-smooth.
+- *Buchstab model* (`scripts/chen_route.py`). The bad proportion among $z$-rough rows is $0.39$–$0.43$ at $K = 5/3$ and $0.25$–$0.28$ at
+  $K = 1.95$. The upper bound for bad rows may therefore lose a factor up to $2.35$ ($K = 5/3$, $s = 4$), up to $3.6$ ($K = 1.95$).
+- *Why this does not close it.* Classifying a bad row by its largest prime factor $q$ and dropping the conditions on the cofactor
+  turns the upper bound back into $\sum_q n_N(q)$ over $q \in (P^{1/2-o(1)}, P)$, with the same Brun–Titchmarsh loss.
+  - Keeping the cofactor conditions requires the distribution of products $p_1\cdots p_k$ in the short interval $[N-P, N]$ in
+    progressions. Those with two factors near $P^{5/6}$ are only about $5\%$ of the $z$-rough rows (at $s = 4$). But for them every
+    available bound (Theorem S near $\theta_0 = K-1$, or a two-dimensional sieve on a factor) loses a factor of order $10^2$.
+  - Net: the margin moves from $2.19$ to about $2.35$ at $K = 5/3$ (and is larger near $K = 2$). The missing input is the same
+    short-interval bilinear distribution.
+
+**(iii) First-failure conditions.**
+- Every extra condition known on a first failure is an *existence* statement. Examples: $p \mid N - j$ for some $j \le p$; at every
+  smaller rank $P'$, some $r \in [P', P)$ divides some $N - \ell$ with $\ell \le P'$ (`first_failure_rank_chain`).
+- These are lower bounds on incidences, in the same direction as Theorem A. They shrink the set of possible $N$, but no upper bound for
+  $\sum_qn_N(q)$ proved here becomes easier on that subset. **This is an observation about the available arguments, not a theorem that no
+  argument can use them.**
+
+**Status.** No unconditional exclusion in the band. Theorem S, Lemma T, Theorem A and the Lean statements above are the proved
+results. `WallIIAt` is open.

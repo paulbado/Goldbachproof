@@ -10,3 +10,4 @@ import Goldbach.WilliamsonSmallRanks
 import Goldbach.WilliamsonSmallRanksData
 import Goldbach.WilliamsonWallI
 import Goldbach.WilliamsonWallII
+import Goldbach.WilliamsonDual
