@@ -144,6 +144,14 @@ Example: `P = 101`, `N = 2236`, rows `3` and `61`: `2233 = 7·11·29`, `2175 = 3
 - Reformulations through Chebotarev, trace functions, GL(2) spectral theory, function fields: `switched-sieve.md` §3. None gives more;
   in particular square-root cancellation in every individual exponential sum would still give only `1.62 > K − ½`.
 
+### Localizing the full Buchstab correction ([FB], Bado, Sept. 2026) — `docs/tex/localized-buchstab-wall-ii.tex`
+
+- [FB]'s theorem (`N = p + rq`, `r ≤ q^{0.7512}`, `p ≤ N`) gives nothing for `p ≤ N^{1/K}`: such representations number `≤ π(N^{3/5}) = o(N/log²N)`.
+- Its inputs do not localize: Li's quantitative Chen bound has no analogue for `p ≤ N^{3/5}`; Lichtman's convolution estimates need dyadic
+  product ranges, while the rows `rq` lie in `[N − P, N]`, where the level for two-factor rows is trivially `1 − Kρ ≤ 2 − K`.
+- The localized Chen–Buchstab balance excludes nothing; even granting level 1 for all multi-factor products in the short interval, it fails at
+  `K = 5/3` for `s ≤ 10` and holds only for `K ≳ 1.8` under that unproved hypothesis.
+
 ## Remaining proof obligations
 
 1. `WallIAt 74` — equivalently (by `wallIAt_of_absent`) prime absence for all prime ranks `P ≥ 74` in the one-deficit branch.

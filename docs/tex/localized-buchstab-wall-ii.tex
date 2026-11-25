@@ -1,0 +1,200 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}[proposition]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[proposition]{Remark}
+\title{Localizing the full Buchstab correction to $\ell\le P$:\\
+what transfers to Wall~II and what does not}
+\author{Research note for I.\,O. Bado's closure chain}
+\date{25 November 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We examine whether the method of \emph{A Full Buchstab Correction for Restricted Goldbach
+Representations} (Bado, September 2026; below [FB]) can be transposed to the localized problem
+behind Wall~II: for even $N$ with $P^{5/3}\le N\le P^{2-\varepsilon}$, show that some
+prime $\ell\le P$ has $N-\ell$ divisible by a prime $\ge P$. We prove three facts:
+\begin{enumerate}
+\item the main theorem of [FB] implies nothing about $\ell\le P$ (Section~2);
+\item each of its two analytic inputs fails in the localized setting for a structural reason
+(Section~3);
+\item a localized Chen--Buchstab balance excludes nothing unconditionally. Even an idealized
+version needs level-one distribution of multi-factor products in the short interval
+$[N-P,N]$, and it still fails at $K=5/3$ with sifting parameter $s\le 10$ (Section~5).
+\end{enumerate}
+No exclusion in Wall~II is obtained. Wall~II remains open.
+\end{abstract}
+
+\section{The localized problem}
+Write $K=\log N/\log P$ and $I=\{\ell\text{ prime}:3\le\ell\le P\}$. By the dual form proved in
+Lean (\texttt{WilliamsonDual.not\_badFamily\_iff\_rep}), for $2P\le N$ even,
+\[
+\neg\,\mathrm{BadFamily}(P,N)\iff \exists\,\ell\in I,\ r\ \text{prime},\ r\ge P,\ m\ge0:\quad
+N=\ell+mr .
+\]
+So excluding a family at $N$ means finding a representation $N=\ell+mr$ with $\ell\le P$ and a
+prime $r\ge P$. Equivalently, some \emph{row} $N-\ell$, $\ell\in I$, is not $P$-smooth. In [FB] the
+prime $p$ ranges up to $N$; here $\ell\le P=N^{1/K}\le N^{3/5}$.
+
+\section{The theorem of [FB] does not localize}
+\begin{proposition}
+For every even $N$, the number of representations counted by $D_{1,a}(N)$ in [FB] with $p\le
+N^{3/5}$ is at most $\pi(N^{3/5})=o\bigl(N/\log^2N\bigr)$. Hence the bound $D_{1,a}(N)\ge
+\mathcal H(N)/2500$ of [FB] is consistent with \emph{no} admissible representation having $p\le
+N^{1/K}$, for every $K\ge5/3$.
+\end{proposition}
+\begin{proof}
+Each prime $p$ is counted at most once in $D_{1,a}(N)$. Moreover $\mathcal H(N)\gg N/\log^2N$, since
+$C(N)$ is bounded below. $\square$
+\end{proof}
+So only the \emph{method} could transfer, not the result.
+
+\section{The two analytic inputs in the localized setting}
+
+\paragraph{(a) The quantitative Chen bound.}
+[FB] subtracts an upper bound for excluded representations from Li's unconditional
+$D_{1,2}(N)\ge 1.9728\,\mathcal H(N)$, where $p\le N$. For $p\le N^{1/K}$ no analogue of Chen's
+theorem is known.
+
+The available input is the linear sieve on $\{N-\ell:\ell\in I\}$, with Bombieri--Vinogradov for the
+primes $\ell\le P$ in the class $N\bmod d$. The maximum over residues makes it pointwise in $N$.
+Its level is $D=P^{1/2}=N^{1/(2K)}$. It gives
+\[
+\#\{\ell\in I:\ (N-\ell,\textstyle\prod_{2<t<z}t)=1\}\ \ge\ (f(s)+o(1))\,|I|\,V_N(z),
+\qquad z=D^{1/s},
+\]
+with $f(s)=2e^\gamma\log(s-1)/s$ for $2\le s\le4$. Lichtman's extension beyond $1/2$, as used in
+[FB, Prop.~3.2], is applied there with residue $N<x^{1+e}$, where $x$ is the size of the sifted
+variable; the residue then costs an extra $\theta e$ in the size conditions. Here the sifted
+variable is $\ell\le x=P$ and the residue is $N=x^{K}$. I have not checked from [Lichtman,
+Prop.~5.2] whether any level $>1/2$ survives a residue of size $x^{5/3}$. It is not needed for the
+conclusion below, which fails on the upper-bound side.
+
+\paragraph{(b) The convolution estimates.}
+[FB, Props.~3.1--3.2] sieve $N-rq$ with $rq$ in a \emph{dyadic} product interval $I\subset[x,2x]$,
+$x\asymp N$. In the localized problem a row is $N-\ell=rq$ with $rq\in[N-P,N]$. This is a short
+interval of relative length $P/N=N^{-(1-1/K)}$.
+
+\begin{lemma}[Trivial level]
+Fix a prime $r=P^{K\rho}$ with $(K-1)/K\le\rho\le1/2$, and let $q$ run over primes with
+$rq\in[N-P,N]$. The integers $q$ in question form an interval of length $P/r=P^{1-K\rho}$. The
+congruence $rq\equiv N\pmod d$ is equidistributed with bounded error per modulus. Consequently
+the Type~I level for sifting $\ell=N-rq$ is $P^{1-K\rho-o(1)}$, i.e.
+\[
+\lambda(\rho)=1-K\rho\ \in\ [\,1-K/2,\ 2-K\,]\subset(0,1/3].
+\]
+\end{lemma}
+\begin{proof}
+For fixed $r\nmid d$ the condition is one class of $q$ modulo $d$. The interval has length
+$P/r$, so the count is $P/(rd)+O(1)$, and the $O(1)$ terms dominate once $d>P/r$. $\square$
+\end{proof}
+
+Going beyond this level requires bilinear estimates: dispersion, Poisson summation in a long
+variable, Kloosterman sums. Every such estimate in [FB] uses a variable running over a dyadic
+range. Here, for fixed $r$, the variable $q$ ranges over $P^{1-K\rho}\le P^{1/3}$ consecutive
+integers near $P^{K(1-\rho)}\ge P^{5/6}$. Poisson summation modulo $d$ in $q$ is only useful when
+$d<P^{1-K\rho}$, i.e.\ within the trivial level.
+\textbf{The extracted-prime estimate [FB, Prop.~3.4] therefore has no localized counterpart with
+known proof.} Neither does the positive Buchstab correction $\Delta(L)$ built on it.
+
+\section{The localized Buchstab scheme}
+The transposition that keeps the structure of [FB] is as follows. Call a row \emph{bad} if it is
+$z$-rough and $P$-smooth. A family exists at $N$ iff every row is $P$-smooth; then every $z$-rough
+row is bad. Hence it suffices to prove
+\begin{equation}\label{eq:target}
+\#\{\text{bad rows}\} \;<\; \#\{z\text{-rough rows}\}.
+\end{equation}
+\begin{itemize}
+\item The right side is bounded below by the linear sieve as in~3(a).
+\item The left side is split by the factorization of the row:
+  \begin{itemize}
+  \item \emph{two-factor} bad rows $rq$, with $P^{K-1}\le r\le q<P$;
+  \item bad rows with at least three prime factors in $[z,P)$.
+  \end{itemize}
+  The first type is the analogue of the excluded representations $B_a$ of [FB].
+\end{itemize}
+
+\section{An idealized balance, and why it fails}
+Normalize so that the expected number of $z$-rough rows is $1$. Let $b_{\rm tot}$ be the expected
+proportion of bad rows among $z$-rough rows, and $b_2$ that of two-factor bad rows. In the
+Buchstab model, with $u=\log N/\log z=2sK$,
+\[
+b_2=\frac1{u\,\omega(u)}\int_{(K-1)/K}^{1/2}\frac{d\rho}{\rho(1-\rho)} .
+\]
+Grant the following idealizations, all \emph{stronger} than what is available:
+\begin{enumerate}
+\item[(I1)] the lower bound in~\eqref{eq:target} equals its expected value $1$ (any valid lower
+bound is $\le1+o(1)$);
+\item[(I2)] two-factor bad rows are bounded by the linear-sieve upper constant at the trivial level
+of Lemma~2, i.e.\ with loss $2/\lambda(\rho)$. In fact only the two-dimensional loss of Theorem~S is
+available, since primality of $q$ in the short interval cannot be sieved at level $>0$;
+\item[(I3)] all other bad rows are bounded with loss $2$, i.e.\ at level $1$. This is an
+Elliott--Halberstam-strength statement for products of primes in the short interval $[N-P,N]$,
+unknown in any form.
+\end{enumerate}
+Then the idealized upper bound is
+\[
+U_{\rm ideal}=2(b_{\rm tot}-b_2)+\frac1{u\,\omega(u)}\int_{(K-1)/K}^{1/2}\frac{2}{1-K\rho}\,
+\frac{d\rho}{\rho(1-\rho)},
+\]
+and~\eqref{eq:target} needs $U_{\rm ideal}<1$. Numerical values
+(\texttt{scripts/localized\_buchstab\_balance.py}):
+\begin{center}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+$K$ & $s=3$ & $s=4$ & $s=6$ & $s=10$ & $f(s)$ at $s=3,4$\\
+\midrule
+$5/3$ & 1.238 & 1.172 & 1.107 & 1.055 & 0.823, 0.978\\
+$1.75$ & 1.138 & 1.073 & 1.008 & 0.957 & \\
+$1.80$ & 1.080 & 1.015 & 0.951 & 0.900 & \\
+$1.90$ & 0.968 & 0.904 & 0.841 & 0.791 & \\
+$1.95$ & 0.914 & 0.851 & 0.788 & 0.739 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}
+Three things follow from the table.
+\begin{itemize}
+\item At $K=5/3$, even (I1)--(I3) together do not give~\eqref{eq:target} for $s\le10$.
+\item For $K\ge1.8$ with $s\ge6$ the idealized balance holds. But it rests on (I3), an unproved
+distribution hypothesis much stronger than Elliott--Halberstam for primes.
+\item The actually available upper bounds are larger, for two reasons. Theorem~S's two-dimensional
+loss replaces $2/\lambda(\rho)$. And dropping the smoothness condition on cofactors in (I3) roughly
+doubles the expected counts.
+\end{itemize}
+\end{remark}
+
+\begin{remark}[What the Buchstab correction could change]
+In [FB], the positive correction $\Delta(L)$ reduces the upper constant below the linear-sieve
+value $4/L$, by sifting extracted-prime layers with bilinear estimates. In the localized problem the
+corresponding layers are short-interval convolutions. By Lemma~2 their level is trivial, so the
+lower-sieve terms $h(v(s)/s-1)$ that produce $\Delta$ vanish ($v(s)/s-1\le2$). The localized
+correction is therefore $0$ with current technology. A positive localized correction is exactly what
+a short-interval analogue of [FB, Prop.~3.4] would provide. That is the missing input.
+\end{remark}
+
+\section{Conclusion}
+\begin{itemize}
+\item The full Buchstab correction of [FB] does not transfer to $\ell\le P$ with known estimates. Its
+lower input (Li's quantitative Chen bound) has no localized analogue. Its convolution inputs need
+dyadic product ranges, whereas the localized products lie in the short interval $[N-P,N]$, where
+only the trivial level $1-K\rho\le2-K$ is available.
+\item The localized balance~\eqref{eq:target} fails unconditionally. It fails even under the
+idealizations (I1)--(I3) at $K=5/3$ for $s\le10$; for $K\ge1.8$ it would need the unknown (I3).
+\item \textbf{No region of Wall~II is excluded.}
+\end{itemize}
+The precise missing statement is the following short-interval convolution estimate.
+For $N=x^K$ with $5/3\le K<2$, products $n=rq$ (and, more generally, $n=p_1\cdots p_k$ with
+$p_i\in[z,P)$) in $[N-P,N]$ must be equidistributed in the classes $n\equiv N\pmod d$, for $d$ up to
+$P^{\lambda}$ with $\lambda$ close to $1$, on average over $d$ with well-factorable weights. That is a
+level of distribution in intervals of length $N^{1/K}$, beyond the square-root barrier.
+
+\end{document}
