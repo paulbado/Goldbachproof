@@ -155,9 +155,140 @@ theorem wallII_excluded_region {P p N : ℕ} (_hprev : PreviousRankConditions p 
     (hN : deficitBudget P 1 * ((P - 3) / 2) < (N - P) ^ 2) : False :=
   absurd (wallII_height_ceiling_sharp hb hII) (not_le.2 hN)
 
+/-! ## Exact differences (low heights)
+
+The uniform bound `gcd ≤ (P - 3) / 2` is replaced by the exact arithmetic constraint: the gcd
+of two deficient complements divides both `deficitBudget P 1` and the odd part of the index
+gap. -/
+
+/-- An odd divisor of `n` divides the odd part of `n`. -/
+theorem odd_dvd_ordCompl {g n : ℕ} (hg : Odd g) (h : g ∣ n) : g ∣ ordCompl[2] n := by
+  have hcop : Nat.Coprime g (ordProj[2] n) :=
+    Nat.Coprime.pow_right _ (Nat.coprime_two_right.2 hg)
+  have h' : g ∣ ordProj[2] n * ordCompl[2] n := by
+    rw [Nat.ordProj_mul_ordCompl_eq_self]; exact h
+  exact hcop.dvd_of_dvd_mul_left h'
+
+/-- The gcd of two deficient complements divides `gcd(B₁, oddpart |i - j|)`. -/
+theorem deficient_gcd_dvd {P N i j : ℕ} (hb : BadFamily P N) (hi : Deficient P N i)
+    (hj : Deficient P N j) :
+    Nat.gcd (N - i) (N - j) ∣
+      Nat.gcd (deficitBudget P 1) (ordCompl[2] (max i j - min i j)) := by
+  have ho : Odd (Nat.gcd (N - i) (N - j)) :=
+    Odd.of_dvd_nat (Nat.odd_iff.2 (compl_odd hb hi.1)) (Nat.gcd_dvd_left _ _)
+  refine Nat.dvd_gcd (dvd_trans (Nat.gcd_dvd_left _ _) (deficient_dvd_budget hb hi))
+    (odd_dvd_ordCompl ho ?_)
+  exact dvd_difference N i j _ (le_trans hi.1.2.2 (le_of_lt hb.1))
+    (le_trans hj.1.2.2 (le_of_lt hb.1)) (Nat.gcd_dvd_left _ _) (Nat.gcd_dvd_right _ _)
+
+/-- **Exact pair divisibility.** For two deficient rows,
+    `(N - i)(N - j) ∣ B₁ · gcd(B₁, oddpart |i - j|)`, `B₁ = deficitBudget P 1`. -/
+theorem deficient_pair_prod_dvd {P N i j : ℕ} (hb : BadFamily P N) (hi : Deficient P N i)
+    (hj : Deficient P N j) :
+    (N - i) * (N - j) ∣ deficitBudget P 1 *
+      Nat.gcd (deficitBudget P 1) (ordCompl[2] (max i j - min i j)) := by
+  rw [← Nat.gcd_mul_lcm (N - i) (N - j), mul_comm]
+  exact mul_dvd_mul
+    (Nat.lcm_dvd (deficient_dvd_budget hb hi) (deficient_dvd_budget hb hj))
+    (deficient_gcd_dvd hb hi hj)
+
+/-- Product over a finite set divides the lcm times the product of the pairwise gcds
+    (pairs `b < a`). -/
+theorem prod_dvd_lcm_mul_pairs (S : Finset ℕ) (f : ℕ → ℕ) :
+    (∏ s ∈ S, f s) ∣ S.lcm f * ∏ a ∈ S, ∏ b ∈ S.filter (· < a), Nat.gcd (f a) (f b) := by
+  classical
+  induction S using Finset.induction_on_max with
+  | empty => simp
+  | insert a S hmax ih =>
+    have ha : a ∉ S := fun h => lt_irrefl a (hmax a h)
+    have hfa : (insert a S).filter (· < a) = S := by
+      ext x
+      simp only [mem_filter, mem_insert]
+      constructor
+      · rintro ⟨rfl | hx, hlt⟩
+        · exact absurd hlt (lt_irrefl _)
+        · exact hx
+      · intro hx; exact ⟨Or.inr hx, hmax x hx⟩
+    have hfx : ∀ x ∈ S, (insert a S).filter (· < x) = S.filter (· < x) := by
+      intro x hx
+      ext y
+      simp only [mem_filter, mem_insert]
+      constructor
+      · rintro ⟨rfl | hy, hlt⟩
+        · exact absurd (lt_trans hlt (hmax x hx)) (lt_irrefl _)
+        · exact ⟨hy, hlt⟩
+      · rintro ⟨hy, hlt⟩; exact ⟨Or.inr hy, hlt⟩
+    have hinner : (∏ x ∈ S, ∏ b ∈ (insert a S).filter (· < x), Nat.gcd (f x) (f b)) =
+        ∏ x ∈ S, ∏ b ∈ S.filter (· < x), Nat.gcd (f x) (f b) :=
+      Finset.prod_congr rfl (fun x hx => by rw [hfx x hx])
+    rw [Finset.prod_insert ha, Finset.lcm_insert, Finset.prod_insert ha, hfa, hinner]
+    have h2 : f a * S.lcm f = Nat.lcm (f a) (S.lcm f) * Nat.gcd (f a) (S.lcm f) := by
+      rw [mul_comm (Nat.lcm _ _)]; exact (Nat.gcd_mul_lcm _ _).symm
+    calc f a * ∏ s ∈ S, f s
+        ∣ f a * (S.lcm f * ∏ x ∈ S, ∏ b ∈ S.filter (· < x), Nat.gcd (f x) (f b)) :=
+          mul_dvd_mul_left _ ih
+      _ = Nat.lcm (f a) (S.lcm f) * (Nat.gcd (f a) (S.lcm f) *
+            ∏ x ∈ S, ∏ b ∈ S.filter (· < x), Nat.gcd (f x) (f b)) := by
+          rw [← mul_assoc, h2, mul_assoc]
+      _ ∣ Nat.lcm (f a) (S.lcm f) * ((∏ b ∈ S, Nat.gcd (f a) (f b)) *
+            ∏ x ∈ S, ∏ b ∈ S.filter (· < x), Nat.gcd (f x) (f b)) :=
+          mul_dvd_mul_left _ (mul_dvd_mul_right (gcd_finset_lcm_dvd (f a) S f) _)
+
+/-- **Exact k-row divisibility.** For every set `D` of deficient rows,
+    `∏_{i ∈ D} (N - i) ∣ B₁ · ∏_{b < a in D} gcd(B₁, oddpart (a - b))`. -/
+theorem deficient_prod_dvd_exact {P N : ℕ} (D : Finset ℕ) (hb : BadFamily P N)
+    (hD : ∀ i ∈ D, Deficient P N i) :
+    (∏ i ∈ D, (N - i)) ∣ deficitBudget P 1 *
+      ∏ a ∈ D, ∏ b ∈ D.filter (· < a),
+        Nat.gcd (deficitBudget P 1) (ordCompl[2] (a - b)) := by
+  classical
+  refine dvd_trans (prod_dvd_lcm_mul_pairs D (fun i => N - i)) (mul_dvd_mul ?_ ?_)
+  · exact Finset.lcm_dvd fun i hi => deficient_dvd_budget hb (hD i hi)
+  · apply Finset.prod_dvd_prod_of_dvd
+    intro a ha
+    apply Finset.prod_dvd_prod_of_dvd
+    intro b hb'
+    have hlt : b < a := (mem_filter.1 hb').2
+    have h := deficient_gcd_dvd hb (hD a ha) (hD b (mem_filter.1 hb').1)
+    rwa [max_eq_left (le_of_lt hlt), min_eq_right (le_of_lt hlt)] at h
+
+/-- A deficient complement is at most `((P - 3) / 2)^ω`, `ω` its number of prime factors. -/
+theorem deficient_compl_le_pow {P N i : ℕ} (hb : BadFamily P N) (hi : Deficient P N i) :
+    N - i ≤ ((P - 3) / 2) ^ #(N - i).primeFactors := by
+  have hn : N - i ≠ 0 := by have := hi.1.2.2; have := hb.1; omega
+  calc N - i = ∏ r ∈ (N - i).primeFactors, r ^ (N - i).factorization r := by
+        have h := Nat.prod_factorization_pow_eq_self hn
+        rw [Nat.prod_factorization_eq_prod_primeFactors] at h
+        exact h.symm
+    _ ≤ ∏ _r ∈ (N - i).primeFactors, (P - 3) / 2 := by
+        apply Finset.prod_le_prod'
+        intro r hr
+        have hrp := Nat.prime_of_mem_primeFactors hr
+        have hpos : 0 < (N - i).factorization r :=
+          hrp.factorization_pos_of_dvd hn (Nat.dvd_of_mem_primeFactors hr)
+        have := deficient_prime_power_bound hb hi hrp hpos (Nat.ordProj_dvd (N - i) r)
+        omega
+    _ = ((P - 3) / 2) ^ #(N - i).primeFactors := Finset.prod_const _
+
+/-- **Low-height structure.** If `((P - 3) / 2)^m < N - P`, every deficient complement has
+    more than `m` distinct prime factors (each prime power being shared with another row). -/
+theorem deficient_many_prime_factors {P N i m : ℕ} (h5 : 5 ≤ P) (hb : BadFamily P N)
+    (hi : Deficient P N i) (hm : ((P - 3) / 2) ^ m < N - P) :
+    m < #(N - i).primeFactors := by
+  by_contra hle
+  push Not at hle
+  have h1 := deficient_compl_le_pow hb hi
+  have h2 : ((P - 3) / 2) ^ #(N - i).primeFactors ≤ ((P - 3) / 2) ^ m :=
+    Nat.pow_le_pow_right (by omega) hle
+  have h3 : N - P ≤ N - i := Nat.sub_le_sub_left hi.1.2.2 N
+  omega
+
 #print axioms deficit_pairwise_height_bound
 #print axioms wallII_height_ceiling_sharp
 #print axioms height_of_absent_count
 #print axioms wallII_excluded_region
+#print axioms deficient_pair_prod_dvd
+#print axioms deficient_prod_dvd_exact
+#print axioms deficient_many_prime_factors
 
 end WilliamsonMurII
