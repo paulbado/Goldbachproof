@@ -471,6 +471,9 @@ restricted-support $N$, its bound must exceed $\max_N\mathcal M(N)$.
   $n(q) \le (P-3)/q + 1$ for $q > P/e^2$, gives **for every $N$** (effective):
   $$\mathcal M(N) \le 2P\log L + O(P).$$
 - This is the Sylvester–Erdős argument restricted to prime positions. It misses $(K-\eta)P$ by a factor $\asymp\log\log P$.
+- **Correction (2026-11-25): this bound is weaker than the trivial one.** For every $N$, $\mathcal M(N) \le \sum_\ell\log(N-\ell) \le (K + o(1))P$.
+  By Lemma E and BV, $\Sigma_{\mathrm{large}}(N) \le (K - \frac12 + o(1))P$ (`distribution-profile.md`, Lemma T). So the bound $2P\log L$ carries no
+  information. Ω asks to beat the **trivial** bound by $\eta P$.
 - The loss comes entirely from moduli $q = P^\theta$ with $\theta \to 1$, where Brun–Titchmarsh's $2/(1-\theta)$ diverges.
 
 **(vi) Large-sieve duality.** This gives an exceptional-set theorem, not a pointwise one: Theorem LS below.
@@ -549,7 +552,8 @@ certificate identities) supplies it, for two reasons:
 |---|---|---|
 | Ω-average | $\mathbb E_{N\in(X,2X]}\Sigma_{\mathrm{large}}(N) = (\frac12 + O(\frac1L))P$, $X \ge P^{5/3}$ | proved (Theorem A) |
 | Ω-small | $\mathcal M_{\le\sqrt P}(N) \le (\frac12 + o(1))P$ for **every** $N$ | proved (BV, ineffective) |
-| Ω-BT | $\mathcal M(N) \le 2P\log L + O(P)$ for **every** $N$ | proved (effective); misses by $\asymp\log\log P$ |
+| Ω-BT | $\mathcal M(N) \le 2P\log L + O(P)$ for **every** $N$ | proved, but **weaker than the trivial** $\mathcal M(N) \le (K + o(1))P$; no information |
+| Lemma T (trivial) | $\Sigma_{\mathrm{large}}(N) \le (K - \frac12 + o(1))P$ for every $N$ | proved (`distribution-profile.md`); Ω = beat it by $\eta P$ |
 | Ω-exceptional | a family exists for at most $7.3\,PL^2$ values of $N \le P^2$ | proved (Theorem LS); not pointwise |
 | Ω-conditional | $(\mathrm{LD}_\lambda)$, $\lambda > 2/(2K-1)$ ⟹ Ω | derivation (Prop. C, audited §7.5) |
 
@@ -624,8 +628,10 @@ requires a smaller bound on the rest.
   - **By contrast, $\Omega$ needs only $\lambda > 2/(2K-1) \in (2/3, 6/7]$, with no parity issue.**
   - The reason: Lemma G bounds the top range by $0.347P$, while its truth is $o(P)$. That lost slack must be recovered in the middle range.
 - **(b) Brun–Titchmarsh.** The divergence $\int^{1}\frac{d\theta}{1-\theta}$ comes from all scales $X_Q = P/q \in [2, P^{o(1)}]$, not only from
-  $X_Q < 2$. For every fixed $T$, the best pointwise bound remains
+  $X_Q < 2$. For every fixed $T$, the method gives
   $\Sigma_{\mathrm{mid}}(N) \le \frac P2\log\frac T2 + 2P\log\frac L{2\log T} + O(P) = 2P\log L + O(P)$, uniformly in $N$.
+  - *Correction:* this is worse than the trivial bound $\Sigma_{\mathrm{mid}} \le \Sigma_{\mathrm{large}} \le (K - \frac12 + o(1))P$ (Lemma T of
+    `distribution-profile.md`).
   - Lemma G's method on $(P/T, P/2]$ and Brun–Titchmarsh below.
 - **(c) Divisor switching.** $N - \ell = bq$ with $b \ge 2N/P \ge 2P^{K-1}$.
   - In modulus $q \in (\sqrt P, P/2]$ the progression has length $(P-3)/(2q) \in [1, \sqrt P/2]$. In modulus $b$ it has length $\le P^{2-K}/4$.
@@ -673,7 +679,7 @@ The original conditional discussion is kept below for the record.
 | $\Omega_{1/2}$: $\Sigma_{\mathrm{mid}} \le (K - 0.847 - \eta)P$ for all $N$ | sufficient condition (stronger than $\Omega$) | open; obsolete after Theorem B |
 | $\Omega_{\mathcal T}$: $\sum_{\sqrt P<q\le P/\mathcal T} \le (K - \frac12 - \eta)P$ for all $N$ | sufficient condition, **equivalent to $\Omega$** (Theorem B) | **open** |
 | $(\mathrm{LD}_\lambda)$, $\lambda > 2/(2K-1)$ | sufficient for $\Omega$ | **open** |
-| Pointwise upper bounds proved | — | $\mathcal M(N) \le 2P\log L + O(P)$; top range $o(P)$ (Theorem B) |
+| Pointwise upper bounds proved | — | trivial $\Sigma_{\mathrm{large}} \le (K - \frac12 + o(1))P$ (Lemma T); top range $o(P)$ (Theorem B) |
 | Theorem LS | exceptional set | proved; excludes no individual $N$ |
 | **Proven pointwise exclusions in this band** | — | **none** |
 
@@ -697,7 +703,9 @@ The original conditional discussion is kept below for the record.
 | Lemma E (mass decomposition, every $N$) | proved | family ⟺ $H_{\mathrm{big}} = 0$ ⟺ $\mathcal M$ maximal |
 | R7: $\log B \ge (K-1-o(1))P$ for $K < 2$ | proved | improves R5 on $[5/3,2)$; still below R4's barrier |
 | MR multiplicative rigidity | proved, **Lean** | negative for exclusion (true for every $N$) |
-| Ω-BT: $\mathcal M(N) \le 2P\log L + O(P)$ | proved | pointwise, misses by $\log\log P$ |
+| Ω-BT: $\mathcal M(N) \le 2P\log L + O(P)$ | proved | weaker than the trivial bound; no information (corrected 2026-11-25) |
+| Lemma T: $\Sigma_{\mathrm{large}}(N) \le (K - \frac12 + o(1))P$ | proved | pointwise; Ω means beating it by $\eta P$ |
+| Proposition PF (integrated sieve bound $2\int d\theta/\lambda(\theta)$) | proved (implication) | `distribution-profile.md`; available profiles give $11.6 > K - \frac12$ |
 | Theorem LS: $\le 7.3PL^2$ families with $N \le P^2$ | proved | exceptional set, **not pointwise** |
 | Lemma P (parity: $n_N(q) \le 1$ for $q > (P-3)/2$) | proved, **Lean** | every $N$ |
 | Lemma G: $\sum_{q>(P-3)/2}\log q\,n_N(q) \le (\frac{\log2}2 + o(1))P$ | proved | every $N$; loses a factor $\asymp L$ |

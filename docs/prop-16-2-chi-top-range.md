@@ -18,7 +18,7 @@ For a family: $I = \mathbb P\cap[3, P]$, $n_N(q) = \#\{\ell \in I : q \mid N - \
 | Input | Statement used |
 |---|---|
 | [KL] Kusmin–Landau (Graham–Kolesnik Th. 2.1) | if $g'$ is monotone on an interval $J$ and $\|g'(x)\| \ge \lambda > 0$ on $J$, then $\bigl|\sum_{k\in J}e(g(k))\bigr| \le \cot(\pi\lambda/2) \le 2/(\pi\lambda)$ |
-| [vdC] $k$-th derivative test, $k \ge 2$ (Titchmarsh Th. 5.13; Graham–Kolesnik Th. 2.8) | if $\lambda \le |g^{(k)}| \le B\lambda$ on $J$, $|J| \le Z$: $\sum_{k\in J}e(g(k)) \ll_{k,B} Z\lambda^{1/(2^k-2)} + Z^{1-2^{2-k}}\lambda^{-1/(2^k-2)}$ |
+| [vdC] $k$-th derivative test, $k \ge 2$ (Titchmarsh Th. 5.9 for $k = 2$, Th. 5.13 for $k \ge 3$; Graham–Kolesnik Th. 2.8 states a variant with all derivatives $\asymp FZ^{-r}$, which also holds here) | if $\lambda \le |g^{(k)}| \le B\lambda$ on $J$, $|J| \le Z$: $\sum_{k\in J}e(g(k)) \ll_{k,B} Z\lambda^{1/(2^k-2)} + Z^{1-2^{2-k}}\lambda^{-1/(2^k-2)}$ |
 | [V] Vaughan's identity (Davenport, *Multiplicative Number Theory*, Ch. 24) | below |
 | [S] Selberg's upper-bound sieve (Halberstam–Richert Th. 3.2) | for weights $w \ge 0$, $\mathcal A_e = g(e)\mathcal X + r_e$, $g$ multiplicative with $0 \le g(p) < 1$: $S(\mathcal A, D) \le \mathcal X/G(D) + \sum_{e<D^2,\,e\mid\Pi(D)}3^{\omega(e)}|r_e|$ |
 | [Va] Vaaler | for weights $w_j \ge 0$ with sum $W$ and $H \ge 1$: $\bigl|\sum_jw_j\psi^*(x_j)\bigr| \le \frac{W}{2H+2} + \sum_{1\le|h|\le H}\bigl|\sum_jw_je(hx_j)\bigr|$ |
@@ -214,7 +214,9 @@ The middle inequality holds because $\frac1{2k-1} > \frac1{2k}$. Also $\sum_{e<D
   At most $3 + 3$ such $q$, so $\psi \ne \psi^*$ costs $\le 6L$.
 - **Vaaler.** By [Va], with $\theta_{\mathcal Q} = \sum_{q\in\mathcal Q}\log q \le 1.02P$:
 $$|r_e| \le \frac{1.02P}{H+1} + \sum_\pm\sum_{1\le|h|\le H}|T^\pm_h(e)| + 6L,\qquad T^+_h(e) = \sum_{q\in\mathcal Q}\log q\,G_h(q)\,e\Bigl(\frac{h(N-3)}{2eq}\Bigr),$$
-  with $G_h(q) = e(-h\beta_q/(2e))$. $T^-_h$ is the same with $-h(N-P)$ in place of $h(N-3)$.
+  with $G_h(q) = e(-h\beta_q/(2e))$. $T^-_h$ is the same with $-h(N-P)$ in place of $h(N-3)$ and with $G_{-h}$ in place of $G_h$ (audit
+correction; it still has modulus 1 and depends only on $q \bmod e$). *Notation warning:* in §7 the letter $e$ denotes both the sieve modulus and
+the function $e(x) = e^{2\pi ix}$.
 
 **B.5 Character expansion (fixed modulus).**
 - $G_h$ is a function on $(\mathbb Z/e)^\times$ of modulus 1. So $G_h = \sum_{\chi\bmod e}\hat G_h(\chi)\chi$ with $|\hat G_h(\chi)| \le 1$.
@@ -293,7 +295,8 @@ Either one, with BV and Theorem A, **excludes the band** (Corollary B2). Neither
 - Through B.4–B.5 this requires bounds for $\sum_{\chi\bmod e}|\sum_{q\in(3X/4,X)}\Lambda(q)\chi(q)e(Y/q)|$, with moduli $e$ up to $P^\lambda$.
 - Proposition 16.2χ allows $e \le X^{1/10}$ with saving $X^{-1/248}$. With the $\varphi(e)$ (or, via Parseval, $\sqrt e$) loss of the character expansion,
   that supports only a level of order $X^{c}$ with $c$ about $10^{-3}$ (rough estimate; not written out). This is far below $2/3$.
-- Brun–Titchmarsh gives $2P\log\frac L{2\log\mathcal T}$ on this range, which diverges.
+- Brun–Titchmarsh gives $2P\log\frac L{2\log\mathcal T}$ on this range, which diverges. Even the **trivial** bound is better: by Lemma E and BV,
+  $\Sigma_{\mathrm{large}}(N) \le (K - \frac12 + o(1))P$ for every $N$ (`distribution-profile.md`, Lemma T). Ω asks to beat this by $\eta P$.
 
 **The single remaining quantitative obstruction is therefore $(\mathrm{LD}_\lambda)$ on the blocks $X \in [\sqrt P, P/\mathcal T]$, with $\lambda > 2/(2K-1)$.**
 
@@ -327,4 +330,16 @@ Also used: `WilliamsonResidual.large_prime_unique_row` ($n_N(q) \le 1$ for $q > 
   - (β): the same with $M \ge X^{1/2}$.
   - The diagonal terms need $M \ge X^{1/5}$ in (α) and $K > X^{1/5}$ in (β); both hold.
 
-**Not yet done:** an independent reading; Lean formalization of the analytic inequalities.
+**Audit by a separate agent (2026-11-25).**
+- *Procedure.* A separate model instance, which had not seen the derivation, re-derived every step of §1–§7 from the text and from
+  `hypothesis-T.md` §2, §7–8.
+- *Verdict.* No gap in Lemma R, Proposition 16.2χ or Theorem B.
+- *Slips found and corrected:*
+  - the van der Corput citation (Graham–Kolesnik Th. 2.8 has a different form; Titchmarsh 5.9/5.13 has the quoted one);
+  - $T^-_h$ carries $G_{-h}$, not $G_h$.
+- *Constants loose in the safe direction:* at most $1$ prime factor of $N - \ell$ in $\mathcal Q$ (not $3$); integer points $3L$ (not $6L$);
+  Type II constants $11.25$ (not $18$).
+- *Side observation of the audit:* Theorem B only needs $N \ge P(\log P)^{9}$ from below.
+- *Status.* This is **not** an independent human verification.
+
+**Not yet done:** a human reading; Lean formalization of the analytic inequalities.
