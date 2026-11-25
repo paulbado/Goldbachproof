@@ -288,10 +288,21 @@ theorem large_prime_unique_row {P N ℓ ℓ' q : ℕ} (hq : q % 2 = 1) (hqP : P 
     have := Nat.le_of_dvd (by omega) (hcop.mul_dvd_of_dvd_of_dvd h2d hd)
     omega
 
+/-- **Divisor switching.** If `q ∣ N - ℓ` with `N` even and `ℓ < N` odd, then
+    `N = ℓ + b q` with `b` and `q` odd (used in `docs/switched-sieve.md`, Step 1). -/
+theorem switch_pair {N ℓ q : ℕ} (hN : Even N) (hℓ : ℓ % 2 = 1) (hlt : ℓ < N)
+    (hq : q ∣ N - ℓ) : ∃ b, b % 2 = 1 ∧ q % 2 = 1 ∧ ℓ + b * q = N := by
+  obtain ⟨k, hk⟩ := hN
+  obtain ⟨b, hb⟩ := hq
+  have ho : Odd (N - ℓ) := Nat.odd_iff.2 (by omega)
+  rw [hb, Nat.odd_mul] at ho
+  exact ⟨b, Nat.odd_iff.1 ho.2, Nat.odd_iff.1 ho.1, by rw [mul_comm, ← hb]; omega⟩
+
 #print axioms high_power_unique_row
 #print axioms powersmooth_dvd_lcm
 #print axioms mult_rigidity
 #print axioms mult_near_rigidity_int
 #print axioms large_prime_unique_row
+#print axioms switch_pair
 
 end WilliamsonResidual

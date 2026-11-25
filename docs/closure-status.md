@@ -94,7 +94,57 @@ contradiction from `PreviousRankConditions` combined with the divisor structure.
 **What remains for Wall II.** All heights `3p + 3 ≤ N` with `(N−P)^k ≤ min(deficitBudget P k, B₁((P−3)/2)^{k(k−1)/2})` for every `k ≤ z`.
 In particular the whole region `N ≤ P + √(B₁(P−3)/2)` with exactly two deficient rows is untouched.
 
-## Remaining proof obligations## Remaining proof obligations
+### Wall II at low heights: exact differences (2026-11-25, second pass)
+
+**Proved in Lean (`Goldbach/WilliamsonWallII.lean`).** With `B₁ = deficitBudget P 1` and `ordCompl[2] n` the odd part of `n`:
+
+```lean
+theorem deficient_pair_prod_dvd (hb : BadFamily P N) (hi : Deficient P N i) (hj : Deficient P N j) :
+    (N - i) * (N - j) ∣ deficitBudget P 1 * Nat.gcd (deficitBudget P 1) (ordCompl[2] (max i j - min i j))
+
+theorem deficient_prod_dvd_exact (D : Finset ℕ) (hb : BadFamily P N) (hD : ∀ i ∈ D, Deficient P N i) :
+    (∏ i ∈ D, (N - i)) ∣ deficitBudget P 1 *
+      ∏ a ∈ D, ∏ b ∈ D.filter (· < a), Nat.gcd (deficitBudget P 1) (ordCompl[2] (a - b))
+
+theorem deficient_many_prime_factors (h5 : 5 ≤ P) (hb : BadFamily P N) (hi : Deficient P N i)
+    (hm : ((P - 3) / 2) ^ m < N - P) : m < #(N - i).primeFactors
+```
+
+- The first is the exact pair divisibility; the second keeps every exact index difference for `k` rows.
+- The third is the low-height structure: a deficient complement is a product of prime powers, each `≤ (P−3)/2` and each dividing a
+  gap to another prime index. Under `PreviousRankConditions` it is never a prime power; for `N − P > ((P−3)/2)²` it has at least three
+  distinct prime factors.
+
+**These constraints exclude no part of the polynomial band.** `scripts/wall_ii_low_height_pairs.py` enumerates the even
+`N ∈ [P^{5/3}, P²]` satisfying `PreviousRankConditions` and counts those with two (three) rows `i` satisfying
+`DifferenceCertificate P i (N − i)`, i.e. everything `Deficient` implies about the row itself:
+
+| P | admissible N | ≥ 2 certificate rows | ≥ 3 | max rows |
+|---|---|---|---|---|
+| 101 | 989 | 74 | 13 | 4 |
+| 199 | 3 653 | 1 342 | 626 | 9 |
+| 499 | 20 576 | 18 207 | 15 407 | 21 |
+
+Example: `P = 101`, `N = 2236`, rows `3` and `61`: `2233 = 7·11·29`, `2175 = 3·5²·29`, `gcd = 29 ∣ 58`.
+
+- At the ranks tested, a contradiction cannot come from these hypotheses alone (two or three rows with their certificates, plus the
+  previous-prime congruence); it has to involve the restricted support of the *other* rows.
+- This is evidence from finitely many ranks. It is not a theorem ruling out every argument based on deficient rows.
+
+### Wall II in the band `P^{5/3} ≤ N ≤ P^{2−ε}`: divisor switching (2026-11-25, third pass; `docs/switched-sieve.md`)
+
+- **Theorem S (unconditional, written proof).** For every even `N` in the band and `θ₀ > K − 1`:
+  `Σ_{P^θ₀<q≤P} log q · n_N(q) ≤ (8 + o(1))·P·[1/(1+θ₀−K) − 1/(2−K)]`. Proof: write `N − ℓ = bq`, fix `b`, and apply the
+  two-dimensional Selberg sieve to the primes `q` in an interval of length `P/b` with `N − bq` prime. No distribution hypothesis.
+- **Corollary EH (conditional).** The Elliott–Halberstam conjecture at level `θ(K)` (`0.99087` at `K = 5/3`; `1 − ε²/13` for the whole
+  band) excludes every restricted-support family in the band, for `P` large. Only a one-sided bound in the single class `N mod d` is used.
+- **Unconditionally nothing is excluded**: with Bombieri–Vinogradov and Brun–Titchmarsh on `(√P, P^θ]`, the resulting bound
+  `𝓜(N) ≤ 8.4·P` (at `K = 5/3`) is worse than the trivial `K·P`.
+- **Remaining obstruction in the band:** a saving on the middle moduli `q ∈ (√P, P^θ]` only (exact inequality in `switched-sieve.md` §2).
+- Reformulations through Chebotarev, trace functions, GL(2) spectral theory, function fields: `switched-sieve.md` §3. None gives more;
+  in particular square-root cancellation in every individual exponential sum would still give only `1.62 > K − ½`.
+
+## Remaining proof obligations
 
 1. `WallIAt 74` — equivalently (by `wallIAt_of_absent`) prime absence for all prime ranks `P ≥ 74` in the one-deficit branch.
 2. `WallIIAt 74`.
