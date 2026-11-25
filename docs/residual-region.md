@@ -534,7 +534,9 @@ $H_{\mathrm{big}}(N) + n_N(P)\log P \ge (\eta - o(1))P$. Hence at least $(\eta/K
 **Why the available technology does not give Ω.**
 - **(1)** BV stops at $\theta = 1/2$.
 - **(2)** The theorems of Fouvry and Bombieri–Friedlander–Iwaniec beyond $1/2$ need a **fixed** residue $a$ that is small relative to
-  $x$, and well-factorable weights. Here the moduli are primes and the "residue" is $N \ge P^{5/3} \gg q^2$.
+  $x$, and well-factorable weights. Here the moduli are primes and the "residue" $N \ge P^{5/3}$ is far larger than the moduli. *(Audit correction 2026-11-25: an earlier
+  version wrote $N \gg q^2$. That is false for $q$ of size $P$: with $K < 2$ fixed, $N/q^2 \to 0$. Only $N > q$ holds on the whole range, and
+  $N \ge q^2$ only for $q \le P^{K/2}$. No external estimate is claimed to apply in either regime.)*
 - **(3)** Divisor switching is unavailable. $N - \ell = bq$ with $b \approx N/q \ge P^{K-1}$, and $\lfloor N/q\rfloor$ is constant only on
   stretches of length $\le q^2/N \le P^{2-K}$. So the problem breaks into $\asymp N/Q$ short pieces. Their recombination requires
   Kloosterman-type sums over primes with a reciprocal phase, $\sum_{q\sim Q}\log q\,e(a\bar q/d + Y/(dq))$ with $Y \approx P^K$, for $d$

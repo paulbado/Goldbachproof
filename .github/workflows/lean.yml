@@ -20,8 +20,8 @@ jobs:
 
       - name: Forbid sorry / new axioms
         run: |
-          if grep -nE '\bsorry\b|^\s*axiom\s' Goldbach/*.lean; then
-            echo "::error::Found sorry or axiom declaration"; exit 1
+          if grep -nE '\bsorry\b|^\s*axiom\s|native_decide' Goldbach/*.lean; then
+            echo "::error::Found sorry, axiom declaration or native_decide"; exit 1
           fi
 
       - name: Check axioms used by the proved theorems

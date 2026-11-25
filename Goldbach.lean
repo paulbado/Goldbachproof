@@ -6,3 +6,5 @@ import Goldbach.WilliamsonMurIIClosure
 import Goldbach.WilliamsonMurIIRatio
 import Goldbach.WilliamsonResidual
 import Goldbach.ReciprocalPhase
+import Goldbach.WilliamsonSmallRanks
+import Goldbach.WilliamsonSmallRanksData

@@ -7,6 +7,16 @@ Status: **research note.** Proved here:
 
 **No new distribution estimate is proved.** Lemma Ω and Wall II remain **open**.
 
+**Scope of the sufficient conditions (audit correction 2026-11-25).**
+- Ω, $\Omega_{\mathcal T}$, Proposition PF and the profile conditions concern **only** the band $P^{5/3} \le N \le P^{2-\epsilon}$ with $\epsilon > 0$ fixed.
+- Even a proof of Ω on that band would **not** close the walls. Still open outside it:
+  - the neighbourhood of $P^2$;
+  - the range $P^{2-\epsilon} < N < P^{950}$. Theorem W only gives the upper bound $N < P^{959}$ (or $P^{950}$), with an effective but uncomputed threshold.
+    It proves no absence of families below it.
+  - the bands $K < 5/3$, which [CC] treats by exceptional-set arguments only;
+  - the connection to `WallIAt P₀` / `WallIIAt P₀` for one common, explicit $P_0$.
+- The BV input is ineffective, so the threshold $P_0$ in the exclusion statements is ineffective.
+
 Notation as in `residual-region.md` §7 and `prop-16-2-chi-top-range.md`: $L = \log P$, $K = \log N/\log P$, $n_N(q) = \#\{\ell \in I : q \mid N-\ell\}$,
 and
 $$\Sigma_{\mathrm{large}}(N) = \sum_{\sqrt P<q\le P,\ q\ \mathrm{prime}}\log q\;n_N(q).$$
@@ -48,15 +58,19 @@ $\log\frac43/L$.
 
 **Three hypotheses at level $P^{\lambda}$, from strongest to weakest.**
 - **(S$_\lambda$) Absolute (Selberg).** $\sum_{e<P^{\lambda},\ e\mid\Pi}\tau_3(e)\,|r_e(i)| \le P/L^3$.
-- **(WF$_\lambda$) Well-factorable (linear sieve).** For every factorisation $D_1D_2 = P^\lambda$ and all coefficients $|\alpha_{d_1}|, |\beta_{d_2}| \le 1$:
-  $\bigl|\sum_{d_1<D_1,\,d_2<D_2}\alpha_{d_1}\beta_{d_2}r_{d_1d_2}(i)\bigr| \le P/L^3$.
+- **(WF$_\lambda$) Well-factorable (linear sieve).** For every factorisation $D_1D_2 = P^\lambda$ and all coefficients $|\alpha_{d_1}|, |\beta_{d_2}| \le 1$
+  supported on divisors of $\Pi(z)$:
+  $\bigl|\sum_{d_1<D_1,\,d_2<D_2,\ (d_1,d_2)=1}\alpha_{d_1}\beta_{d_2}r_{d_1d_2}(i)\bigr| \le P/L^3$.
+  *(Audit correction 2026-11-25: $r_e$ is defined only for odd squarefree $e$. The sum is therefore restricted to coprime pairs of odd
+  squarefree divisors of $\Pi(z)$, so that $d_1d_2$ is again odd and squarefree. This is the support of the linear-sieve remainder, and on it
+  (S) ⟹ (WF) holds as stated.)*
 - **(SG) Signed aggregate (Selberg).** With $\lambda_d(i)$ the optimal Selberg weights at sifting limit $D_i = P^{\lambda(\theta_i)/2}$ and
   $\rho_e(i) = \sum_{[d_1,d_2]=e}\lambda_{d_1}(i)\lambda_{d_2}(i)$:
   $$\sum_i\sum_e\rho_e(i)\,r_e(i) \le \eta_0P\qquad\text{(one-sided, summed over all blocks).}$$
 
 **Implications.**
 - (S) ⟹ (SG), since $|\rho_e| \le \tau_3(e)$ (because $|\lambda_d| \le 1$).
-- (S) ⟹ (WF), since a product $d_1d_2 = e$ arises at most $\tau(e) \le \tau_3(e)$ times.
+- (S) ⟹ (WF): each squarefree $e$ arises as a coprime product $d_1d_2$ at most $\tau(e) \le \tau_3(e)$ times.
 - (SG) is the **exact** error term of Selberg's method. For any real $\lambda_d$ with $\lambda_1 = 1$,
   $$S(\mathcal A_i, D_i) \le \sum_aw_a\Bigl(\sum_{d\mid a}\lambda_d\Bigr)^2 = \mathcal X_i\sum\lambda_{d_1}\lambda_{d_2}g([d_1, d_2]) + \sum_e\rho_e r_e(i),$$
   and the optimal choice makes the first term $\mathcal X_i/G(D_i)$.
@@ -125,11 +139,15 @@ A profile is admissible for $K$ when $\mathcal C(\lambda) := 2\int_{1/2}^1d\thet
 | 1.9 | 1.400 | 0.714 | 0.493 | 0.646 |
 | 2 | 1.500 | 0.667 | 0.448 | 0.672 |
 
-**Reading.**
-- Even the most favourable shapes require, at every prime scale $q \sim P^\theta$, equidistribution of the dual sequence at moduli
-  $P^{0.45}$–$P^{0.65}$ **beyond** the progression length $P^{1-\theta}$.
-- Equivalently, they require full level $1$ on all scales $\theta \ge 0.57$–$0.67$.
-- No profile close to what is known is admissible.
+**Reading (scope corrected 2026-11-25).** The thresholds in the table are attached to the three **families** of profiles studied. They are
+not necessary conditions for an arbitrary admissible profile.
+- *Constant gain family.* An admissible profile of the form $\min(1, 1-\theta+c)$ needs $c$ at least the tabulated value.
+- *Threshold family.* A profile that is trivial on $[\frac12, \theta_1]$ and equal to $1$ above needs $\theta_1$ below the tabulated value.
+- *Level 1 is not necessary in general.* For example, $\lambda \equiv 0.9$ gives $\mathcal C = 10/9 < 7/6$ without ever reaching level 1. (This
+  says nothing about whether such a profile is available.)
+- *What is true for every profile.* Admissibility is the single integral condition $2\int d\theta/\lambda < K - \frac12$. Since
+  $2\int_{1/2}^1d\theta = 1$, any admissible profile must exceed $2/(2K-1)$ on a set of positive measure.
+- No profile close to what is known is admissible (§4).
 
 ---
 
@@ -141,8 +159,11 @@ A profile is admissible for $K$ when $\mathcal C(\lambda) := 2\int_{1/2}^1d\thet
 | Theorem B | fixed level on the top $O(\log\mathcal T)$ blocks | top range $o(P)$ | proved |
 | Prop. 16.2χ + Parseval, scales $\theta > K/2$ | $\max\bigl(1-\theta,\ \frac{31}{47}(1 - \theta + \frac\theta{248})\bigr)$ | **11.59** (for $K \le 1.97$) | computation (below); not a theorem |
 | Prop. 16.3χ, scales $\theta \le K/2$ | gain $\approx c_*\theta^3/(K+1)^2 \approx 10^{-9}$ | — | negligible |
-| Hypothetical large sieve over $\chi \bmod e$, averaged over $e$ | $\max(1-\theta, \min(2(1-\theta), \theta/2))$ | $\approx 7.37$ | **not proved** |
+| Hypothetical large sieve over $\chi \bmod e$, averaged over $e$, combined with the Prop. 16.2χ profile | $\max\bigl(1-\theta,\ \min(2(1-\theta), \theta/2),\ \frac{31}{47}(1 - \theta + \frac\theta{248})\bigr)$ | $\approx 7.37$ | **not proved** |
 | Required | — | $< K - \frac12 \le 1.5$ | open |
+
+*(Audit correction: the large-sieve row previously displayed only the first two terms of the maximum. That profile equals $2(1-\theta)$ near
+$\theta = 1$, so its integral diverges. The value $7.37$ is that of the three-term maximum computed in `scripts/distribution_profile.py`.)*
 
 **The Prop. 16.2χ computation.** This is the method of `hypothesis-T.md` §7–8 with Prop. 16.2χ in place of 16.3χ.
 - At a block $X = P^\theta$, Vaaler with $H = D^2L^5$ (coefficients $\ll 1/|h|$, total $\ll\log H$), the character expansion with
@@ -163,18 +184,28 @@ A profile is admissible for $K$ when $\mathcal C(\lambda) := 2\int_{1/2}^1d\thet
 - Neither is done here. **Even if done, $\mathcal C \approx 7.37$ is still worse than trivial.**
 
 **Dispersion / bilinear forms.**
-- The minimal requirement (SG) is a one-sided bound for a signed sum. Expanding $r_e$ by Vaaler (the truncation error is absolute and is handled by
-  $H \ge P^{\lambda}L^5$) leaves the signed bilinear sums
+- The minimal requirement (SG) is a one-sided bound for a signed sum. Expanding $r_e$ by Vaaler leaves the signed bilinear sums
   $$\mathcal K_\pm(X, h) := \sum_{e<P^\lambda}\rho_e\sum_{q\in(3X/4,X)}\log q\;e\Bigl(\mp\frac{h\,\bar 2\,N\bar q}e \pm \frac{h(N - c_\pm)}{2eq}\Bigr),\qquad c_+ = 3,\ c_- = P,\ 1 \le h \le H.$$
 - Derivation of the phase.
   - $\beta = \beta_q(e)$ is the odd class with $\beta \equiv N\bar q \pmod e$ (Lean `odd_class_mod_two_mul`).
   - With $\bar 2 := (e+1)/2$, we have $\beta(1 - 2\bar 2) = -e\beta$, hence $\frac\beta{2e} \equiv \frac{\bar 2\beta}e - \frac\beta2 \equiv \frac{\bar 2N\bar q}e - \frac12 \pmod 1$.
   - So $e(\mp h\beta/(2e)) = (-1)^he(\mp h\bar 2N\bar q/e)$, and the sign $(-1)^h$ is absorbed.
-  - In $\mathcal K_\pm$, $\bar q$ is the inverse of $q$ modulo $e$.
+  - **Support of $\rho_e$ (audit correction).** $\rho_e(i) \ne 0$ only for $e = [d_1, d_2]$ with $d_j \mid \Pi(D_i)$, $d_j < D_i$. Every prime factor of
+    $e$ is therefore $< D_i \le \sqrt P < q$ for $q$ in the block, so $q \nmid e$ and $\bar q \bmod e$ is well defined on the whole support (even when $e > q$).
+- **The Vaaler remainder is not absolute-free (audit correction 2026-11-25).**
+  - Write $\psi = \psi_H + R_H$. Vaaler's majorant (Graham–Kolesnik, Th. A.6) gives
+    $|R_H(x)| \le \Delta_H(x) := \frac1{2H+2}\sum_{|h|\le H}\bigl(1 - \frac{|h|}{H+1}\bigr)e(hx)$.
+  - The truncation error in $\sum_e\rho_er_e$ is therefore at most
+    $\sum_e|\rho_e|\sum_q\log q\,\Delta_H(x_{e,q})$. Its $h = 0$ term, $\frac{\theta_{\mathcal J}}{2H+2}\sum_e|\rho_e|$, is controlled by $H \ge P^\lambda L^5$.
+  - Its terms $h \ne 0$ are sums $\mathcal K^{|\cdot|}_\pm(X, h)$, defined like $\mathcal K_\pm$ but with the **nonnegative weights $|\rho_e|$** in place of
+    $\rho_e$. They must be controlled as well. The signed structure of $\rho_e$ is **not** available for them.
+  - The integer points ($x_{e,q} \in \mathbb Z$, which forces $q \mid N-3$ or $q \mid N-P$, so at most two primes per block) cost
+    $\le 2L\sum_{e<P^\lambda}|\rho_e| \le 2L^3P^\lambda$ per block. This is negligible for $\lambda < 1$.
+  - PF stated directly under the exact hypothesis (SG) is unaffected; only the reduction of (SG) to Kloosterman-type sums needs the extra term.
 - These are **incomplete Kloosterman sums over primes, with a reciprocal phase of height $hN/e \ge P^{K-\lambda}$, averaged over $e$ with Selberg
   (or well-factorable) weights**.
-- A dispersion argument would need these sums for $e$ up to $P^{\lambda(\theta)}$ with $\lambda(\theta) \ge 1 - \theta + 0.45$. The frequency $N$ is larger than
-  $(eq)^{5/6}$, which places the problem outside the ranges I know how to treat. No estimate is obtained here.
+- A dispersion argument would need these sums for $e$ up to $P^{\lambda(\theta)}$. Within the constant-gain family this means
+  $\lambda(\theta) \ge 1 - \theta + 0.45$; for other profiles the requirement is only the integral condition. No estimate is obtained here.
 
 **Direct estimate of the total incidence.** Lemma T is the direct estimate. Beating it by $\eta P$ is Ω itself (Lemma E: at least $\eta P$ of the
 rows' mass lies in prime factors $\ge P$).
@@ -187,8 +218,9 @@ rows' mass lies in prime factors $\ge P$).
 > $2\int_{1/2}^1d\theta/\lambda(\theta) \le K - \frac12 - \eta$ on a band $J \subseteq [5/3, 2-\epsilon]$, such that, uniformly in even $N$ with $K \in J$, the
 > one-sided aggregated Selberg error (SG) is $\le o(P)$.
 >
-> Sufficient: for every block $X = P^\theta \in [\sqrt P, P/\mathcal T]$ and $1 \le h \le P^{\lambda(\theta)}L^5$, the signed sums $\mathcal K_\pm(X, h)$ with
-> $e < P^{\lambda(\theta)}$ satisfy $\sum_h|h|^{-1}|\mathcal K_\pm(X, h)| \le P/L^4$.
+> Sufficient (corrected): for every block $X = P^\theta \in [\sqrt P, P/\mathcal T]$, with $H = P^{\lambda(\theta)}L^5$ and $e < P^{\lambda(\theta)}$,
+> both $\sum_{1\le h\le H}|h|^{-1}|\mathcal K_\pm(X, h)| \le P/L^4$ (signed weights $\rho_e$) and
+> $\frac1H\sum_{1\le h\le H}|\mathcal K^{|\cdot|}_\pm(X, h)| \le P/L^4$ (weights $|\rho_e|$, from Vaaler's majorant).
 
 **Quantitative gap.**
 - The required gain over the trivial level is at least $0.448$ (as $K \to 2$) to $0.645$ (at $K = 5/3$) **at every scale** in the additive-gain family.
