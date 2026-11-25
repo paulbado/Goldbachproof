@@ -53,7 +53,48 @@ Exact Lean statement: as `WallIAt` with `MultipleDeficits P N` in place of its n
 - The obstacle is **analytic** (a level-of-distribution statement beyond Bombieri–Vinogradov for a fixed large residue), plus the same
   effectivity gap below `P_*`.
 
-## Remaining proof obligations
+### Wall II, joint constraints on the deficient rows (new, 2026-11-25; `Goldbach/WilliamsonWallII.lean`)
+
+Let `i ≠ j` be deficient rows and `B₁ = deficitBudget P 1`.
+- Each complement divides `B₁` (`deficient_dvd_budget`), so `lcm(N−i, N−j) ∣ B₁`.
+- `gcd(N−i, N−j)` is odd and divides `|i−j|`, so it is `≤ (P−3)/2` (`compl_gcd_le`).
+- Hence `(N−P)² ≤ (N−i)(N−j) = gcd·lcm ≤ B₁·(P−3)/2` (`wallII_height_ceiling_sharp`).
+  The earlier ceiling was `(N−P)² ≤ deficitBudget P 2 = B₁²`.
+
+For a set `D` of `k` deficient rows, `∏(N−i) ∣ lcm·T` with `T ≤ ((P−3)/2)^{k(k−1)/2}` (`prod_dvd_lcm_mul`), which gives
+`deficit_pairwise_height_bound'`:
+
+```lean
+(N - P) ^ #D ≤ deficitBudget P 1 * ((P - 3) / 2) ^ (#D * (#D - 1) / 2)
+```
+
+and, by `z ≥ 1 + a`, the same for every `k ≤ 1 + #absentSet` (`height_of_absent_count`).
+
+**Is the joint constraint stronger than the individual ones?** Yes for few rows, no for many. Values of `log(N−P)/log P` allowed by
+the old k-line budget → by the joint bound:
+
+| P | k=2 | k=3 | k=5 | k=10 | k=20 | k=50 |
+|---|---|---|---|---|---|---|
+| 199 | 17.8 → 9.3 | 15.0 → 6.8 | 11.1 → 5.3 | 6.7 → 5.7 | 3.9 → 9.1 | 1.7 → 21.6 |
+| 1009 | 73.4 → 37.2 | 61.0 → 25.4 | 45.0 → 16.5 | 27.8 → 11.4 | 16.4 → 12.2 | 7.7 → 23.5 |
+| 10007 | 542.6 → 271.8 | 452.1 → 181.8 | 334.9 → 110.4 | 207.7 → 58.4 | 123.3 → 35.9 | 59.3 → 33.5 |
+
+The joint bound wins roughly for `k ≲ √P`; the best of the two is the available constraint.
+
+**Region newly excluded (Lean: `wallII_excluded_region`).** No bad family with two deficient rows has
+`(N−P)² > B₁·(P−3)/2`. Compared with the previous ceiling `N − P ≤ B₁`, the heights with
+`√(B₁(P−3)/2) < N − P ≤ B₁` are now excluded for Wall II. This is an upper height bound (about `e^{P/4}` instead of `e^{P/2}`);
+it does **not** prove emptiness below it.
+
+**What the first-failure conditions add.** The previous prime `p` divides a complement `N − j₀` with `j₀ ≤ p`, and `p` is then a private
+certificate of row `j₀` (`previous_prime_has_private_owner`), so `j₀` is not deficient and `p ∤ N − i` for every deficient `i`. Since
+`2p > P − 3`, `p` is not a factor of `B₁` anyway: the congruence gives no further restriction on the deficient pair. I found no
+contradiction from `PreviousRankConditions` combined with the divisor structure.
+
+**What remains for Wall II.** All heights `3p + 3 ≤ N` with `(N−P)^k ≤ min(deficitBudget P k, B₁((P−3)/2)^{k(k−1)/2})` for every `k ≤ z`.
+In particular the whole region `N ≤ P + √(B₁(P−3)/2)` with exactly two deficient rows is untouched.
+
+## Remaining proof obligations## Remaining proof obligations
 
 1. `WallIAt 74` — equivalently (by `wallIAt_of_absent`) prime absence for all prime ranks `P ≥ 74` in the one-deficit branch.
 2. `WallIIAt 74`.

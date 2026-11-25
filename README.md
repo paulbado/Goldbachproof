@@ -22,6 +22,7 @@ This repository does **not** prove the Goldbach conjecture. Current strategy:
 | `WilliamsonMurIIBridge` | **exact bridge**: at P = largest prime < N, `BadFamily P N ↔ ¬ Goldbach(N)`; `first_failure_rank_chain`; **`goldbach_of_walls`**: Wall I + Wall II above P₀ + ranks 5 ≤ P < P₀ ⇒ Goldbach for all even N ≥ 8 |
 | `WilliamsonSmallRanks` | **`badFamily_height_le_budget`**: every bad family of prime rank P ≥ 3 has N ≤ P + `deficitBudget P 1`; `exists_deficient_dvd_budget`; **`goldbach_of_walls_prev`**: the small-rank hypothesis only needs to exclude configurations with `PreviousRankConditions` and N ≤ P + `deficitBudget P 1`; certificate checker (`primeB_iff`, `mem_divsF`, `checkCert_sound`, `rank_clear_rows`) with proved completeness of the candidate enumeration |
 | `WilliamsonWallI` | forced structure of the one-deficit branch (`wallI_absent_empty`, `wallI_odd_multiple`, `wallI_unique_deficient`); reduction `wallIAt_of_absent` (Wall I ⟸ prime absence); `goldbach_usual_of_goldbachAt` (N ≥ 8 ⇒ usual statement for N ≥ 4). **`WallIAt` itself is not proved**; see [`docs/closure-status.md`](docs/closure-status.md) |
+| `WilliamsonWallII` | **joint height bound** for any set D of k deficient rows: (N−P)^k ≤ `deficitBudget P 1` · ((P−3)/2)^{k(k−1)/2} (`deficit_pairwise_height_bound'`); `wallII_height_ceiling_sharp`: (N−P)² ≤ `deficitBudget P 1`·(P−3)/2 (previously `deficitBudget P 2` = square of `deficitBudget P 1`); `height_of_absent_count`; `wallII_excluded_region`. **`WallIIAt` itself is not proved.** |
 | `WilliamsonSmallRanksData` | **`small_ranks_clear`**: no bad family of prime rank 5 ≤ P < 74 satisfies `PreviousRankConditions` (59,773 candidate heights, each killed by a kernel-checked witness; `decide +kernel`, kernel-checked); **`goldbach_of_walls_74`**: `WallIAt 74 → WallIIAt 74 → ∀ N ≥ 8 even, GoldbachAt N` |
 
 `deficitBudget P k = ∏_{r<P prime} r^{E(r)}`, with
@@ -89,6 +90,8 @@ Goldbach/WilliamsonMurIIBridge.lean      exact bridge to Goldbach
 Goldbach/WilliamsonMurIIClosure.lean     link with manuscript §17 (z ≥ 1+a ≥ 1+G)
 Goldbach/WilliamsonMurIIRatio.lean       exact identities (17.1), (17.4), (17.6)
 Goldbach/ReciprocalPhase.lean            algebraic steps of Prop. 16.2χ and Theorem B (phase shift, phase difference, sawtooth count, odd class mod 2e)
+Goldbach/WilliamsonWallI.lean            one-deficit branch: structure, reduction to prime absence
+Goldbach/WilliamsonWallII.lean           joint pairwise-gcd height bound for deficient rows
 Goldbach/WilliamsonSmallRanks.lean       finite height bound, sharper bridge, certificate checker
 Goldbach/WilliamsonSmallRanksData.lean   generated certificates, small_ranks_clear, goldbach_of_walls_74
 Goldbach/WilliamsonResidual.lean         injectivity, near-injectivity, fiber counting, row uniqueness, powersmooth ⇒ lcm, multiplicative rigidity, parity lemma for q > (P−3)/2
