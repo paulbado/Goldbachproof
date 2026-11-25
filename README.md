@@ -1,6 +1,6 @@
 # Goldbach — Williamson certificate reduction (Lean 4 + Mathlib)
 
-[![Build & verify](https://github.com/idrissbado/Golbach-Conjecture/actions/workflows/lean.yml/badge.svg)](https://github.com/idrissbado/Golbach-Conjecture/actions/workflows/lean.yml)
+[![Build & verify](https://github.com/paulbado/Goldbachproof/actions/workflows/lean.yml/badge.svg)](https://github.com/paulbado/Goldbachproof/actions/workflows/lean.yml)
 
 Formal (Lean 4 / Mathlib) and computational material for a certificate-based
 attack on first failing endpoints of Goldbach-type decompositions.
@@ -68,6 +68,15 @@ above (`Goldbach/*.lean`), including (17.1), (17.4), (17.6) and a ≥ G. **Nothi
 
 **Not proved:** Wall I, Wall II, the emptiness of the residual region, Williamson, Goldbach. Theorem W
 (polynomial height) does **not** close Wall II: the region P < N ≤ P^{K₀} remains.
+
+## Source manuscript and its finite checks (not duplicated here)
+
+The Lean development follows I. O. Bado, *A Closure Chain Toward Williamson's Conjecture* (110 pages, DOI 10.13140/RG.2.2.34840.97281),
+referred to as [CC] in `docs/`. Its submission package contains the LaTeX source, thirteen finite verification programs
+(`code/run_checks.py`), their JSON reports (`results/`: `check_summary.json`, `wall_ii_budget_checks.json`, `structural_checks.json`,
+`prime_power_rigidity_checks.json`, `valuation_extension_checks.json`, `threshold_checks.json`, the three `mur_i_*.json` audits, …) and a
+`MANIFEST.sha256`. Those reports check finite identities, constants and examples of the manuscript; they are **not** re-proved or
+copied in this repository, and they are not Lean proofs. What this repository adds is listed in the tables above.
 
 ## Layout
 

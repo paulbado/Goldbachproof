@@ -112,3 +112,19 @@ Theorem W annonce un seuil effectif mais non calculé. La valeur indicative `log
 Une piste bibliographique récente mérite une étude séparée : Daniel R. Johnston, [An effective Bombieri–Vinogradov error term for sifting problems, version 3, août 2026](https://arxiv.org/abs/2510.10853v3). Cet article annonce une méthode d'effectivisation pour les problèmes classiques de crible. Son applicabilité aux sommes et uniformités exactes de ce dépôt n'a pas été vérifiée ici ; il ne fournit pas à lui seul l'estimation Ω manquante.
 
 **Critère de clôture :** disposer de preuves de `WallIAt P₀`, `WallIIAt P₀` et `hsmall` pour un même seuil, puis les appliquer effectivement à `goldbach_of_walls` et contrôler les axiomes du théorème résultant. La compilation actuelle valide la réduction conditionnelle ; ces trois arguments restent à construire.
+
+
+---
+
+## Suite donnée à cet audit (commits `d5d3e16`, `6926c8b`)
+
+| Point de l'audit | État |
+|---|---|
+| Borne finie `N ≤ P + deficitBudget P 1` | **prouvée en Lean** : `badFamily_height_le_budget` (`WilliamsonSmallRanks.lean`) |
+| `hsmall` restreint aux configurations de premier échec | **prouvé en Lean** : `goldbach_of_walls_prev` (hypothèse limitée à `PreviousRankConditions` et à la borne de hauteur) ; `goldbach_of_walls` est conservé |
+| Certificats des petits rangs | **prouvé en Lean** pour `5 ≤ P < 74` : `small_ranks_clear` (59 773 hauteurs candidates, témoins vérifiés par le noyau, complétude de l'énumération démontrée par `rank_clear_rows`) ; d'où `goldbach_of_walls_74 : WallIAt 74 → WallIIAt 74 → ∀ N, 8 ≤ N → Even N → GoldbachAt N` |
+| Corrections 1 à 6 des notes | faites dans `docs/distribution-profile.md` et `docs/residual-region.md` (datées 2026-11-25) |
+| `WallIAt`, `WallIIAt` | **toujours ouverts** ; ce sont des hypothèses, pas des axiomes |
+
+Obligations restantes pour une clôture : prouver `WallIAt 74` et `WallIIAt 74` (ou les mêmes énoncés pour un seuil certifié plus grand),
+puis raccorder `GoldbachAt` (deux premiers impairs, `N ≥ 8`) aux cas `N = 4, 6` de l'énoncé usuel.
