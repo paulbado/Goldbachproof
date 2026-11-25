@@ -149,8 +149,12 @@ Example: `P = 101`, `N = 2236`, rows `3` and `61`: `2233 = 7·11·29`, `2175 = 3
 - [FB]'s theorem (`N = p + rq`, `r ≤ q^{0.7512}`, `p ≤ N`) gives nothing for `p ≤ N^{1/K}`: such representations number `≤ π(N^{3/5}) = o(N/log²N)`.
 - Its inputs do not localize: Li's quantitative Chen bound has no analogue for `p ≤ N^{3/5}`; Lichtman's convolution estimates need dyadic
   product ranges, while the rows `rq` lie in `[N − P, N]`, where the level for two-factor rows is trivially `1 − Kρ ≤ 2 − K`.
-- The localized Chen–Buchstab balance excludes nothing; even granting level 1 for all multi-factor products in the short interval, it fails at
-  `K = 5/3` for `s ≤ 10` and holds only for `K ≳ 1.8` under that unproved hypothesis.
+- Revised: the idealized balance tends to `2(1 − log K)` as `s → ∞` and, with the true `f(s)`, has a positive *idealized* margin for
+  `s ≥ 40` at `K = 5/3`. In the limit it reduces to an upper bound for `#{ℓ ≤ P : N − ℓ P-smooth}` within a factor `< 1/ρ_D(K)` (2.044 at
+  `K = 5/3`) of its expected size, i.e. a level `> 2ρ_D(K)` for `P`-smooth numbers of `[N − P, N]` in the classes `N mod d`, which is unknown.
+- With rigorous constants the margin is negative for every `s`: a sieve at any level `< 1` cannot separate `P`-smooth rows from rough rows.
+- Correction: the fixed-`r` level `1 − Kρ` holds for an integer variable `q`, not for prime `q`, for which even `d = 1` is open
+  (short interval of length `≤ X^{1/3}`).
 
 ## Remaining proof obligations
 

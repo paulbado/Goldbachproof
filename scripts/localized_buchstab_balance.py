@@ -1,26 +1,35 @@
 #!/usr/bin/env python3
-"""docs/localized-buchstab-wall-ii.tex, Section 5: idealised Chen/Buchstab balance for the localized problem l <= P (Buchstab-function model)."""
+"""docs/tex/localized-buchstab-wall-ii.tex, Sections 5-6: idealised localized balance U_ideal(K,s), its limit 2(1-log K),
+and the true linear-sieve functions F(s), f(s) (delay-differential equations) for s > 4."""
 import numpy as np, math
 from scipy.integrate import quad
-h=1e-4; U=np.arange(1,40+h,h); w=np.zeros_like(U)
-for k,u in enumerate(U):
+g=math.exp(0.5772156649015329)
+# Buchstab omega on [1,250]
+h=2e-4; U=np.arange(1,250+h,h); w=np.zeros_like(U); n1=int(round(1/h))
+for k in range(len(U)):
+    u=U[k]
     if u<=2: w[k]=1/u
-    else:
-        j=k-int(round(1/h)); w[k]=(U[k-1]*w[k-1]+h*w[j])/u
+    else: w[k]=(U[k-1]*w[k-1]+h*0.5*(w[k-n1]+w[k-1-n1]))/u
 W=lambda v: float(np.interp(v,U,w))
-g=math.exp(0.5772156649)
-def fs(s): return 2*g*math.log(s-1)/s if 2<=s<=4 else None
-print(" K     s   bad_tot  two-factor  ideal_upper  (lower<=1; f(s) if s<=4)")
-for K in (5/3,1.75,1.8,1.9,1.95,1.99):
-  for s in (2.5,3,4,6,10):
-    beta=1/(2*s); u=K/beta
-    # bad fraction among z-rough: 1 - good, good = rows with a prime factor >= P
-    good=quad(lambda t: W(u*(1-t))/t, 1/K, 1-1/u, limit=200)[0]+1/u
-    good/=W(u); bad=1-good
-    norm=u*W(u)
-    lo,hi=(K-1)/K,0.5
-    b2=quad(lambda r:1/(r*(1-r)),lo,hi)[0]/norm
-    up2=quad(lambda r:(2/(1-K*r))/(r*(1-r)),lo,hi)[0]/norm
-    ideal=2*(bad-b2)+up2
-    f=fs(s)
-    print(f"{K:.3f} {s:4.1f}  {bad:.3f}   {b2:.4f}     {ideal:.3f}   {'' if f is None else f'f={f:.3f}'}")
+# linear sieve F,f: F=2e^g/s (0<s<=3), f=0 (s<=2); (sF)'=f(s-1) s>3; (sf)'=F(s-1) s>2
+H=1e-4; S=np.arange(0.5,80+H,H); F=np.zeros_like(S); f=np.zeros_like(S); m=int(round(1/H))
+for k,s in enumerate(S):
+    if s<=3: F[k]=2*g/s
+    if s<=2: f[k]=0
+    if k>0:
+        if s>3: F[k]=(S[k-1]*F[k-1]+H*0.5*(f[k-m]+f[k-1-m]))/s
+        if s>2: f[k]=(S[k-1]*f[k-1]+H*0.5*(F[k-m]+F[k-1-m]))/s
+Ff=lambda s:(float(np.interp(s,S,F)),float(np.interp(s,S,f)))
+print("check f(3),f(4):",Ff(3)[1],2*g*math.log(2)/3, Ff(4)[1], 2*g*math.log(3)/4)
+def Uid(K,s):
+    u=2*s*K; norm=u*W(u)
+    good=(quad(lambda t: W(u*(1-t))/t,1/K,1-1/u,limit=400)[0]+1/u)/W(u)
+    bad=1-good; lo=(K-1)/K
+    b2=quad(lambda r:1/(r*(1-r)),lo,.5)[0]/norm
+    up2=quad(lambda r:(2/(1-K*r))/(r*(1-r)),lo,.5)[0]/norm
+    return 2*(bad-b2)+up2, bad, u
+print(" K      s   U_ideal  limit 2(1-logK)  lower=f(s)/(e^g w(u))  F(s)/(e^g w(u))  margin(lower-U)")
+for K in (5/3,1.7,1.75,1.8):
+    for s in (4,6,10,20,40,60):
+        Ui,bad,u=Uid(K,s); Fs,fs=Ff(s); nrm=g*W(u)
+        print(f"{K:.3f} {s:4d}  {Ui:.4f}   {2*(1-math.log(K)):.5f}        {fs/nrm:.5f}            {Fs/nrm:.5f}      {fs/nrm-Ui:+.4f}")

@@ -25,9 +25,11 @@ prime $\ell\le P$ has $N-\ell$ divisible by a prime $\ge P$. We prove three fact
 \item the main theorem of [FB] implies nothing about $\ell\le P$ (Section~2);
 \item each of its two analytic inputs fails in the localized setting for a structural reason
 (Section~3);
-\item a localized Chen--Buchstab balance excludes nothing unconditionally. Even an idealized
-version needs level-one distribution of multi-factor products in the short interval
-$[N-P,N]$, and it still fails at $K=5/3$ with sifting parameter $s\le 10$ (Section~5).
+\item a localized Chen--Buchstab balance excludes nothing unconditionally (Sections~5--7).
+An idealized version (levels close to $1$ for products in the short interval $[N-P,N]$) has a
+positive margin for large $s$: its limit is $2(1-\log K)<1$, so the margin is positive for
+$s\ge40$ at $K=5/3$. Every rigorous upper bound available for the bad rows gives a
+\emph{negative} margin for every $s$.
 \end{enumerate}
 No exclusion in Wall~II is obtained. Wall~II remains open.
 \end{abstract}
@@ -82,19 +84,30 @@ conclusion below, which fails on the upper-bound side.
 $x\asymp N$. In the localized problem a row is $N-\ell=rq$ with $rq\in[N-P,N]$. This is a short
 interval of relative length $P/N=N^{-(1-1/K)}$.
 
-\begin{lemma}[Trivial level]
-Fix a prime $r=P^{K\rho}$ with $(K-1)/K\le\rho\le1/2$, and let $q$ run over primes with
-$rq\in[N-P,N]$. The integers $q$ in question form an interval of length $P/r=P^{1-K\rho}$. The
-congruence $rq\equiv N\pmod d$ is equidistributed with bounded error per modulus. Consequently
-the Type~I level for sifting $\ell=N-rq$ is $P^{1-K\rho-o(1)}$, i.e.
-\[
-\lambda(\rho)=1-K\rho\ \in\ [\,1-K/2,\ 2-K\,]\subset(0,1/3].
-\]
+\begin{lemma}[Fixed $r$: integer and prime variables, corrected]
+Fix a prime $r=P^{K\rho}$ with $(K-1)/K\le\rho\le1/2$, and let $J_r=[(N-P)/r,(N-3)/r]$, an interval of
+length $Y=(P-3)/r=P^{1-K\rho}$ located at $X=N/r=P^{K(1-\rho)}$. Then $Y=X^{\alpha}$ with
+$\alpha=(1-K\rho)/(K(1-\rho))\le1/3$ (and $\le 1/5$ at $\rho=1/2$, $K=5/3$).
+\begin{enumerate}
+\item[(i)] \emph{Integer variable (Type~I).} For $(d,r)=1$,
+$\#\{q\in J_r\cap\mathbb Z: rq\equiv N\ (d)\}=Y/d+O(1)$. So the integer sequence $\{N-rq: q\in J_r\}$ has
+level $Y=P^{1-K\rho}$, i.e.\ $\lambda(\rho)=1-K\rho\le2-K$.
+\item[(ii)] \emph{Prime variable.} For $q$ restricted to primes, no asymptotic for
+$\#\{q\in J_r \text{ prime}\}$ is known even for $d=1$: $J_r$ is a short interval of length $X^{\alpha}$,
+$\alpha\le1/3$, below the range $X^{0.525}$ where primes in short intervals are known to exist.
+The only unconditional information is an \emph{upper} bound. A Selberg sieve applied jointly to
+$q$ and $N-rq$ in $J_r$ (dimension two, as in Theorem~S of \texttt{switched-sieve.md}) loses a factor
+$\asymp 8/\lambda(\rho)^2$, not $2/\lambda(\rho)$.
+\end{enumerate}
 \end{lemma}
 \begin{proof}
-For fixed $r\nmid d$ the condition is one class of $q$ modulo $d$. The interval has length
-$P/r$, so the count is $P/(rd)+O(1)$, and the $O(1)$ terms dominate once $d>P/r$. $\square$
+(i) For fixed $r\nmid d$ the condition is one class of $q$ modulo $d$, and the count of integers in an
+interval of length $Y$ in one class is $Y/d+O(1)$. (ii) Asymptotics for primes in $[X,X+X^\alpha]$ are
+known only for $\alpha>7/12$, and existence only for $\alpha\ge0.525$ (Baker--Harman--Pintz). The
+upper bound is Halberstam--Richert Th.~5.7 with $g=2$. $\square$
 \end{proof}
+\noindent\emph{Correction.} The first version of this note stated (i) for prime $q$. That is not valid:
+for prime $q$ the per-modulus error is not $O(1)$, and the main term itself is unknown.
 
 Going beyond this level requires bilinear estimates: dispersion, Poisson summation in a long
 variable, Kloosterman sums. Every such estimate in [FB] uses a variable running over a dyadic
@@ -132,9 +145,9 @@ Grant the following idealizations, all \emph{stronger} than what is available:
 \begin{enumerate}
 \item[(I1)] the lower bound in~\eqref{eq:target} equals its expected value $1$ (any valid lower
 bound is $\le1+o(1)$);
-\item[(I2)] two-factor bad rows are bounded by the linear-sieve upper constant at the trivial level
-of Lemma~2, i.e.\ with loss $2/\lambda(\rho)$. In fact only the two-dimensional loss of Theorem~S is
-available, since primality of $q$ in the short interval cannot be sieved at level $>0$;
+\item[(I2)] two-factor bad rows are bounded with loss $2/\lambda(\rho)$, as if the integer level of
+Lemma~2(i) held for the prime variable. Lemma~2(ii) shows that only a two-dimensional loss
+$\asymp8/\lambda(\rho)^2$ is available;
 \item[(I3)] all other bad rows are bounded with loss $2$, i.e.\ at level $1$. This is an
 Elliott--Halberstam-strength statement for products of primes in the short interval $[N-P,N]$,
 unknown in any form.
@@ -160,6 +173,8 @@ $1.95$ & 0.914 & 0.851 & 0.788 & 0.739 & \\
 \end{tabular}
 \end{center}
 
+(This table is extended to large $s$ in Section~6.)
+
 \begin{remark}
 Three things follow from the table.
 \begin{itemize}
@@ -172,13 +187,116 @@ doubles the expected counts.
 \end{itemize}
 \end{remark}
 
-\begin{remark}[What the Buchstab correction could change]
-In [FB], the positive correction $\Delta(L)$ reduces the upper constant below the linear-sieve
-value $4/L$, by sifting extracted-prime layers with bilinear estimates. In the localized problem the
-corresponding layers are short-interval convolutions. By Lemma~2 their level is trivial, so the
-lower-sieve terms $h(v(s)/s-1)$ that produce $\Delta$ vanish ($v(s)/s-1\le2$). The localized
-correction is therefore $0$ with current technology. A positive localized correction is exactly what
-a short-interval analogue of [FB, Prop.~3.4] would provide. That is the missing input.
+\section{Large $s$: the limit of the idealized balance}
+
+\begin{proposition}\label{prop:limit}
+In the Buchstab model, for $1<K<2$,
+\[
+\lim_{s\to\infty}b_{\rm tot}(K,s)=1-\log K=\rho_{\rm D}(K),\qquad
+\lim_{s\to\infty}U_{\rm ideal}(K,s)=2(1-\log K),
+\]
+where $\rho_{\rm D}$ is Dickman's function. At $K=5/3$ the limit is $0.97835$.
+\end{proposition}
+\begin{proof}
+Write $u=2sK\to\infty$.
+\begin{itemize}
+\item The good fraction is $\omega(u)^{-1}\bigl[\int_{1/K}^{1-1/u}\omega(u(1-t))\,dt/t+1/u\bigr]$.
+\item The function $\omega$ is bounded on $[1,\infty)$ and $\omega(v)\to e^{-\gamma}$. The integrand tends to $e^{-\gamma}$ for
+each fixed $t<1$, and the piece $t\in(1-1/\sqrt u,1)$ has measure $\to0$. By dominated convergence the good
+fraction tends to $\int_{1/K}^1dt/t=\log K$.
+\item Next, $u\,\omega(u)\to\infty$, so $b_2\to0$. The two-factor term
+$(u\omega(u))^{-1}\int 2(1-K\rho)^{-1}\,d\rho/(\rho(1-\rho))$ also tends to $0$, because the integral is finite: $1-K\rho\ge1-K/2>0$.
+\item Hence $U_{\rm ideal}\to2(1-\log K)$. $\square$
+\end{itemize}
+\end{proof}
+
+\noindent\textbf{The lower side for $s>4$.} I computed the linear-sieve functions from
+$F(s)=2e^\gamma/s$ ($s\le3$), $f(s)=0$ ($s\le2$), $(sF(s))'=f(s-1)$ ($s>3$), $(sf(s))'=F(s-1)$ ($s>2$),
+checked against $f(3)$ and $f(4)$. The normalized lower bound is $f(s)/(e^\gamma\omega(u))$; the expected
+count of $z$-rough rows is $XV(z)e^\gamma\omega(u)$. Values
+(\texttt{scripts/localized\_buchstab\_balance.py}):
+\begin{center}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+$K$ & $s$ & $U_{\rm ideal}$ & lower $f(s)/(e^\gamma\omega)$ & upper $F(s)/(e^\gamma\omega)$ & idealized margin\\
+\midrule
+$5/3$ & 10 & 1.0553 & 1.00000 & 1.00000 & $-0.0553$\\
+$5/3$ & 20 & 1.0167 & 1.00000 & 1.00000 & $-0.0167$\\
+$5/3$ & 40 & 0.9975 & 1.00000 & 1.00000 & $+0.0025$\\
+$5/3$ & 60 & 0.9911 & 1.00000 & 1.00000 & $+0.0089$\\
+$1.75$ & 10 & 0.9569 & 1.00000 & 1.00000 & $+0.0431$\\
+$1.80$ & 6 & 0.9510 & 0.99990 & 1.00011 & $+0.0489$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The value $U_{\rm ideal}(5/3,40)=0.9975$ quoted in the review is confirmed. With the true $f(s)$, the
+\emph{idealized} margin is positive for $s\ge40$ at $K=5/3$, for $s\ge20$ at $K=1.7$, and for $s\ge6$ at
+$K=1.8$.
+
+\noindent\textbf{What the limit means.} As $s\to\infty$, $z$-rough rows are all rows and bad rows are the
+$P$-smooth rows. The idealized balance becomes the statement
+\begin{equation}\label{eq:smooth}
+\#\{\ell\in I:\ N-\ell\ \text{is $P$-smooth}\}\ \le\ (2+o(1))\,\rho_{\rm D}(K)\,|I|,
+\end{equation}
+an upper bound within the parity factor $2$ of the expected count. Since $2\rho_{\rm D}(K)<1$ for
+$K>e^{1/2}=1.6487$, \eqref{eq:smooth} excludes families on the whole band $5/3\le K<2$. It would even
+suffice to have $(1/\rho_{\rm D}(K)-\eta)$ in place of $2$; the threshold is $2.044$ at $K=5/3$.
+
+\section{Rigorous constants: the margin is negative}
+\begin{proposition}\label{prop:negative}
+Let $\lambda<1$. Any upper bound for the bad rows obtained by sieving $\{N-\ell:\ell\in I\}$ with
+information on $\ell$ in classes modulo $d\le P^\lambda$ cannot separate $P$-smooth rows from rough rows.
+It is therefore at least the upper bound for $z$-rough rows. In normalized units the resulting margin
+is
+\[
+\frac{f(s)-F(s)}{e^\gamma\omega(u)}<0\qquad\text{for every } s,
+\]
+so no exclusion follows.
+\end{proposition}
+\begin{proof}
+Bad and good $z$-rough rows differ only in divisibility by primes $r\ge P$. For $r\ge P>\ell$, the class
+$N\bmod r$ contains at most one element of $I$ (Lean: \texttt{WilliamsonDual.badFamily\_iff\_residues}),
+so these moduli carry no distributional information about $\ell$ and lie beyond every level $\lambda<1$.
+The weights of a sieve at level $P^\lambda$ are supported on $d<P^\lambda<P$, so its majorant for the bad
+rows is a majorant for all $z$-rough rows. The linear sieve gives $F(s)>f(s)$ for every $s$. $\square$
+\end{proof}
+
+To get a positive margin one must bound the $P$-smooth rows \emph{directly}, through their own
+factorizations. That is the role of (I2) and (I3). Unconditionally:
+\begin{itemize}
+\item For two-factor rows, Lemma~2(ii) gives only the two-dimensional loss.
+\item For rows with $\ge3$ factors, sieving $\ell=N-n$ over $P$-smooth $n\in[N-P,N]$ needs those $n$
+equidistributed in classes $N\bmod d$ in a short interval of length $N^{1/K}$. For~\eqref{eq:smooth}
+with constant below $1/\rho_{\rm D}(K)$, the linear sieve needs level
+\[
+\lambda>2\rho_{\rm D}(K)\qquad(0.978 \text{ at } K=5/3,\ 0.824 \text{ at } K=1.8).
+\]
+No such estimate is known for smooth numbers in short intervals.
+\item Even the main term, the count of $P$-smooth integers in $[N-P,N]$, is a short-interval smooth-number
+problem, $\Psi(N,P)-\Psi(N-P,P)$ with $P=N^{1/K}$. I did not establish its asymptotic here.
+\end{itemize}
+
+\begin{remark}[Adapting the positive extraction terms of {[FB]}, with large $s$]
+In [FB] the correction $\Delta(L)$ lowers an \emph{upper} bound by subtracting \emph{lower} bounds for
+extracted layers $S_\ell(\ell)$. Each layer is sifted at level $N^{v(s)-s}$ using Lichtman's bilinear
+estimates for $\{N-rq\}$. Three localized versions are possible.
+\begin{enumerate}
+\item \emph{Extraction on the sequence $\{N-rq\}$ (two-factor bad rows).} A layer needs lower bounds for
+$\#\{q\in J_r\ \text{prime}: t\mid N-rq,\ \dots\}$. By Lemma~2(ii) these are unavailable even for $t=1$:
+lower bounds for primes in intervals of length $X^{\le1/3}$ are unknown. This is independent of $s$.
+\item \emph{Extraction on the sequence $\{N-\ell\}$.} Layers $S_t(t)$ need $\ell$ in classes modulo $td$, with
+$td\le P^{1/2}$ (Bombieri--Vinogradov). This improves the lower bound for $z$-rough rows, but that bound is
+already $1-O(e^{-s})$ for large $s$ and cannot exceed the truth. It does not touch the binding side.
+\item \emph{Extraction by the largest prime factor.} Buchstab's identity at the level of rows gives
+\[
+\#\{\text{$P$-smooth rows}\}=\#\{\text{rows}\}-\sum_{t\ \mathrm{prime}\ge P}n_N(t),
+\]
+since $n_N(t)\in\{0,1\}$ for $t>P-3$. The positive extraction term is $\sum_{t\ge P}n_N(t)$. A positive
+lower bound for it is exactly $H_{\rm big}(N)>0$ (Lemma~E of \texttt{residual-region.md}), i.e.\ the
+conclusion itself.
+\end{enumerate}
+\textbf{So no localized positive correction is available unconditionally for any $s$.} Taking $s$ large
+removes the two-factor obstruction (I2) and leaves only~\eqref{eq:smooth}.
 \end{remark}
 
 \section{Conclusion}
@@ -187,14 +305,15 @@ a short-interval analogue of [FB, Prop.~3.4] would provide. That is the missing 
 lower input (Li's quantitative Chen bound) has no localized analogue. Its convolution inputs need
 dyadic product ranges, whereas the localized products lie in the short interval $[N-P,N]$, where
 only the trivial level $1-K\rho\le2-K$ is available.
-\item The localized balance~\eqref{eq:target} fails unconditionally. It fails even under the
-idealizations (I1)--(I3) at $K=5/3$ for $s\le10$; for $K\ge1.8$ it would need the unknown (I3).
+\item With the true linear-sieve functions, the idealized balance has a positive margin for large $s$
+(Proposition~\ref{prop:limit}): $s\ge40$ at $K=5/3$. The margin is $0.0025$ at $s=40$ and tends to $0.0217$.
+\item With rigorous constants the margin is negative for every $s$ (Proposition~\ref{prop:negative}).
 \item \textbf{No region of Wall~II is excluded.}
 \end{itemize}
-The precise missing statement is the following short-interval convolution estimate.
-For $N=x^K$ with $5/3\le K<2$, products $n=rq$ (and, more generally, $n=p_1\cdots p_k$ with
-$p_i\in[z,P)$) in $[N-P,N]$ must be equidistributed in the classes $n\equiv N\pmod d$, for $d$ up to
-$P^{\lambda}$ with $\lambda$ close to $1$, on average over $d$ with well-factorable weights. That is a
-level of distribution in intervals of length $N^{1/K}$, beyond the square-root barrier.
+The precise missing statement, in its weakest form found here, is~\eqref{eq:smooth} with a constant
+$c<1/\rho_{\rm D}(K)$ (that is, $c<2.044$ at $K=5/3$): an upper bound for the number of primes $\ell\le P$ with
+$N-\ell$ $P$-smooth. Via the linear sieve it would follow from a level of distribution
+$\lambda>2\rho_{\rm D}(K)$ for $P$-smooth integers of $[N-P,N]$ in the classes $N\bmod d$. That is a short-interval
+smooth-number analogue of an Elliott--Halberstam-type estimate, and it is not known.
 
 \end{document}
