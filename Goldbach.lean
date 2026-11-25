@@ -11,3 +11,4 @@ import Goldbach.WilliamsonSmallRanksData
 import Goldbach.WilliamsonWallI
 import Goldbach.WilliamsonWallII
 import Goldbach.WilliamsonDual
+import Goldbach.WilliamsonSmoothRows

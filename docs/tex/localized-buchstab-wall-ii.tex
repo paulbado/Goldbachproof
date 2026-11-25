@@ -299,6 +299,100 @@ conclusion itself.
 removes the two-factor obstruction (I2) and leaves only~\eqref{eq:smooth}.
 \end{remark}
 
+
+\section{Smooth numbers in short intervals (Younis) and the shifted-prime count}
+
+Let $S=\{n\in[N-P,N]: P^+(n)\le P\}$ and $T(P,N)=\#\{\ell\in I: N-\ell\in S\}$. A bad family at $(P,N)$ means
+$T(P,N)=|I|$ (Lean: \texttt{WilliamsonSmoothRows.badFamily\_no\_good\_row}).
+
+\paragraph{8.1 The unweighted count.}
+Younis (arXiv:2409.05761) proves: for every $17/30<\theta\le1$, the density of $y$-smooth numbers in
+$[x,x+x^\theta]$ is asymptotic to their density in $[1,x]$, for $y\ge\exp((\log x)^{2/3+\varepsilon})$. Only the
+statement in the abstract was checked; the paper's error terms and explicit uniformity were not
+consulted.
+
+\emph{Mapping.} Take a fixed $\theta_0\in(17/30,1/K)$ and cover $[N-P,N]$ by $\asymp P/N^{\theta_0}$ intervals
+$[x_j,x_j+x_j^{\theta_0}]$ with $x_j\in[N-2P,N]$, plus a remainder of length $O(N^{\theta_0})$.
+\begin{itemize}
+\item The theorem applies to each piece. Its $o(1)$ depends only on $x_j\ge N/2$, so it is uniform in $j$.
+\item The density on $[1,x_j]$ is $\rho(\log x_j/\log P)+o(1)=\rho(K)+o(1)$ for fixed $K$.
+\end{itemize}
+Hence, for every fixed $K\in(1,30/17)$,
+\[
+|S|=(\rho(K)+o(1))\,P\qquad(P\to\infty),
+\]
+uniformly in $N$ with $\log N/\log P\to K$. The condition $\theta_0<1/K$ needs $K<30/17=1.7647$.
+
+\paragraph{8.2 This does not control $T$.}
+$|S|$ counts all integers, while $T$ counts $n\in S$ with $N-n$ prime. Passing from one to the other is a
+binary (parity-sensitive) correlation. No bound for $T$ follows from $|S|$ alone, other than $T\le|S|$,
+which exceeds $|I|$.
+
+\paragraph{8.3 Exact complement below $P^2$ (proved, Lean).}
+For $N<P^2$ a row has at most one prime factor $\ge P$ (\texttt{large\_prime\_factor\_unique}). Therefore
+\[
+|I|-T(P,N)=\sum_{\substack{P\le r\le N\\ r\ \mathrm{prime}}}n_N(r)\qquad(\texttt{card\_good\_rows\_eq\_sum}),
+\]
+and likewise $|S|=P+1-|G'|$, where $G'=\{n\in[N-P,N]: n=mr,\ r\ge P\text{ prime}\}$. For every modulus $d$, the
+remainders satisfy $r_d(S)=-r_d(G')+O(1)$.
+
+So a level of distribution for $S$ in the classes $N\bmod d$ is \emph{the same problem} as for $G'$: primes
+$r$ in the short intervals $((N-P)/m,N/m]$, $m\le N/P$, in the classes $Nm^{-1}\bmod d$, summed over $m$. In this
+form, Younis's theorem is the case $d=1$: an average over $m$ of primes in short intervals of length
+$X^{\le1/K}$, most of them below the range where primes in short intervals are known.
+
+\paragraph{8.4 Conditional implication (linear sieve).}
+Hypothesis $(\mathrm{Sm}_\lambda)$: $\sum_{d<P^\lambda}\tau_3(d)\,|r_d(S)|=o(P/\log P)$, uniformly in $N$, with local
+densities $g(p)=1/p+O(p^{-1}\log^{-1}P)$ for the class $N\bmod p$.
+(These densities are what the complement identity and the equidistribution of $m$ and $r$ suggest; they
+are \emph{not} proved here.) Under $(\mathrm{Sm}_\lambda)$, Selberg's sieve applied to $\{N-n:n\in S\}$ gives
+\[
+T(P,N)\le\Bigl(\frac2\lambda+o(1)\Bigr)\rho(K)\,|I| .
+\]
+Hence $(\mathrm{Sm}_\lambda)$ with $\lambda>2\rho(K)$ excludes bad families for $K\in[5/3,30/17)$ and $P$ large. The
+required level lies in $(0.864,\,0.978]$ on this range. \textbf{$(\mathrm{Sm}_\lambda)$ is unproved for every
+$\lambda>0$.}
+
+\paragraph{8.5 What levels are plausible.}
+These are heuristics, not theorems.
+\begin{itemize}
+\item \emph{Each $m$ separately.} Even GRH, which gives errors $\ll(N/m)^{1/2+o(1)}$ for primes in each interval,
+yields $\sum_{m\le N/P}(N/m)^{1/2}\asymp N/P^{1/2}\gg P$. This is useless already at $d=1$. The averaging over $m$
+(Younis's Perron--zero-density argument) is indispensable.
+\item \emph{Character analogue of Younis.} A twisted version with zero-density estimates on average over
+characters to moduli $d\le D$ plausibly needs $h/D\ge x^{17/30+\varepsilon}$, i.e.\ $\lambda\approx1-17K/30\le0.06$.
+Under the density hypothesis it would need $h/D\ge x^{1/2}$, i.e.\ $\lambda\approx1-K/2\le1/6$.
+\item \emph{Short-interval convolution.} $S$ is well factorable: $n=ab$ with $a$ in any range. In $[N-P,N]$,
+however, a long variable $b$ runs over an interval of length $P/a$. Poisson summation modulo $d$ gains only
+for $d<P/a$, inside the trivial range.
+\end{itemize}
+
+\paragraph{8.6 Pure linear-sieve limitations versus all methods.}
+The constant $2/\lambda$ is optimal for the linear upper-bound sieve given \emph{only} level-$\lambda$ information,
+by Selberg's parity examples. This is a statement about that information, not about $T$. Methods using
+bilinear (Type~II) information on $S$, or on the prime variable $\ell$, are not excluded by it. I did not find
+such an estimate in the short interval $[N-P,N]$ with the large residue $N$.
+
+\paragraph{8.7 Numerics} (\texttt{scripts/smooth\_rows\_numerics.py}, $200$ random $N$ per line).
+\begin{center}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+$P$ & $K$ & $\rho(K)$ & $T/|I|$ mean (max) & $|S|/P$ mean\\
+\midrule
+1009 & $5/3$ & 0.489 & 0.386 (0.518) & 0.443\\
+3001 & $5/3$ & 0.489 & 0.394 (0.481) & 0.448\\
+3001 & $1.70$ & 0.469 & 0.381 (0.463) & 0.430\\
+3001 & $1.75$ & 0.440 & 0.354 (0.423) & 0.401\\
+\bottomrule
+\end{tabular}
+\end{center}
+The target $T\le c\,\rho(K)|I|$ with $c\rho(K)<1$ holds in these samples with a wide margin ($c\approx0.8$--$1.1$).
+This is evidence, not proof.
+
+\paragraph{8.8 Outcome.} No unconditional exclusion is obtained for any $K$. The proved additions are the
+Younis mapping (8.1), the exact complement identity (8.3, Lean), and the conditional implication (8.4). The
+missing input is $(\mathrm{Sm}_\lambda)$ with $\lambda>2\rho(K)$, or a bilinear substitute for it.
+
 \section{Conclusion}
 \begin{itemize}
 \item The full Buchstab correction of [FB] does not transfer to $\ell\le P$ with known estimates. Its
